@@ -51,6 +51,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.FastDateFormat;
 import org.eclipse.jgit.lib.Constants;
 import org.kohsuke.github.GHCommit;
+import org.kohsuke.github.GHPullRequest;
 import org.kohsuke.github.GHRef;
 import org.kohsuke.github.GHRepository;
 import org.kohsuke.github.GHUser;
@@ -83,9 +84,9 @@ public class GitHubSCMFileSystem extends SCMFileSystem implements GitHubClosable
         this.repo = repo;
         if (rev != null) {
             if (rev.getHead() instanceof PullRequestSCMHead) {
-                PullRequestSCMHead pr = (PullRequestSCMHead) rev.getHead();
-                assert !pr.isMerge(); // TODO see below
-                this.ref = ((PullRequestSCMRevision) rev).getPullHash();
+                // PullRequestSCMHead pr = (PullRequestSCMHead) rev.getHead();
+                // assert !pr.isMerge(); // TODO see below
+                this.ref = ((PullRequestSCMRevision) rev).getMergeHash();
             } else if (rev instanceof AbstractGitSCMSource.SCMRevisionImpl) {
                 this.ref = ((AbstractGitSCMSource.SCMRevisionImpl) rev).getHash();
             } else {
@@ -271,7 +272,7 @@ public class GitHubSCMFileSystem extends SCMFileSystem implements GitHubClosable
                     refName = "tags/" + head.getName();
                 } else if (head instanceof PullRequestSCMHead) {
                     PullRequestSCMHead pr = (PullRequestSCMHead) head;
-                    if (!pr.isMerge() && pr.getSourceRepo() != null) {
+                    if (pr.getSourceRepo() != null) {
                         GHUser user = github.getUser(pr.getSourceOwner());
                         if (user == null) {
                             // we need to release here as we are not throwing an exception or transferring
@@ -286,10 +287,19 @@ public class GitHubSCMFileSystem extends SCMFileSystem implements GitHubClosable
                             Connector.release(github);
                             return null;
                         }
-                        return new GitHubSCMFileSystem(
+                        // GHPullRequest
+                        if (pr.isMerge()) {
+                            // if (rev)
+                            return new GitHubSCMFileSystem(
                                 github, repo,
-                                pr.getSourceBranch(),
+                                pr.getName(),
                                 rev);
+                        } else {
+                            return new GitHubSCMFileSystem(
+                                github, repo,
+                                pr.getName(),
+                                rev);
+                        }
                     }
                     // we need to release here as we are not throwing an exception or transferring responsibility to FS
                     Connector.release(github);

@@ -81,6 +81,7 @@ public class PullRequestSCMHead extends SCMHead implements ChangeRequestSCMHead2
         // the merge flag is encoded into the name, so safe to store here
         this.merge = merge;
         this.number = pr.getNumber();
+
         this.target = new BranchSCMHead(pr.getBase().getRef());
         // the source stuff is immutable for a pull request on github, so safe to store here
         GHRepository repository = pr.getHead().getRepository(); // may be null for deleted forks JENKINS-41246

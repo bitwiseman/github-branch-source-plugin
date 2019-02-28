@@ -888,15 +888,6 @@ public class GitHubSCMSource extends AbstractGitSCMSource {
                     // populate the request with its data sources
                     request.setGitHub(github);
                     request.setRepository(ghRepository);
-                    if (request.isFetchPRs()) {
-                        request.setPullRequests(new LazyPullRequests(request, ghRepository));
-                    }
-                    if (request.isFetchBranches()) {
-                        request.setBranches(new LazyBranches(request, ghRepository));
-                    }
-                    if (request.isFetchTags()) {
-                        request.setTags(new LazyTags(request, ghRepository));
-                    }
                     request.setCollaboratorNames(new LazyContributorNames(request, listener, github, ghRepository, credentials));
                     request.setPermissionsSource(new GitHubPermissionsSource() {
                         @Override
@@ -905,167 +896,9 @@ public class GitHubSCMSource extends AbstractGitSCMSource {
                         }
                     });
 
-                    if (request.isFetchBranches() && !request.isComplete()) {
-                        listener.getLogger().format("%n  Checking branches...%n");
-                        int count = 0;
-                        for (final GHBranch branch : request.getBranches()) {
-                            count++;
-                            String branchName = branch.getName();
-                            listener.getLogger().format("%n    Checking branch %s%n", HyperlinkNote
-                                    .encodeTo(repositoryUrl + "/tree/" + branchName, branchName));
-                            BranchSCMHead head = new BranchSCMHead(branchName);
-                            if (request.process(head, new SCMRevisionImpl(head, branch.getSHA1()),
-                                    new SCMSourceRequest.ProbeLambda<BranchSCMHead, SCMRevisionImpl>() {
-                                        @NonNull
-                                        @Override
-                                        public SCMSourceCriteria.Probe create(@NonNull BranchSCMHead head,
-                                                                              @Nullable SCMRevisionImpl revisionInfo)
-                                                throws IOException, InterruptedException {
-                                            return new GitHubSCMProbe(github, ghRepository, head, revisionInfo);
-                                        }
-                                    }, new CriteriaWitness(listener))) {
-                                listener.getLogger().format("%n  %d branches were processed (query completed)%n", count);
-                                break;
-                            } else {
-                                request.checkApiRateLimit();
-                            }
-                        }
-                        listener.getLogger().format("%n  %d branches were processed%n", count);
-                    }
-                    if (request.isFetchPRs() && !request.isComplete()) {
-                        listener.getLogger().format("%n  Checking pull-requests...%n");
-                        int count = 0;
-                        Map<Boolean, Set<ChangeRequestCheckoutStrategy>> strategies = request.getPRStrategies();
-                        PRs: for (final GHPullRequest pr : request.getPullRequests()) {
-                            int number = pr.getNumber();
-                            boolean fork = !ghRepository.getOwner().equals(pr.getHead().getUser());
-                            listener.getLogger().format("%n    Checking pull request %s%n",
-                                    HyperlinkNote.encodeTo(pr.getHtmlUrl().toString(), "#" + number));
-                            if (strategies.get(fork).isEmpty()) {
-                                if (fork) {
-                                    listener.getLogger().format("    Submitted from fork, skipping%n%n");
-                                } else {
-                                    listener.getLogger().format("    Submitted from origin repository, skipping%n%n");
-                                }
-                                continue;
-                            }
-                            for (final ChangeRequestCheckoutStrategy strategy : strategies.get(fork)) {
-                                final String branchName;
-                                if (strategies.get(fork).size() == 1) {
-                                    branchName = "PR-" + number;
-                                } else {
-                                    branchName = "PR-" + number + "-" + strategy.name().toLowerCase(Locale.ENGLISH);
-                                }
-                                count++;
-                                if (request.process(new PullRequestSCMHead(
-                                                pr, branchName, strategy == ChangeRequestCheckoutStrategy.MERGE
-                                        ),
-                                        null,
-                                        new SCMSourceRequest.ProbeLambda<PullRequestSCMHead, Void>() {
-                                            @NonNull
-                                            @Override
-                                            public SCMSourceCriteria.Probe create(@NonNull PullRequestSCMHead head,
-                                                                                  @Nullable Void revisionInfo)
-                                                    throws IOException, InterruptedException {
-                                                boolean trusted = request.isTrusted(head);
-                                                if (!trusted) {
-                                                    listener.getLogger().format("    (not from a trusted source)%n");
-                                                }
-                                                return new GitHubSCMProbe(github, ghRepository,
-                                                        trusted ? head : head.getTarget(), null);
-                                            }
-                                        },
-                                        new SCMSourceRequest.LazyRevisionLambda<PullRequestSCMHead, SCMRevision, Void>() {
-                                            @NonNull
-                                            @Override
-                                            public SCMRevision create(@NonNull PullRequestSCMHead head,
-                                                                      @Nullable Void ignored)
-                                                    throws IOException, InterruptedException {
-                                                switch (strategy) {
-                                                    case MERGE:
-                                                        request.checkApiRateLimit();
-                                                        GHRef mergeRef = ghRepository.getRef(
-                                                                "heads/" + pr.getBase().getRef()
-                                                        );
-                                                        return new PullRequestSCMRevision(head,
-                                                                mergeRef.getObject().getSha(),
-                                                                pr.getHead().getSha());
-                                                    default:
-                                                        return new PullRequestSCMRevision(head, pr.getBase().getSha(),
-                                                                pr.getHead().getSha());
-                                                }
-                                            }
-                                        },
-                                        new MergabilityWitness(pr, strategy, listener),
-                                        new CriteriaWitness(listener)
-                                )) {
-                                    listener.getLogger().format(
-                                            "%n  %d pull requests were processed (query completed)%n",
-                                            count
-                                    );
-                                    break PRs;
-                                } else {
-                                    request.checkApiRateLimit();
-                                }
-                            }
-                        }
-                        listener.getLogger().format("%n  %d pull requests were processed%n", count);
-                    }
-                    if (request.isFetchTags() && !request.isComplete()) {
-                        listener.getLogger().format("%n  Checking tags...%n");
-                        int count = 0;
-                        for (final GHRef tag : request.getTags()) {
-                            String tagName = tag.getRef();
-                            if (!tagName.startsWith(Constants.R_TAGS)) {
-                                // should never happen, but if it does we should skip
-                                continue;
-                            }
-                            tagName = tagName.substring(Constants.R_TAGS.length());
-                            count++;
-                            listener.getLogger().format("%n    Checking tag %s%n", HyperlinkNote
-                                    .encodeTo(repositoryUrl + "/tree/" + tagName, tagName));
-                            long tagDate = 0L;
-                            String sha = tag.getObject().getSha();
-                            if ("tag".equalsIgnoreCase(tag.getObject().getType())) {
-                                // annotated tag object
-                                try {
-                                    GHTagObject tagObject = request.getRepository().getTagObject(sha);
-                                    tagDate = tagObject.getTagger().getDate().getTime();
-                                    // we want the sha of the tagged commit not the tag object
-                                    sha = tagObject.getObject().getSha();
-                                } catch (IOException e) {
-                                    // ignore, if the tag doesn't exist, the probe will handle that correctly
-                                    // we just need enough of a date value to allow for probing
-                                }
-                            } else {
-                                try {
-                                    GHCommit commit = request.getRepository().getCommit(sha);
-                                    tagDate = commit.getCommitDate().getTime();
-                                } catch (IOException e) {
-                                    // ignore, if the tag doesn't exist, the probe will handle that correctly
-                                    // we just need enough of a date value to allow for probing
-                                }
-                            }
-                            GitHubTagSCMHead head = new GitHubTagSCMHead(tagName, tagDate);
-                            if (request.process(head, new GitTagSCMRevision(head, sha),
-                                    new SCMSourceRequest.ProbeLambda<GitHubTagSCMHead, GitTagSCMRevision>() {
-                                        @NonNull
-                                        @Override
-                                        public SCMSourceCriteria.Probe create(@NonNull GitHubTagSCMHead head,
-                                                                              @Nullable GitTagSCMRevision revisionInfo)
-                                                throws IOException, InterruptedException {
-                                            return new GitHubSCMProbe(github, ghRepository, head, revisionInfo);
-                                        }
-                                    }, new CriteriaWitness(listener))) {
-                                listener.getLogger()
-                                        .format("%n  %d tags were processed (query completed)%n", count);
-                                break;
-                            } else {
-                                request.checkApiRateLimit();
-                            }
-                        }
-                        listener.getLogger().format("%n  %d tags were processed%n", count);
-                    }
+                    retrieveBranches(listener, request, github, ghRepository);
+                    retrievePullRequests(listener, request, github, ghRepository);
+                    retrieveTags(listener, request, github, ghRepository);
                 }
                 listener.getLogger().format("%nFinished examining %s%n%n", fullName);
             } catch (WrappedException e) {
@@ -1078,6 +911,217 @@ public class GitHubSCMSource extends AbstractGitSCMSource {
         } finally {
             Connector.release(github);
         }
+    }
+
+    private final void retrieveBranches(final TaskListener listener, final GitHubSCMSourceRequest request, final GitHub github, final GHRepository ghRepository) throws IOException, InterruptedException {
+        if (!request.isFetchBranches()) {
+            return;
+        }
+
+        request.setBranches(new LazyBranches(request, ghRepository));
+        if (request.isComplete()) {
+            return;
+        }
+
+        listener.getLogger().format("%n  Checking branches...%n");
+        int count = 0;
+        for (final GHBranch branch : request.getBranches()) {
+            count++;
+            String branchName = branch.getName();
+            listener.getLogger().format("%n    Checking branch %s%n", HyperlinkNote
+                    .encodeTo(repositoryUrl + "/tree/" + branchName, branchName));
+            BranchSCMHead head = new BranchSCMHead(branchName);
+            SCMSourceRequest.ProbeLambda<BranchSCMHead, SCMRevisionImpl> probe =
+                new SCMSourceRequest.ProbeLambda<BranchSCMHead, SCMRevisionImpl>() {
+                    @NonNull
+                    @Override
+                    public SCMSourceCriteria.Probe create(@NonNull BranchSCMHead head,
+                                                        @Nullable SCMRevisionImpl revisionInfo)
+                            throws IOException, InterruptedException {
+                        return new GitHubSCMProbe(github, ghRepository, head, revisionInfo);
+                    }
+                };
+            if (request.process(head,
+                    new SCMRevisionImpl(head, branch.getSHA1()),
+                    probe,
+                    new CriteriaWitness(listener))) {
+                listener.getLogger().format("%n  %d branches were processed (query completed)%n", count);
+                break;
+            } else {
+                request.checkApiRateLimit();
+            }
+        }
+        listener.getLogger().format("%n  %d branches were processed%n", count);
+    }
+
+    private void retrievePullRequests(final TaskListener listener, final GitHubSCMSourceRequest request, final GitHub github, final GHRepository ghRepository) throws IOException, InterruptedException {
+        if (!request.isFetchPRs()) {
+            return;
+        }
+
+        request.setPullRequests(new LazyPullRequests(request, ghRepository));
+        if (request.isComplete()) {
+            return;
+        }
+
+        listener.getLogger().format("%n  Checking pull-requests...%n");
+        int count = 0;
+        Map<Boolean, Set<ChangeRequestCheckoutStrategy>> strategies = request.getPRStrategies();
+        PRs: for (final GHPullRequest pr : request.getPullRequests()) {
+            int number = pr.getNumber();
+            boolean fork = !ghRepository.getOwner().equals(pr.getHead().getUser());
+            listener.getLogger().format("%n    Checking pull request %s%n",
+                    HyperlinkNote.encodeTo(pr.getHtmlUrl().toString(), "#" + number));
+            if (strategies.get(fork).isEmpty()) {
+                if (fork) {
+                    listener.getLogger().format("    Submitted from fork, skipping%n%n");
+                } else {
+                    listener.getLogger().format("    Submitted from origin repository, skipping%n%n");
+                }
+                continue;
+            }
+            for (final ChangeRequestCheckoutStrategy strategy : strategies.get(fork)) {
+                final String branchName;
+                if (strategies.get(fork).size() == 1) {
+                    branchName = "PR-" + number;
+                } else {
+                    branchName = "PR-" + number + "-" + strategy.name().toLowerCase(Locale.ENGLISH);
+                }
+                count++;
+                PullRequestSCMHead head = new PullRequestSCMHead(
+                                pr, branchName, strategy == ChangeRequestCheckoutStrategy.MERGE);
+                SCMSourceRequest.ProbeLambda<PullRequestSCMHead, Void> probe =
+                    new SCMSourceRequest.ProbeLambda<PullRequestSCMHead, Void>() {
+                        @NonNull
+                        @Override
+                        public SCMSourceCriteria.Probe create(@NonNull PullRequestSCMHead head,
+                                                                @Nullable Void revisionInfo)
+                                throws IOException, InterruptedException {
+                            boolean trusted = request.isTrusted(head);
+                            if (!trusted) {
+                                listener.getLogger().format("    (not from a trusted source)%n");
+                            }
+                            return new GitHubSCMProbe(github, ghRepository,
+                                    trusted ? head : head.getTarget(), null);
+                        }
+                    };
+
+                SCMSourceRequest.LazyRevisionLambda<PullRequestSCMHead, SCMRevision, Void> revision =
+                    new SCMSourceRequest.LazyRevisionLambda<PullRequestSCMHead, SCMRevision, Void>() {
+                        @NonNull
+                        @Override
+                        public SCMRevision create(@NonNull PullRequestSCMHead head,
+                                                    @Nullable Void ignored)
+                                throws IOException, InterruptedException {
+                            switch (strategy) {
+                                case MERGE:
+                                    request.checkApiRateLimit();
+                                    GHRef mergeRef = ghRepository.getRef(
+                                            "heads/" + pr.getBase().getRef());
+                                    return new PullRequestSCMRevision(head,
+                                            mergeRef.getObject().getSha(),
+                                            pr.getHead().getSha());
+                                    // TODO(bitwiseman): This isn't right, but this is approximately what I think needs to happen.
+                                    // There will be a difference in merge cases between the headHash and pullHash.
+                                    // return new PullRequestSCMRevision(head,
+                                    //     mergeRef.getObject().getSha(),
+                                    //     pr.getMergeCommitSha());
+
+                                default:
+                                    return new PullRequestSCMRevision(head, pr.getBase().getSha(),
+                                            pr.getHead().getSha());
+                            }
+                        }
+                    };
+
+                if (request.process(head,
+                        null,
+                        probe,
+                        revision,
+                        new MergabilityWitness(pr, strategy, listener),
+                        new CriteriaWitness(listener)
+                )) {
+                    listener.getLogger().format(
+                            "%n  %d pull requests were processed (query completed)%n",
+                            count
+                    );
+                    break PRs;
+                } else {
+                    request.checkApiRateLimit();
+                }
+            }
+        }
+        listener.getLogger().format("%n  %d pull requests were processed%n", count);
+    }
+
+    private final void retrieveTags(final TaskListener listener, final GitHubSCMSourceRequest request, final GitHub github, final GHRepository ghRepository) throws IOException, InterruptedException {
+        if (!request.isFetchTags()) {
+            return;
+        }
+
+        request.setTags(new LazyTags(request, ghRepository));
+        if (request.isComplete()) {
+            return;
+        }
+
+        listener.getLogger().format("%n  Checking tags...%n");
+        int count = 0;
+        for (final GHRef tag : request.getTags()) {
+            String tagName = tag.getRef();
+            if (!tagName.startsWith(Constants.R_TAGS)) {
+                // should never happen, but if it does we should skip
+                continue;
+            }
+            tagName = tagName.substring(Constants.R_TAGS.length());
+            count++;
+            listener.getLogger().format("%n    Checking tag %s%n", HyperlinkNote
+                    .encodeTo(repositoryUrl + "/tree/" + tagName, tagName));
+            long tagDate = 0L;
+            String sha = tag.getObject().getSha();
+            if ("tag".equalsIgnoreCase(tag.getObject().getType())) {
+                // annotated tag object
+                try {
+                    GHTagObject tagObject = request.getRepository().getTagObject(sha);
+                    tagDate = tagObject.getTagger().getDate().getTime();
+                    // we want the sha of the tagged commit not the tag object
+                    sha = tagObject.getObject().getSha();
+                } catch (IOException e) {
+                    // ignore, if the tag doesn't exist, the probe will handle that correctly
+                    // we just need enough of a date value to allow for probing
+                }
+            } else {
+                try {
+                    GHCommit commit = request.getRepository().getCommit(sha);
+                    tagDate = commit.getCommitDate().getTime();
+                } catch (IOException e) {
+                    // ignore, if the tag doesn't exist, the probe will handle that correctly
+                    // we just need enough of a date value to allow for probing
+                }
+            }
+            GitHubTagSCMHead head = new GitHubTagSCMHead(tagName, tagDate);
+            SCMSourceRequest.ProbeLambda<GitHubTagSCMHead, GitTagSCMRevision> probe =
+                new SCMSourceRequest.ProbeLambda<GitHubTagSCMHead, GitTagSCMRevision>() {
+                    @NonNull
+                    @Override
+                    public SCMSourceCriteria.Probe create(@NonNull GitHubTagSCMHead head,
+                                                        @Nullable GitTagSCMRevision revisionInfo)
+                            throws IOException, InterruptedException {
+                        return new GitHubSCMProbe(github, ghRepository, head, revisionInfo);
+                    }
+                };
+
+            if (request.process(head,
+                    new GitTagSCMRevision(head, sha),
+                    probe,
+                    new CriteriaWitness(listener))) {
+                listener.getLogger()
+                        .format("%n  %d tags were processed (query completed)%n", count);
+                break;
+            } else {
+                request.checkApiRateLimit();
+            }
+        }
+        listener.getLogger().format("%n  %d tags were processed%n", count);
     }
 
     @NonNull
@@ -1192,119 +1236,45 @@ public class GitHubSCMSource extends AbstractGitSCMSource {
             final GHRepository ghRepository = this.ghRepository;
             listener.getLogger().format("Examining %s%n",
                     HyperlinkNote.encodeTo(ghRepository.getHtmlUrl().toString(), fullName));
-            GitHubSCMSourceContext context = new GitHubSCMSourceContext(null, SCMHeadObserver.none())
-                    .withTraits(traits);
-            Matcher prMatcher = Pattern.compile("^PR-(\\d+)(?:-(.*))?$").matcher(headName);
-            if (prMatcher.matches()) {
-                // it's a looking very much like a PR
-                int number = Integer.parseInt(prMatcher.group(1));
-                listener.getLogger().format("Attempting to resolve %s as pull request %d%n", headName, number);
-                try {
-                    GHPullRequest pr = ghRepository.getPullRequest(number);
-                    if (pr != null) {
-                        boolean fork = !ghRepository.getOwner().equals(pr.getHead().getUser());
-                        Set<ChangeRequestCheckoutStrategy> strategies;
-                        if (context.wantPRs()) {
-                            strategies = fork
-                                            ? context.forkPRStrategies()
-                                            : context.originPRStrategies();
-                        } else {
-                            // if not configured, we go with merge
-                            strategies = EnumSet.of(ChangeRequestCheckoutStrategy.MERGE);
-                        }
-                        ChangeRequestCheckoutStrategy strategy;
-                        if (prMatcher.group(2) == null) {
-                            if (strategies.size() == 1) {
-                                strategy = strategies.iterator().next();
-                            } else {
-                                // invalid name
-                                listener.getLogger().format(
-                                        "Resolved %s as pull request %d but indeterminate checkout strategy, "
-                                                + "please try %s or %s%n",
-                                        headName,
-                                        number,
-                                        headName + "-" + ChangeRequestCheckoutStrategy.HEAD.name(),
-                                        headName + "-" + ChangeRequestCheckoutStrategy.MERGE.name()
-                                );
-                                return null;
-                            }
-                        } else {
-                            strategy = null;
-                            for (ChangeRequestCheckoutStrategy s: strategies) {
-                                if (s.name().toLowerCase(Locale.ENGLISH).equals(prMatcher.group(2))) {
-                                    strategy = s;
-                                    break;
-                                }
-                            }
-                            if (strategy == null) {
-                                // invalid name;
-                                listener.getLogger().format(
-                                        "Resolved %s as pull request %d but unknown checkout strategy %s, "
-                                                + "please try %s or %s%n",
-                                        headName,
-                                        number,
-                                        prMatcher.group(2),
-                                        headName + "-" + ChangeRequestCheckoutStrategy.HEAD.name(),
-                                        headName + "-" + ChangeRequestCheckoutStrategy.MERGE.name()
-                                );
-                                return null;
-                            }
-                        }
-                        PullRequestSCMHead head = new PullRequestSCMHead(
-                                pr, headName, strategy == ChangeRequestCheckoutStrategy.MERGE
-                        );
-                        switch (strategy) {
-                            case MERGE:
-                                Connector.checkApiRateLimit(listener, github);
-                                GHRef mergeRef = ghRepository.getRef(
-                                        "heads/" + pr.getBase().getRef()
-                                );
-                                listener.getLogger().format(
-                                        "Resolved %s as pull request %d at revision %s merged onto %s%n",
-                                        headName,
-                                        number,
-                                        pr.getHead().getSha(),
-                                        pr.getBase().getSha()
-                                );
-                                return new PullRequestSCMRevision(head,
-                                        mergeRef.getObject().getSha(),
-                                        pr.getHead().getSha());
-                            default:
-                                listener.getLogger().format(
-                                                "Resolved %s as pull request %d at revision %s%n",
-                                                headName,
-                                                number,
-                                                pr.getHead().getSha()
-                                        );
-                                return new PullRequestSCMRevision(head, pr.getBase().getSha(),
-                                        pr.getHead().getSha());
-                        }
-                    } else {
-                        listener.getLogger().format(
-                                "Could not resolve %s as pull request %d%n",
-                                headName,
-                                number
-                        );
-                    }
-                } catch (FileNotFoundException e) {
-                    // maybe some ****er created a branch or a tag called PR-_
-                    listener.getLogger().format(
-                            "Could not resolve %s as pull request %d%n",
-                            headName,
-                            number
-                    );
-                }
+            SCMRevision result = retrievePRRevision(github, ghRepository, listener, headName);
+            if (result == null) {
+                result = retrieveBranchRevision(github, ghRepository, listener, headName);
             }
-            try {
-                listener.getLogger().format("Attempting to resolve %s as a branch%n", headName);
-                GHBranch branch = ghRepository.getBranch(headName);
-                if (branch != null) {
-                    listener.getLogger().format("Resolved %s as branch %s at revision %s%n", headName, branch.getName(), branch.getSHA1());
-                    return new SCMRevisionImpl(new BranchSCMHead(headName), branch.getSHA1());
-                }
-            } catch (FileNotFoundException e) {
-                // maybe it's a tag
+            if (result == null) {
+                result = retrieveTagRevision(github, ghRepository, listener, headName);
             }
+
+            // TODO try and resolve as a revision, but right now we'd need to know what branch the revision belonged to
+            // once GitSCMSource has support for arbitrary refs, we could just use that... but given that
+            // GitHubSCMBuilder constructs the refspec based on the branch name, without a specific "arbitrary ref"
+            // SCMHead subclass we cannot do anything here
+
+            if (result == null) {
+                listener.error("Could not resolve %s", headName);
+            }
+            return result;
+        } finally {
+            Connector.release(github);
+        }
+    }
+
+    private SCMRevision retrieveTagRevision(final GitHub github, final GHRepository ghRepository, TaskListener listener,
+            String headName) throws IOException {
+        try {
+            listener.getLogger().format("Attempting to resolve %s as a branch%n", headName);
+            GHBranch branch = ghRepository.getBranch(headName);
+            if (branch != null) {
+                listener.getLogger().format("Resolved %s as branch %s at revision %s%n", headName, branch.getName(), branch.getSHA1());
+                return new SCMRevisionImpl(new BranchSCMHead(headName), branch.getSHA1());
+            }
+        } catch (FileNotFoundException e) {
+            // maybe it's a tag
+        }
+        return null;
+    }
+
+    private SCMRevision retrieveBranchRevision(final GitHub github, final GHRepository ghRepository, TaskListener listener,
+            String headName) throws IOException {
             try {
                 listener.getLogger().format("Attempting to resolve %s as a tag%n", headName);
                 GHRef tag = ghRepository.getRef("tags/" + headName);
@@ -1336,16 +1306,118 @@ public class GitHubSCMSource extends AbstractGitSCMSource {
             } catch (FileNotFoundException e) {
                 // ok it doesn't exist
             }
-            listener.error("Could not resolve %s", headName);
-
-            // TODO try and resolve as a revision, but right now we'd need to know what branch the revision belonged to
-            // once GitSCMSource has support for arbitrary refs, we could just use that... but given that
-            // GitHubSCMBuilder constructs the refspec based on the branch name, without a specific "arbitrary ref"
-            // SCMHead subclass we cannot do anything here
             return null;
-        } finally {
-            Connector.release(github);
         }
+
+    private SCMRevision retrievePRRevision(final GitHub github, final GHRepository ghRepository,
+            @NonNull TaskListener listener, String headName) throws IOException, InterruptedException {
+        Matcher prMatcher = Pattern.compile("^PR-(\\d+)(?:-(.*))?$").matcher(headName);
+        if (prMatcher.matches()) {
+            // it's a looking very much like a PR
+            int number = Integer.parseInt(prMatcher.group(1));
+            listener.getLogger().format("Attempting to resolve %s as pull request %d%n", headName, number);
+            try {
+                GitHubSCMSourceContext context = new GitHubSCMSourceContext(null, SCMHeadObserver.none())
+                    .withTraits(traits);
+                GHPullRequest pr = ghRepository.getPullRequest(number);
+                if (pr != null) {
+                    boolean fork = !ghRepository.getOwner().equals(pr.getHead().getUser());
+                    Set<ChangeRequestCheckoutStrategy> strategies;
+                    if (context.wantPRs()) {
+                        strategies = fork
+                                        ? context.forkPRStrategies()
+                                        : context.originPRStrategies();
+                    } else {
+                        // if not configured, we go with merge
+                        strategies = EnumSet.of(ChangeRequestCheckoutStrategy.MERGE);
+                    }
+                    ChangeRequestCheckoutStrategy strategy;
+                    if (prMatcher.group(2) == null) {
+                        if (strategies.size() == 1) {
+                            strategy = strategies.iterator().next();
+                        } else {
+                            // invalid name
+                            listener.getLogger().format(
+                                    "Resolved %s as pull request %d but indeterminate checkout strategy, "
+                                            + "please try %s or %s%n",
+                                    headName,
+                                    number,
+                                    headName + "-" + ChangeRequestCheckoutStrategy.HEAD.name(),
+                                    headName + "-" + ChangeRequestCheckoutStrategy.MERGE.name()
+                            );
+                            return null;
+                        }
+                    } else {
+                        strategy = null;
+                        for (ChangeRequestCheckoutStrategy s: strategies) {
+                            if (s.name().toLowerCase(Locale.ENGLISH).equals(prMatcher.group(2))) {
+                                strategy = s;
+                                break;
+                            }
+                        }
+                        if (strategy == null) {
+                            // invalid name;
+                            listener.getLogger().format(
+                                    "Resolved %s as pull request %d but unknown checkout strategy %s, "
+                                            + "please try %s or %s%n",
+                                    headName,
+                                    number,
+                                    prMatcher.group(2),
+                                    headName + "-" + ChangeRequestCheckoutStrategy.HEAD.name(),
+                                    headName + "-" + ChangeRequestCheckoutStrategy.MERGE.name()
+                            );
+                            return null;
+                        }
+                    }
+                    PullRequestSCMHead head = new PullRequestSCMHead(
+                            pr, headName, strategy == ChangeRequestCheckoutStrategy.MERGE
+                    );
+                    switch (strategy) {
+                        case MERGE:
+                            Connector.checkApiRateLimit(listener, github);
+                            GHRef mergeRef = ghRepository.getRef(
+                                    "heads/" + pr.getBase().getRef()
+                            );
+                            listener.getLogger().format(
+                                    "Resolved %s as pull request %d at revision %s merged onto %s - %s%n",
+                                    headName,
+                                    number,
+                                    pr.getHead().getSha(),
+                                    pr.getBase().getSha(),
+                                    pr.getMergeCommitSha()
+                            );
+                            return new PullRequestSCMRevision(head,
+                                    mergeRef.getObject().getSha(),
+                                    pr.getHead().getSha(),
+                                    pr.getMergeCommitSha());
+                        default:
+                            listener.getLogger().format(
+                                            "Resolved %s as pull request %d at revision %s%n",
+                                            headName,
+                                            number,
+                                            pr.getHead().getSha()
+                                    );
+                            return new PullRequestSCMRevision(head,
+                                    pr.getBase().getSha(),
+                                    pr.getHead().getSha());
+                    }
+                } else {
+                    listener.getLogger().format(
+                            "Could not resolve %s as pull request %d%n",
+                            headName,
+                            number
+                    );
+                }
+            } catch (FileNotFoundException e) {
+                // maybe some ****er created a branch or a tag called PR-_
+                listener.getLogger().format(
+                        "Could not resolve %s as pull request %d%n",
+                        headName,
+                        number
+                );
+            }
+        }
+        return null;
     }
 
     @NonNull

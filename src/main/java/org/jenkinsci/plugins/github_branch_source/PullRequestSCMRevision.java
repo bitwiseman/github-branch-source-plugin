@@ -24,6 +24,7 @@
 
 package org.jenkinsci.plugins.github_branch_source;
 
+import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import jenkins.plugins.git.AbstractGitSCMSource;
@@ -41,13 +42,13 @@ public class PullRequestSCMRevision extends ChangeRequestSCMRevision<PullRequest
 
     private final @NonNull String baseHash;
     private final @NonNull String pullHash;
-    private final @NonNull String mergeHash;
+    private final @CheckForNull String mergeHash;
 
     public PullRequestSCMRevision(@NonNull PullRequestSCMHead head, @NonNull String baseHash, @NonNull String pullHash) {
         this(head, baseHash, pullHash, null);
     }
 
-    public PullRequestSCMRevision(@NonNull PullRequestSCMHead head, @NonNull String baseHash, @NonNull String pullHash, @NonNull String mergeHash) {
+    public PullRequestSCMRevision(@NonNull PullRequestSCMHead head, @NonNull String baseHash, @NonNull String pullHash, @CheckForNull String mergeHash) {
         super(head, new AbstractGitSCMSource.SCMRevisionImpl(head.getTarget(), baseHash));
         this.baseHash = baseHash;
         this.pullHash = pullHash;
@@ -92,7 +93,7 @@ public class PullRequestSCMRevision extends ChangeRequestSCMRevision<PullRequest
      *
      * @return The commit hash of the head of the pull request branch
      */
-    @NonNull
+    @CheckForNull
     public String getMergeHash() {
         return mergeHash;
     }

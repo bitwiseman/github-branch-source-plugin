@@ -896,9 +896,9 @@ public class GitHubSCMSource extends AbstractGitSCMSource {
                         }
                     });
 
-                    retrieveBranches(listener, request, github, ghRepository);
-                    retrievePullRequests(listener, request, github, ghRepository);
-                    retrieveTags(listener, request, github, ghRepository);
+                    retrieveScanBranches(listener, request, github, ghRepository);
+                    retrieveScanPullRequests(listener, request, github, ghRepository);
+                    retrieveScanTags(listener, request, github, ghRepository);
                 }
                 listener.getLogger().format("%nFinished examining %s%n%n", fullName);
             } catch (WrappedException e) {
@@ -913,7 +913,7 @@ public class GitHubSCMSource extends AbstractGitSCMSource {
         }
     }
 
-    private final void retrieveBranches(final TaskListener listener, final GitHubSCMSourceRequest request, final GitHub github, final GHRepository ghRepository) throws IOException, InterruptedException {
+    private void retrieveScanBranches(final TaskListener listener, final GitHubSCMSourceRequest request, final GitHub github, final GHRepository ghRepository) throws IOException, InterruptedException {
         if (!request.isFetchBranches()) {
             return;
         }
@@ -954,7 +954,7 @@ public class GitHubSCMSource extends AbstractGitSCMSource {
         listener.getLogger().format("%n  %d branches were processed%n", count);
     }
 
-    private void retrievePullRequests(final TaskListener listener, final GitHubSCMSourceRequest request, final GitHub github, final GHRepository ghRepository) throws IOException, InterruptedException {
+    private void retrieveScanPullRequests(final TaskListener listener, final GitHubSCMSourceRequest request, final GitHub github, final GHRepository ghRepository) throws IOException, InterruptedException {
         if (!request.isFetchPRs()) {
             return;
         }
@@ -990,6 +990,7 @@ public class GitHubSCMSource extends AbstractGitSCMSource {
                 count++;
                 PullRequestSCMHead head = new PullRequestSCMHead(
                                 pr, branchName, strategy == ChangeRequestCheckoutStrategy.MERGE);
+                ensureDetailedGHPullRequest(pr, listener, github, ghRepository);
                 SCMSourceRequest.ProbeLambda<PullRequestSCMHead, Void> probe =
                     new SCMSourceRequest.ProbeLambda<PullRequestSCMHead, Void>() {
                         @NonNull
@@ -1013,24 +1014,22 @@ public class GitHubSCMSource extends AbstractGitSCMSource {
                         public SCMRevision create(@NonNull PullRequestSCMHead head,
                                                     @Nullable Void ignored)
                                 throws IOException, InterruptedException {
+                            String baseHash = pr.getBase().getSha();
+                            String mergeHash = null;
+
                             switch (strategy) {
                                 case MERGE:
                                     request.checkApiRateLimit();
-                                    GHRef mergeRef = ghRepository.getRef(
-                                            "heads/" + pr.getBase().getRef());
-                                    return new PullRequestSCMRevision(head,
-                                            mergeRef.getObject().getSha(),
-                                            pr.getHead().getSha());
-                                    // TODO(bitwiseman): This isn't right, but this is approximately what I think needs to happen.
-                                    // There will be a difference in merge cases between the headHash and pullHash.
-                                    // return new PullRequestSCMRevision(head,
-                                    //     mergeRef.getObject().getSha(),
-                                    //     pr.getMergeCommitSha());
-
+                                    baseHash = ghRepository.getRef("heads/" + head.getTarget().getName()).getObject().getSha();
+                                    mergeHash = pr.getMergeCommitSha();
+                                    break;
                                 default:
-                                    return new PullRequestSCMRevision(head, pr.getBase().getSha(),
-                                            pr.getHead().getSha());
+                                    break;
                             }
+                            return new PullRequestSCMRevision(head,
+                                baseHash,
+                                pr.getHead().getSha(),
+                                mergeHash);
                         }
                     };
 
@@ -1054,7 +1053,7 @@ public class GitHubSCMSource extends AbstractGitSCMSource {
         listener.getLogger().format("%n  %d pull requests were processed%n", count);
     }
 
-    private final void retrieveTags(final TaskListener listener, final GitHubSCMSourceRequest request, final GitHub github, final GHRepository ghRepository) throws IOException, InterruptedException {
+    private void retrieveScanTags(final TaskListener listener, final GitHubSCMSourceRequest request, final GitHub github, final GHRepository ghRepository) throws IOException, InterruptedException {
         if (!request.isFetchTags()) {
             return;
         }
@@ -1236,12 +1235,12 @@ public class GitHubSCMSource extends AbstractGitSCMSource {
             final GHRepository ghRepository = this.ghRepository;
             listener.getLogger().format("Examining %s%n",
                     HyperlinkNote.encodeTo(ghRepository.getHtmlUrl().toString(), fullName));
-            SCMRevision result = retrievePRRevision(github, ghRepository, listener, headName);
+            SCMRevision result = retrieveRevisionForPullRequest(headName, listener, github, ghRepository);
             if (result == null) {
-                result = retrieveBranchRevision(github, ghRepository, listener, headName);
+                result = retrieveRevisionForBranch(headName, listener, github, ghRepository);
             }
             if (result == null) {
-                result = retrieveTagRevision(github, ghRepository, listener, headName);
+                result = retrieveRevisionForTag(headName, listener, github, ghRepository);
             }
 
             // TODO try and resolve as a revision, but right now we'd need to know what branch the revision belonged to
@@ -1258,59 +1257,7 @@ public class GitHubSCMSource extends AbstractGitSCMSource {
         }
     }
 
-    private SCMRevision retrieveTagRevision(final GitHub github, final GHRepository ghRepository, TaskListener listener,
-            String headName) throws IOException {
-        try {
-            listener.getLogger().format("Attempting to resolve %s as a branch%n", headName);
-            GHBranch branch = ghRepository.getBranch(headName);
-            if (branch != null) {
-                listener.getLogger().format("Resolved %s as branch %s at revision %s%n", headName, branch.getName(), branch.getSHA1());
-                return new SCMRevisionImpl(new BranchSCMHead(headName), branch.getSHA1());
-            }
-        } catch (FileNotFoundException e) {
-            // maybe it's a tag
-        }
-        return null;
-    }
-
-    private SCMRevision retrieveBranchRevision(final GitHub github, final GHRepository ghRepository, TaskListener listener,
-            String headName) throws IOException {
-            try {
-                listener.getLogger().format("Attempting to resolve %s as a tag%n", headName);
-                GHRef tag = ghRepository.getRef("tags/" + headName);
-                if (tag != null) {
-                    long tagDate = 0L;
-                    String tagSha = tag.getObject().getSha();
-                    if ("tag".equalsIgnoreCase(tag.getObject().getType())) {
-                        // annotated tag object
-                        try {
-                            GHTagObject tagObject = ghRepository.getTagObject(tagSha);
-                            tagDate = tagObject.getTagger().getDate().getTime();
-                        } catch (IOException e) {
-                            // ignore, if the tag doesn't exist, the probe will handle that correctly
-                            // we just need enough of a date value to allow for probing
-                        }
-                    } else {
-                        try {
-                            GHCommit commit = ghRepository.getCommit(tagSha);
-                            tagDate = commit.getCommitDate().getTime();
-                        } catch (IOException e) {
-                            // ignore, if the tag doesn't exist, the probe will handle that correctly
-                            // we just need enough of a date value to allow for probing
-                        }
-                    }
-                    listener.getLogger().format("Resolved %s as tag %s at revision %s%n", headName, headName,
-                            tagSha);
-                    return new GitTagSCMRevision(new GitHubTagSCMHead(headName, tagDate), tagSha);
-                }
-            } catch (FileNotFoundException e) {
-                // ok it doesn't exist
-            }
-            return null;
-        }
-
-    private SCMRevision retrievePRRevision(final GitHub github, final GHRepository ghRepository,
-            @NonNull TaskListener listener, String headName) throws IOException, InterruptedException {
+    private SCMRevision retrieveRevisionForPullRequest(@NonNull String headName, @NonNull TaskListener listener, final GitHub github, final GHRepository ghRepository) throws IOException, InterruptedException {
         Matcher prMatcher = Pattern.compile("^PR-(\\d+)(?:-(.*))?$").matcher(headName);
         if (prMatcher.matches()) {
             // it's a looking very much like a PR
@@ -1319,7 +1266,7 @@ public class GitHubSCMSource extends AbstractGitSCMSource {
             try {
                 GitHubSCMSourceContext context = new GitHubSCMSourceContext(null, SCMHeadObserver.none())
                     .withTraits(traits);
-                GHPullRequest pr = ghRepository.getPullRequest(number);
+                GHPullRequest pr = getDetailedGHPullRequest(number, listener, github, ghRepository);
                 if (pr != null) {
                     boolean fork = !ghRepository.getOwner().equals(pr.getHead().getUser());
                     Set<ChangeRequestCheckoutStrategy> strategies;
@@ -1372,24 +1319,23 @@ public class GitHubSCMSource extends AbstractGitSCMSource {
                     PullRequestSCMHead head = new PullRequestSCMHead(
                             pr, headName, strategy == ChangeRequestCheckoutStrategy.MERGE
                     );
+                    String baseHash = pr.getBase().getSha();
+                    String mergeHash = null;
+
                     switch (strategy) {
                         case MERGE:
                             Connector.checkApiRateLimit(listener, github);
-                            GHRef mergeRef = ghRepository.getRef(
-                                    "heads/" + pr.getBase().getRef()
-                            );
+                            baseHash = ghRepository.getRef("heads/" + head.getTarget().getName()).getObject().getSha();
+                            mergeHash = pr.getMergeCommitSha();
                             listener.getLogger().format(
-                                    "Resolved %s as pull request %d at revision %s merged onto %s - %s%n",
+                                    "Resolved %s as pull request %d at revision %s merged onto %s as %s%n",
                                     headName,
                                     number,
                                     pr.getHead().getSha(),
                                     pr.getBase().getSha(),
                                     pr.getMergeCommitSha()
                             );
-                            return new PullRequestSCMRevision(head,
-                                    mergeRef.getObject().getSha(),
-                                    pr.getHead().getSha(),
-                                    pr.getMergeCommitSha());
+                            break;
                         default:
                             listener.getLogger().format(
                                             "Resolved %s as pull request %d at revision %s%n",
@@ -1397,10 +1343,13 @@ public class GitHubSCMSource extends AbstractGitSCMSource {
                                             number,
                                             pr.getHead().getSha()
                                     );
-                            return new PullRequestSCMRevision(head,
-                                    pr.getBase().getSha(),
-                                    pr.getHead().getSha());
+                            break;
                     }
+                    return new PullRequestSCMRevision(head,
+                        baseHash,
+                        pr.getHead().getSha(),
+                        mergeHash);
+
                 } else {
                     listener.getLogger().format(
                             "Could not resolve %s as pull request %d%n",
@@ -1416,6 +1365,55 @@ public class GitHubSCMSource extends AbstractGitSCMSource {
                         number
                 );
             }
+        }
+        return null;
+    }
+
+    private SCMRevision retrieveRevisionForBranch(@NonNull String headName, @NonNull TaskListener listener, final GitHub github, final GHRepository ghRepository) throws IOException {
+        try {
+            listener.getLogger().format("Attempting to resolve %s as a branch%n", headName);
+            GHBranch branch = ghRepository.getBranch(headName);
+            if (branch != null) {
+                listener.getLogger().format("Resolved %s as branch %s at revision %s%n", headName, branch.getName(), branch.getSHA1());
+                return new SCMRevisionImpl(new BranchSCMHead(headName), branch.getSHA1());
+            }
+        } catch (FileNotFoundException e) {
+            // maybe it's a tag
+        }
+        return null;
+    }
+
+    private SCMRevision retrieveRevisionForTag(@NonNull String headName, @NonNull TaskListener listener, final GitHub github, final GHRepository ghRepository) throws IOException {
+        try {
+            listener.getLogger().format("Attempting to resolve %s as a tag%n", headName);
+            GHRef tag = ghRepository.getRef("tags/" + headName);
+            if (tag != null) {
+                long tagDate = 0L;
+                String tagSha = tag.getObject().getSha();
+                if ("tag".equalsIgnoreCase(tag.getObject().getType())) {
+                    // annotated tag object
+                    try {
+                        GHTagObject tagObject = ghRepository.getTagObject(tagSha);
+                        tagDate = tagObject.getTagger().getDate().getTime();
+                    } catch (IOException e) {
+                        // ignore, if the tag doesn't exist, the probe will handle that correctly
+                        // we just need enough of a date value to allow for probing
+                    }
+                } else {
+                    try {
+                        GHCommit commit = ghRepository.getCommit(tagSha);
+                        tagDate = commit.getCommitDate().getTime();
+                    } catch (IOException e) {
+                        // ignore, if the tag doesn't exist, the probe will handle that correctly
+                        // we just need enough of a date value to allow for probing
+                    }
+                }
+                listener.getLogger().format("Resolved %s as tag %s at revision %s%n", headName, headName,
+                        tagSha);
+                return new GitTagSCMRevision(new GitHubTagSCMHead(headName, tagDate), tagSha);
+            }
+        } catch (FileNotFoundException e) {
+            // ok it doesn't exist
         }
         return null;
     }
@@ -1510,21 +1508,22 @@ public class GitHubSCMSource extends AbstractGitSCMSource {
                 Connector.checkApiRateLimit(listener, github);
                 String fullName = repoOwner + "/" + repository;
                 ghRepository = github.getRepository(fullName);
+                final GHRepository ghRepository = this.ghRepository;
                 repositoryUrl = ghRepository.getHtmlUrl();
                 if (head instanceof PullRequestSCMHead) {
                     PullRequestSCMHead prhead = (PullRequestSCMHead) head;
-                    int number = prhead.getNumber();
-                    GHPullRequest pr = ghRepository.getPullRequest(number);
-                    String baseHash;
+                    GHPullRequest pr = getDetailedGHPullRequest(prhead.getNumber(), listener, github, ghRepository);
+                    String baseHash = pr.getBase().getSha();
+                    String mergeHash = null;
                     switch (prhead.getCheckoutStrategy()) {
                         case MERGE:
                             baseHash = ghRepository.getRef("heads/" + prhead.getTarget().getName()).getObject().getSha();
+                            mergeHash = pr.getMergeCommitSha();
                             break;
                         default:
-                            baseHash = pr.getBase().getSha();
                             break;
                     }
-                    return new PullRequestSCMRevision(prhead, baseHash, pr.getHead().getSha());
+                    return new PullRequestSCMRevision(prhead, baseHash, pr.getHead().getSha(), mergeHash);
                 } else if (head instanceof GitHubTagSCMHead) {
                     GitHubTagSCMHead tagHead = (GitHubTagSCMHead) head;
                     GHRef tag = ghRepository.getRef("tags/" + tagHead.getName());
@@ -1544,6 +1543,24 @@ public class GitHubSCMSource extends AbstractGitSCMSource {
             }
         } finally {
             Connector.release(github);
+        }
+    }
+
+    private GHPullRequest getDetailedGHPullRequest(int number, TaskListener listener, GitHub github, GHRepository ghRepository) throws IOException, InterruptedException {
+        Connector.checkApiRateLimit(listener, github);
+        GHPullRequest pr = ghRepository.getPullRequest(number);
+        ensureDetailedGHPullRequest(pr, listener, github, ghRepository);
+        return pr;
+    }
+
+    private void ensureDetailedGHPullRequest(GHPullRequest pr, TaskListener listener, GitHub github, GHRepository ghRepository) throws IOException, InterruptedException {
+        final long sleep = 1000;
+        while (pr.getMergeableState() == null) {
+            listener.getLogger().format(
+                "Could not determine the mergability of pull request %d.  Retrying...%n",
+                pr.getNumber());
+            Thread.sleep(sleep);
+            Connector.checkApiRateLimit(listener, github);
         }
     }
 
@@ -1640,6 +1657,7 @@ public class GitHubSCMSource extends AbstractGitSCMSource {
                 }
                 request.setPermissionsSource(new DeferredPermissionsSource(listener));
                 if (request.isTrusted(head)) {
+                    // TODO: this changes for merge_commmit_sha
                     return revision;
                 }
             } catch (WrappedException wrapped) {

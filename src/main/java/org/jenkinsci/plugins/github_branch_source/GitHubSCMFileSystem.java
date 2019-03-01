@@ -51,7 +51,6 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.FastDateFormat;
 import org.eclipse.jgit.lib.Constants;
 import org.kohsuke.github.GHCommit;
-import org.kohsuke.github.GHPullRequest;
 import org.kohsuke.github.GHRef;
 import org.kohsuke.github.GHRepository;
 import org.kohsuke.github.GHUser;
@@ -287,19 +286,10 @@ public class GitHubSCMFileSystem extends SCMFileSystem implements GitHubClosable
                             Connector.release(github);
                             return null;
                         }
-                        // GHPullRequest
-                        if (pr.isMerge()) {
-                            // if (rev)
-                            return new GitHubSCMFileSystem(
+                        return new GitHubSCMFileSystem(
                                 github, repo,
-                                pr.getName(),
+                                null,
                                 rev);
-                        } else {
-                            return new GitHubSCMFileSystem(
-                                github, repo,
-                                pr.getName(),
-                                rev);
-                        }
                     }
                     // we need to release here as we are not throwing an exception or transferring responsibility to FS
                     Connector.release(github);

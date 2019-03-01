@@ -289,6 +289,7 @@ public class GitHubSCMFileSystem extends SCMFileSystem implements GitHubClosable
                             Connector.release(github);
                             return null;
                         }
+
                         return new GitHubSCMFileSystem(
                                 github, repo,
                                 null,
@@ -296,7 +297,7 @@ public class GitHubSCMFileSystem extends SCMFileSystem implements GitHubClosable
                     }
                     // we need to release here as we are not throwing an exception or transferring responsibility to FS
                     Connector.release(github);
-                    return null; // TODO support merge revisions somehow
+                    return null;
                 } else {
                     // we need to release here as we are not throwing an exception or transferring responsibility to FS
                     Connector.release(github);

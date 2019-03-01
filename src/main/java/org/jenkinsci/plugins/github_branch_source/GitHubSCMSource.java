@@ -1327,6 +1327,14 @@ public class GitHubSCMSource extends AbstractGitSCMSource {
                             Connector.checkApiRateLimit(listener, github);
                             baseHash = ghRepository.getRef("heads/" + head.getTarget().getName()).getObject().getSha();
                             mergeHash = pr.getMergeCommitSha();
+
+                            if (Boolean.FALSE.equals(pr.getMergeable())) {
+                                listener.getLogger().format("Resolved %s as pull request %d:  Not mergeable.%n%n",
+                                    headName,
+                                    number);
+                                return null;
+                            }
+
                             listener.getLogger().format(
                                     "Resolved %s as pull request %d at revision %s merged onto %s as %s%n",
                                     headName,
@@ -1517,6 +1525,9 @@ public class GitHubSCMSource extends AbstractGitSCMSource {
                     String mergeHash = null;
                     switch (prhead.getCheckoutStrategy()) {
                         case MERGE:
+                            if (Boolean.FALSE.equals(pr.getMergeable())) {
+                                throw new AbortException("Pull request " + prhead.getNumber() + " is not mergeable.");
+                            }
                             baseHash = ghRepository.getRef("heads/" + prhead.getTarget().getName()).getObject().getSha();
                             mergeHash = pr.getMergeCommitSha();
                             break;
@@ -1657,7 +1668,6 @@ public class GitHubSCMSource extends AbstractGitSCMSource {
                 }
                 request.setPermissionsSource(new DeferredPermissionsSource(listener));
                 if (request.isTrusted(head)) {
-                    // TODO: this changes for merge_commmit_sha
                     return revision;
                 }
             } catch (WrappedException wrapped) {

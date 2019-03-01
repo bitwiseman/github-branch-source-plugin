@@ -83,9 +83,12 @@ public class GitHubSCMFileSystem extends SCMFileSystem implements GitHubClosable
         this.repo = repo;
         if (rev != null) {
             if (rev.getHead() instanceof PullRequestSCMHead) {
-                // PullRequestSCMHead pr = (PullRequestSCMHead) rev.getHead();
-                // assert !pr.isMerge(); // TODO see below
-                this.ref = ((PullRequestSCMRevision) rev).getMergeHash();
+                PullRequestSCMHead pr = (PullRequestSCMHead) rev.getHead();
+                if (pr.isMerge()) {
+                    this.ref = ((PullRequestSCMRevision) rev).getMergeHash();
+                } else {
+                    this.ref = ((PullRequestSCMRevision) rev).getPullHash();
+                }
             } else if (rev instanceof AbstractGitSCMSource.SCMRevisionImpl) {
                 this.ref = ((AbstractGitSCMSource.SCMRevisionImpl) rev).getHash();
             } else {

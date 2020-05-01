@@ -4,7 +4,7 @@
     <parent>
         <groupId>org.jenkins-ci.plugins</groupId>
         <artifactId>plugin</artifactId>
-        <version>3.57</version>
+        <version>4.1</version>
         <relativePath />
     </parent>
     <artifactId>github-branch-source</artifactId>
@@ -26,6 +26,10 @@
         <hpi.compatibleSinceVersion>2.2.0</hpi.compatibleSinceVersion>
         <java.level>8</java.level>
         <jenkins.version>2.164.3</jenkins.version>
+        <scm-api.version>2.6.3</scm-api.version>
+        <hamcrest.version>2.2</hamcrest.version>
+        <okhttp3.version>4.4.0</okhttp3.version>
+        <okio.version>2.5.0</okio.version>
         <useBeta>true</useBeta>
         <jcasc.version>1.35</jcasc.version>
         <jjwt.version>0.10.5</jjwt.version>
@@ -64,6 +68,18 @@
             <artifactId>jjwt-api</artifactId>
             <version>${jjwt.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.squareup.okio</groupId>
+            <artifactId>okio</artifactId>
+            <version>${okio.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>okhttp</artifactId>
+            <version>${okhttp3.version}</version>
+        </dependency>
+
+        <!-- Currently just here for interactive testing via hpi:run: -->
         <dependency>
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt-impl</artifactId>
@@ -133,6 +149,12 @@
                 <artifactId>commons-lang3</artifactId>
                 <version>3.9</version>
             </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-jdk14</artifactId>
+                <version>1.7.26</version>
+                <scope>provided</scope>
+            </dependency>
         </dependencies>
     </dependencyManagement>
     <repositories>
@@ -147,4 +169,29 @@
             <url>https://repo.jenkins-ci.org/public/</url>
         </pluginRepository>
     </pluginRepositories>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.jenkins-ci.tools</groupId>
+                <artifactId>maven-hpi-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>generate-taglib-interface</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <compatibleSinceVersion>2.2.0</compatibleSinceVersion>
+                    <!-- <pluginFirstClassLoader>true</pluginFirstClassLoader> -->
+                    <maskClasses>
+                        okhttp3.
+                        okio.
+                    </maskClasses>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
 </project>

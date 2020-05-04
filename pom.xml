@@ -25,7 +25,7 @@
         <changelist>-SNAPSHOT</changelist>
         <hpi.compatibleSinceVersion>2.2.0</hpi.compatibleSinceVersion>
         <java.level>8</java.level>
-        <jenkins.version>2.164.3</jenkins.version>
+        <jenkins.version>2.176.4</jenkins.version>
         <scm-api.version>2.6.3</scm-api.version>
         <hamcrest.version>2.2</hamcrest.version>
         <okhttp3.version>4.4.0</okhttp3.version>
@@ -139,7 +139,7 @@
         <dependencies>
             <dependency>
                 <groupId>io.jenkins.tools.bom</groupId>
-                <artifactId>bom-2.164.x</artifactId>
+                <artifactId>bom-2.176.x</artifactId>
                 <version>9</version>
                 <scope>import</scope>
                 <type>pom</type>
@@ -148,12 +148,6 @@
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-lang3</artifactId>
                 <version>3.9</version>
-            </dependency>
-            <dependency>
-                <groupId>org.slf4j</groupId>
-                <artifactId>slf4j-jdk14</artifactId>
-                <version>1.7.26</version>
-                <scope>provided</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>

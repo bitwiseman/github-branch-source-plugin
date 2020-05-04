@@ -28,7 +28,7 @@
         <jenkins.version>2.176.4</jenkins.version>
         <scm-api.version>2.6.3</scm-api.version>
         <hamcrest.version>2.2</hamcrest.version>
-        <okhttp3.version>4.4.0</okhttp3.version>
+        <okhttp3.version>4.4.1</okhttp3.version>
         <okio.version>2.5.0</okio.version>
         <useBeta>true</useBeta>
         <jcasc.version>1.35</jcasc.version>

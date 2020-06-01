@@ -28,8 +28,6 @@
         <jenkins.version>2.176.4</jenkins.version>
         <scm-api.version>2.6.3</scm-api.version>
         <hamcrest.version>2.2</hamcrest.version>
-        <okhttp3.version>4.4.1</okhttp3.version>
-        <okio.version>2.5.0</okio.version>
         <useBeta>true</useBeta>
         <jcasc.version>1.35</jcasc.version>
         <jjwt.version>0.10.5</jjwt.version>
@@ -50,7 +48,7 @@
         <dependency>
             <groupId>org.jenkins-ci.plugins</groupId>
             <artifactId>github-api</artifactId>
-            <version>1.110</version>
+            <version>1.111.1-SNAPSHOT</version>
         </dependency>
         <!-- TODO: after upgrading jenkins.version >= 2.171, migrate dependency -->
         <dependency>
@@ -67,16 +65,6 @@
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt-api</artifactId>
             <version>${jjwt.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.squareup.okio</groupId>
-            <artifactId>okio</artifactId>
-            <version>${okio.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.squareup.okhttp3</groupId>
-            <artifactId>okhttp</artifactId>
-            <version>${okhttp3.version}</version>
         </dependency>
 
         <!-- Currently just here for interactive testing via hpi:run: -->
@@ -163,29 +151,4 @@
             <url>https://repo.jenkins-ci.org/public/</url>
         </pluginRepository>
     </pluginRepositories>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.jenkins-ci.tools</groupId>
-                <artifactId>maven-hpi-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>generate-taglib-interface</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <compatibleSinceVersion>2.2.0</compatibleSinceVersion>
-                    <!-- <pluginFirstClassLoader>true</pluginFirstClassLoader> -->
-                    <maskClasses>
-                        okhttp3.
-                        okio.
-                    </maskClasses>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
-
 </project>

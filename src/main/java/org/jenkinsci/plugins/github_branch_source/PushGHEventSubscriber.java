@@ -118,12 +118,11 @@ public class PushGHEventSubscriber extends GHEventsSubscriber {
     @Override
     protected void onEvent(GHSubscriberEvent event) {
         try {
-            final GHEventPayload.Push p = GitHub.offline()
-                    .parseEventPayload(new StringReader(event.getPayload()), GHEventPayload.Push.class);
+            final GHEventPayload.Push p = GitHub.offline().parseEventPayload(new StringReader(event.getPayload()),
+                    GHEventPayload.Push.class);
             String repoUrl = p.getRepository().getHtmlUrl().toExternalForm();
             LOGGER.log(Level.FINE, "Received {0} for {1} from {2}",
-                    new Object[]{event.getGHEvent(), repoUrl, event.getOrigin()}
-            );
+                    new Object[]{event.getGHEvent(), repoUrl, event.getOrigin()});
             Matcher matcher = REPOSITORY_NAME_PATTERN.matcher(repoUrl);
             if (matcher.matches()) {
                 final GitHubRepositoryName changedRepository = GitHubRepositoryName.create(repoUrl);
@@ -133,29 +132,14 @@ public class PushGHEventSubscriber extends GHEventsSubscriber {
                 }
 
                 if (p.isCreated()) {
-                    fireAfterDelay(new SCMHeadEventImpl(
-                            SCMEvent.Type.CREATED,
-                            event.getTimestamp(),
-                            p,
-                            changedRepository,
-                            event.getOrigin()
-                    ));
+                    fireAfterDelay(new SCMHeadEventImpl(SCMEvent.Type.CREATED, event.getTimestamp(), p,
+                            changedRepository, event.getOrigin()));
                 } else if (p.isDeleted()) {
-                    fireAfterDelay(new SCMHeadEventImpl(
-                            SCMEvent.Type.REMOVED,
-                            event.getTimestamp(),
-                            p,
-                            changedRepository,
-                            event.getOrigin()
-                    ));
+                    fireAfterDelay(new SCMHeadEventImpl(SCMEvent.Type.REMOVED, event.getTimestamp(), p,
+                            changedRepository, event.getOrigin()));
                 } else {
-                    fireAfterDelay(new SCMHeadEventImpl(
-                            SCMEvent.Type.UPDATED,
-                            event.getTimestamp(),
-                            p,
-                            changedRepository,
-                            event.getOrigin()
-                    ));
+                    fireAfterDelay(new SCMHeadEventImpl(SCMEvent.Type.UPDATED, event.getTimestamp(), p,
+                            changedRepository, event.getOrigin()));
                 }
             } else {
                 LOGGER.log(Level.WARNING, "{0} does not match expected repository name pattern", repoUrl);
@@ -182,7 +166,7 @@ public class PushGHEventSubscriber extends GHEventsSubscriber {
         private final String repository;
 
         public SCMHeadEventImpl(Type type, long timestamp, GHEventPayload.Push pullRequest, GitHubRepositoryName repo,
-                                String origin) {
+                String origin) {
             super(type, timestamp, pullRequest, origin);
             this.repoHost = repo.getHost();
             this.repoOwner = pullRequest.getRepository().getOwnerName();
@@ -265,8 +249,7 @@ public class PushGHEventSubscriber extends GHEventsSubscriber {
         @NonNull
         @Override
         public Map<SCMHead, SCMRevision> heads(@NonNull SCMSource source) {
-            if (!(source instanceof GitHubSCMSource
-                    && isApiMatch(((GitHubSCMSource) source).getApiUri())
+            if (!(source instanceof GitHubSCMSource && isApiMatch(((GitHubSCMSource) source).getApiUri())
                     && repoOwner.equalsIgnoreCase(((GitHubSCMSource) source).getRepoOwner())
                     && repository.equalsIgnoreCase(((GitHubSCMSource) source).getRepository()))) {
                 return Collections.emptyMap();
@@ -292,8 +275,8 @@ public class PushGHEventSubscriber extends GHEventsSubscriber {
             /*
              * What we are looking for is to return the BranchSCMHead for this push
              *
-             * Since anything we provide here is untrusted, we don't have to worry about whether this is also a PR...
-             * It will be revalidated later when the event is processed
+             * Since anything we provide here is untrusted, we don't have to worry about whether this is also a PR... It
+             * will be revalidated later when the event is processed
              *
              * In any case, if it is also a PR then there will be a PullRequest:synchronize event that will handle
              * things for us, so we just claim a BranchSCMHead
@@ -319,7 +302,8 @@ public class PushGHEventSubscriber extends GHEventsSubscriber {
                     }
                 }
                 if (!excluded) {
-                    return Collections.singletonMap(head, new AbstractGitSCMSource.SCMRevisionImpl(head, push.getHead()));
+                    return Collections.singletonMap(head,
+                            new AbstractGitSCMSource.SCMRevisionImpl(head, push.getHead()));
                 }
             }
             if (context.wantTags() && ref.startsWith(R_TAGS)) {

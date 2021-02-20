@@ -58,19 +58,19 @@ import org.kohsuke.stapler.DataBoundConstructor;
 public class ForkPullRequestDiscoveryTrait extends SCMSourceTrait {
     /**
      * None strategy.
-    */
+     */
     public static final int NONE = 0;
     /**
      * Merging the pull request with the current target branch revision.
-    */
+     */
     public static final int MERGE = 1;
     /**
      * The current pull request revision.
-    */
+     */
     public static final int HEAD = 2;
     /**
      * Both the current pull request revision and the pull request merged with the current target branch revision.
-    */
+     */
     public static final int HEAD_AND_MERGE = 3;
     /**
      * The strategy encoded as a bit-field.
@@ -85,12 +85,14 @@ public class ForkPullRequestDiscoveryTrait extends SCMSourceTrait {
     /**
      * Constructor for stapler.
      *
-     * @param strategyId the strategy id.
-     * @param trust      the authority to use.
+     * @param strategyId
+     *            the strategy id.
+     * @param trust
+     *            the authority to use.
      */
     @DataBoundConstructor
     public ForkPullRequestDiscoveryTrait(int strategyId,
-                                         @NonNull SCMHeadAuthority<? super GitHubSCMSourceRequest, ? extends ChangeRequestSCMHead2, ? extends SCMRevision> trust) {
+            @NonNull SCMHeadAuthority<? super GitHubSCMSourceRequest, ? extends ChangeRequestSCMHead2, ? extends SCMRevision> trust) {
         this.strategyId = strategyId;
         this.trust = trust;
     }
@@ -98,11 +100,13 @@ public class ForkPullRequestDiscoveryTrait extends SCMSourceTrait {
     /**
      * Constructor for programmatic instantiation.
      *
-     * @param strategies the {@link ChangeRequestCheckoutStrategy} instances.
-     * @param trust      the authority.
+     * @param strategies
+     *            the {@link ChangeRequestCheckoutStrategy} instances.
+     * @param trust
+     *            the authority.
      */
     public ForkPullRequestDiscoveryTrait(@NonNull Set<ChangeRequestCheckoutStrategy> strategies,
-                                         @NonNull SCMHeadAuthority<? super GitHubSCMSourceRequest, ? extends ChangeRequestSCMHead2, ? extends SCMRevision> trust) {
+            @NonNull SCMHeadAuthority<? super GitHubSCMSourceRequest, ? extends ChangeRequestSCMHead2, ? extends SCMRevision> trust) {
         this((strategies.contains(ChangeRequestCheckoutStrategy.MERGE) ? MERGE : NONE)
                 + (strategies.contains(ChangeRequestCheckoutStrategy.HEAD) ? HEAD : NONE), trust);
     }
@@ -124,13 +128,13 @@ public class ForkPullRequestDiscoveryTrait extends SCMSourceTrait {
     @NonNull
     public Set<ChangeRequestCheckoutStrategy> getStrategies() {
         switch (strategyId) {
-            case ForkPullRequestDiscoveryTrait.MERGE:
+            case ForkPullRequestDiscoveryTrait.MERGE :
                 return EnumSet.of(ChangeRequestCheckoutStrategy.MERGE);
-            case ForkPullRequestDiscoveryTrait.HEAD:
+            case ForkPullRequestDiscoveryTrait.HEAD :
                 return EnumSet.of(ChangeRequestCheckoutStrategy.HEAD);
-            case ForkPullRequestDiscoveryTrait.HEAD_AND_MERGE:
+            case ForkPullRequestDiscoveryTrait.HEAD_AND_MERGE :
                 return EnumSet.of(ChangeRequestCheckoutStrategy.HEAD, ChangeRequestCheckoutStrategy.MERGE);
-            default:
+            default :
                 return EnumSet.noneOf(ChangeRequestCheckoutStrategy.class);
         }
     }
@@ -220,12 +224,8 @@ public class ForkPullRequestDiscoveryTrait extends SCMSourceTrait {
         @NonNull
         @SuppressWarnings("unused") // stapler
         public List<SCMHeadAuthorityDescriptor> getTrustDescriptors() {
-            return SCMHeadAuthority._for(
-                    GitHubSCMSourceRequest.class,
-                    PullRequestSCMHead.class,
-                    PullRequestSCMRevision.class,
-                    SCMHeadOrigin.Fork.class
-            );
+            return SCMHeadAuthority._for(GitHubSCMSourceRequest.class, PullRequestSCMHead.class,
+                    PullRequestSCMRevision.class, SCMHeadOrigin.Fork.class);
         }
 
         /**
@@ -240,11 +240,12 @@ public class ForkPullRequestDiscoveryTrait extends SCMSourceTrait {
         }
     }
 
-
     /**
      * An {@link SCMHeadAuthority} that trusts nothing.
      */
-    public static class TrustNobody extends SCMHeadAuthority<SCMSourceRequest, PullRequestSCMHead, PullRequestSCMRevision> {
+    public static class TrustNobody
+            extends
+                SCMHeadAuthority<SCMSourceRequest, PullRequestSCMHead, PullRequestSCMRevision> {
 
         /**
          * Constructor.
@@ -290,7 +291,8 @@ public class ForkPullRequestDiscoveryTrait extends SCMSourceTrait {
      * An {@link SCMHeadAuthority} that trusts contributors to the repository.
      */
     public static class TrustContributors
-            extends SCMHeadAuthority<GitHubSCMSourceRequest, PullRequestSCMHead, PullRequestSCMRevision> {
+            extends
+                SCMHeadAuthority<GitHubSCMSourceRequest, PullRequestSCMHead, PullRequestSCMRevision> {
         /**
          * Constructor.
          */
@@ -337,7 +339,8 @@ public class ForkPullRequestDiscoveryTrait extends SCMSourceTrait {
      * An {@link SCMHeadAuthority} that trusts those with write permission to the repository.
      */
     public static class TrustPermission
-            extends SCMHeadAuthority<GitHubSCMSourceRequest, PullRequestSCMHead, PullRequestSCMRevision> {
+            extends
+                SCMHeadAuthority<GitHubSCMSourceRequest, PullRequestSCMHead, PullRequestSCMRevision> {
 
         /**
          * Constructor.
@@ -355,10 +358,11 @@ public class ForkPullRequestDiscoveryTrait extends SCMSourceTrait {
             if (!head.getOrigin().equals(SCMHeadOrigin.DEFAULT)) {
                 GHPermissionType permission = request.getPermissions(head.getSourceOwner());
                 switch (permission) {
-                    case ADMIN:
-                    case WRITE:
+                    case ADMIN :
+                    case WRITE :
                         return true;
-                    default:return false;
+                    default :
+                        return false;
                 }
             }
             return false;
@@ -392,7 +396,9 @@ public class ForkPullRequestDiscoveryTrait extends SCMSourceTrait {
     /**
      * An {@link SCMHeadAuthority} that trusts everyone.
      */
-    public static class TrustEveryone extends SCMHeadAuthority<SCMSourceRequest, PullRequestSCMHead, PullRequestSCMRevision> {
+    public static class TrustEveryone
+            extends
+                SCMHeadAuthority<SCMSourceRequest, PullRequestSCMHead, PullRequestSCMRevision> {
         /**
          * Constructor.
          */

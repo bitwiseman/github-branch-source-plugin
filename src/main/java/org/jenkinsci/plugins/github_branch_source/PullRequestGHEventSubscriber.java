@@ -114,8 +114,7 @@ public class PullRequestGHEventSubscriber extends GHEventsSubscriber {
             String action = p.getAction();
             String repoUrl = p.getRepository().getHtmlUrl().toExternalForm();
             LOGGER.log(Level.FINE, "Received {0} for {1} from {2}",
-                    new Object[]{event.getGHEvent(), repoUrl, event.getOrigin()}
-            );
+                    new Object[]{event.getGHEvent(), repoUrl, event.getOrigin()});
             Matcher matcher = REPOSITORY_NAME_PATTERN.matcher(repoUrl);
             if (matcher.matches()) {
                 final GitHubRepositoryName changedRepository = GitHubRepositoryName.create(repoUrl);
@@ -125,29 +124,14 @@ public class PullRequestGHEventSubscriber extends GHEventsSubscriber {
                 }
 
                 if ("opened".equals(action)) {
-                    fireAfterDelay(new SCMHeadEventImpl(
-                            SCMEvent.Type.CREATED,
-                            event.getTimestamp(),
-                            p,
-                            changedRepository,
-                            event.getOrigin()
-                    ));
+                    fireAfterDelay(new SCMHeadEventImpl(SCMEvent.Type.CREATED, event.getTimestamp(), p,
+                            changedRepository, event.getOrigin()));
                 } else if ("reopened".equals(action) || "synchronize".equals(action) || "edited".equals(action)) {
-                    fireAfterDelay(new SCMHeadEventImpl(
-                            SCMEvent.Type.UPDATED,
-                            event.getTimestamp(),
-                            p,
-                            changedRepository,
-                            event.getOrigin()
-                    ));
+                    fireAfterDelay(new SCMHeadEventImpl(SCMEvent.Type.UPDATED, event.getTimestamp(), p,
+                            changedRepository, event.getOrigin()));
                 } else if ("closed".equals(action)) {
-                    fireAfterDelay(new SCMHeadEventImpl(
-                            SCMEvent.Type.REMOVED,
-                            event.getTimestamp(),
-                            p,
-                            changedRepository,
-                            event.getOrigin()
-                    ));
+                    fireAfterDelay(new SCMHeadEventImpl(SCMEvent.Type.REMOVED, event.getTimestamp(), p,
+                            changedRepository, event.getOrigin()));
                 }
             }
 
@@ -168,8 +152,8 @@ public class PullRequestGHEventSubscriber extends GHEventsSubscriber {
         private final String repoOwner;
         private final String repository;
 
-        public SCMHeadEventImpl(Type type, long timestamp, GHEventPayload.PullRequest pullRequest, GitHubRepositoryName repo,
-                                String origin) {
+        public SCMHeadEventImpl(Type type, long timestamp, GHEventPayload.PullRequest pullRequest,
+                GitHubRepositoryName repo, String origin) {
             super(type, timestamp, pullRequest, origin);
             this.repoHost = repo.getHost();
             this.repoOwner = pullRequest.getRepository().getOwnerName();
@@ -191,13 +175,13 @@ public class PullRequestGHEventSubscriber extends GHEventsSubscriber {
             String action = getPayload().getAction();
             if (action != null) {
                 switch (action) {
-                    case "opened":
+                    case "opened" :
                         return "Pull request #" + getPayload().getNumber() + " opened in repository " + repository;
-                    case "reopened":
+                    case "reopened" :
                         return "Pull request #" + getPayload().getNumber() + " reopened in repository " + repository;
-                    case "synchronize":
+                    case "synchronize" :
                         return "Pull request #" + getPayload().getNumber() + " updated in repository " + repository;
-                    case "closed":
+                    case "closed" :
                         return "Pull request #" + getPayload().getNumber() + " closed in repository " + repository;
                 }
             }
@@ -209,13 +193,13 @@ public class PullRequestGHEventSubscriber extends GHEventsSubscriber {
             String action = getPayload().getAction();
             if (action != null) {
                 switch (action) {
-                    case "opened":
+                    case "opened" :
                         return "Pull request #" + getPayload().getNumber() + " opened";
-                    case "reopened":
+                    case "reopened" :
                         return "Pull request #" + getPayload().getNumber() + " reopened";
-                    case "synchronize":
+                    case "synchronize" :
                         return "Pull request #" + getPayload().getNumber() + " updated";
-                    case "closed":
+                    case "closed" :
                         return "Pull request #" + getPayload().getNumber() + " closed";
                 }
             }
@@ -227,15 +211,16 @@ public class PullRequestGHEventSubscriber extends GHEventsSubscriber {
             String action = getPayload().getAction();
             if (action != null) {
                 switch (action) {
-                    case "opened":
-                        return "Pull request #" + getPayload().getNumber() + " opened in repository " + repoOwner + "/" + repository;
-                    case "reopened":
+                    case "opened" :
+                        return "Pull request #" + getPayload().getNumber() + " opened in repository " + repoOwner + "/"
+                                + repository;
+                    case "reopened" :
                         return "Pull request #" + getPayload().getNumber() + " reopened in repository " + repoOwner
                                 + "/" + repository;
-                    case "synchronize":
+                    case "synchronize" :
                         return "Pull request #" + getPayload().getNumber() + " updated in repository " + repoOwner + "/"
                                 + repository;
-                    case "closed":
+                    case "closed" :
                         return "Pull request #" + getPayload().getNumber() + " closed in repository " + repoOwner + "/"
                                 + repository;
                 }
@@ -252,8 +237,7 @@ public class PullRequestGHEventSubscriber extends GHEventsSubscriber {
         @NonNull
         @Override
         public Map<SCMHead, SCMRevision> heads(@NonNull SCMSource source) {
-            if (!(source instanceof GitHubSCMSource
-                    && isApiMatch(((GitHubSCMSource) source).getApiUri())
+            if (!(source instanceof GitHubSCMSource && isApiMatch(((GitHubSCMSource) source).getApiUri())
                     && repoOwner.equalsIgnoreCase(((GitHubSCMSource) source).getRepoOwner())
                     && repository.equalsIgnoreCase(((GitHubSCMSource) source).getRepository()))) {
                 return Collections.emptyMap();
@@ -292,27 +276,28 @@ public class PullRequestGHEventSubscriber extends GHEventsSubscriber {
 
             Map<SCMHead, SCMRevision> result = new HashMap<>();
             GitHubSCMSourceContext context = new GitHubSCMSourceContext(null, SCMHeadObserver.none())
-                            .withTraits(src.getTraits());
+                    .withTraits(src.getTraits());
             if (!fork && context.wantBranches()) {
                 final String branchName = ghPullRequest.getHead().getRef();
                 SCMHead head = new BranchSCMHead(branchName);
                 boolean excluded = false;
-                for (SCMHeadPrefilter prefilter: context.prefilters()) {
+                for (SCMHeadPrefilter prefilter : context.prefilters()) {
                     if (prefilter.isExcluded(source, head)) {
                         excluded = true;
                         break;
                     }
                 }
                 if (!excluded) {
-                    SCMRevision hash =
-                            new AbstractGitSCMSource.SCMRevisionImpl(head, ghPullRequest.getHead().getSha());
+                    SCMRevision hash = new AbstractGitSCMSource.SCMRevisionImpl(head, ghPullRequest.getHead().getSha());
                     result.put(head, hash);
                 }
             }
             if (context.wantPRs()) {
                 int number = pullRequest.getNumber();
-                Set<ChangeRequestCheckoutStrategy> strategies = fork ? context.forkPRStrategies() : context.originPRStrategies();
-                for (ChangeRequestCheckoutStrategy strategy: strategies) {
+                Set<ChangeRequestCheckoutStrategy> strategies = fork
+                        ? context.forkPRStrategies()
+                        : context.originPRStrategies();
+                for (ChangeRequestCheckoutStrategy strategy : strategies) {
                     final String branchName;
                     if (strategies.size() == 1) {
                         branchName = "PR-" + number;
@@ -322,19 +307,16 @@ public class PullRequestGHEventSubscriber extends GHEventsSubscriber {
                     PullRequestSCMHead head;
                     PullRequestSCMRevision revision;
                     switch (strategy) {
-                        case MERGE:
+                        case MERGE :
                             // it will take a call to GitHub to get the merge commit, so let the event receiver poll
                             head = new PullRequestSCMHead(ghPullRequest, branchName, true);
                             revision = null;
                             break;
-                        default:
+                        default :
                             // Give the event receiver the data we have so they can revalidate
                             head = new PullRequestSCMHead(ghPullRequest, branchName, false);
-                            revision = new PullRequestSCMRevision(
-                                    head,
-                                    ghPullRequest.getBase().getSha(),
-                                    ghPullRequest.getHead().getSha()
-                            );
+                            revision = new PullRequestSCMRevision(head, ghPullRequest.getBase().getSha(),
+                                    ghPullRequest.getHead().getSha());
                             break;
                     }
                     boolean excluded = false;

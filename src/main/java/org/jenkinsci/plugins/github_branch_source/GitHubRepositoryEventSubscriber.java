@@ -61,7 +61,6 @@ public class GitHubRepositoryEventSubscriber extends GHEventsSubscriber {
     private static final Logger LOGGER = Logger.getLogger(GitHubRepositoryEventSubscriber.class.getName());
     private static final Pattern REPOSITORY_NAME_PATTERN = Pattern.compile("https?://([^/]+)/([^/]+)/([^/]+)");
 
-
     @Override
     protected boolean isApplicable(@Nullable Item item) {
         if (item instanceof SCMNavigatorOwner) {
@@ -85,13 +84,12 @@ public class GitHubRepositoryEventSubscriber extends GHEventsSubscriber {
     @Override
     protected void onEvent(GHSubscriberEvent event) {
         try {
-            final GHEventPayload.Repository p = GitHub.offline()
-                    .parseEventPayload(new StringReader(event.getPayload()), GHEventPayload.Repository.class);
+            final GHEventPayload.Repository p = GitHub.offline().parseEventPayload(new StringReader(event.getPayload()),
+                    GHEventPayload.Repository.class);
             String action = p.getAction();
             String repoUrl = p.getRepository().getHtmlUrl().toExternalForm();
             LOGGER.log(Level.FINE, "Received {0} for {1} from {2}",
-                    new Object[]{event.getGHEvent(), repoUrl, event.getOrigin()}
-            );
+                    new Object[]{event.getGHEvent(), repoUrl, event.getOrigin()});
             boolean fork = p.getRepository().isFork();
             Matcher matcher = REPOSITORY_NAME_PATTERN.matcher(repoUrl);
             if (matcher.matches()) {
@@ -130,7 +128,7 @@ public class GitHubRepositoryEventSubscriber extends GHEventsSubscriber {
         private final String repository;
 
         public NewSCMSourceEvent(long timestamp, String origin, GHEventPayload.Repository event,
-                                 GitHubRepositoryName repo) {
+                GitHubRepositoryName repo) {
             super(Type.CREATED, timestamp, event, origin);
             this.repoHost = repo.getHost();
             this.repoOwner = event.getRepository().getOwnerName();
@@ -143,15 +141,13 @@ public class GitHubRepositoryEventSubscriber extends GHEventsSubscriber {
 
         @Override
         public boolean isMatch(@NonNull SCMNavigator navigator) {
-            return navigator instanceof GitHubSCMNavigator
-                    && isApiMatch(((GitHubSCMNavigator) navigator).getApiUri())
+            return navigator instanceof GitHubSCMNavigator && isApiMatch(((GitHubSCMNavigator) navigator).getApiUri())
                     && repoOwner.equalsIgnoreCase(((GitHubSCMNavigator) navigator).getRepoOwner());
         }
 
         @Override
         public boolean isMatch(@NonNull SCMSource source) {
-            return source instanceof GitHubSCMSource
-                    && isApiMatch(((GitHubSCMSource) source).getApiUri())
+            return source instanceof GitHubSCMSource && isApiMatch(((GitHubSCMSource) source).getApiUri())
                     && repoOwner.equalsIgnoreCase(((GitHubSCMSource) source).getRepoOwner())
                     && repository.equalsIgnoreCase(((GitHubSCMSource) source).getRepository());
         }

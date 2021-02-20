@@ -28,9 +28,8 @@ import com.cloudbees.jenkins.GitHubRepositoryName;
 import com.cloudbees.jenkins.GitHubRepositoryNameContributor;
 import hudson.Extension;
 import hudson.model.Item;
-import jenkins.scm.api.SCMSourceOwner;
-
 import java.util.Collection;
+import jenkins.scm.api.SCMSourceOwner;
 
 /**
  * Finds the repository name(s) associated with a {@link SCMSourceOwner}'s {@link GitHubSCMSource}s.
@@ -50,8 +49,7 @@ public class GitHubSCMSourceRepositoryNameContributor extends GitHubRepositoryNa
                     GitHubSCMSource gitHubSCMSource = (GitHubSCMSource) o;
                     result.add(new GitHubRepositoryName(
                             RepositoryUriResolver.hostnameFromApiUri(gitHubSCMSource.getApiUri()),
-                            gitHubSCMSource.getRepoOwner(),
-                            gitHubSCMSource.getRepository()));
+                            gitHubSCMSource.getRepoOwner(), gitHubSCMSource.getRepository()));
 
                 }
             }

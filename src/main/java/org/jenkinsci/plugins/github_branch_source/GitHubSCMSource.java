@@ -382,8 +382,13 @@ public class GitHubSCMSource extends AbstractGitSCMSource {
      *            the repository name.
      */
     @Deprecated
-    public GitHubSCMSource(@CheckForNull String id, @CheckForNull String apiUri, @NonNull String checkoutCredentialsId,
-            @CheckForNull String scanCredentialsId, @NonNull String repoOwner, @NonNull String repository) {
+    public GitHubSCMSource(
+            @CheckForNull String id,
+            @CheckForNull String apiUri,
+            @NonNull String checkoutCredentialsId,
+            @CheckForNull String scanCredentialsId,
+            @NonNull String repoOwner,
+            @NonNull String repository) {
         this(repoOwner, repository, null, false);
         setId(id);
         setApiUri(apiUri);
@@ -956,9 +961,11 @@ public class GitHubSCMSource extends AbstractGitSCMSource {
     }
 
     @Override
-    protected final void retrieve(@CheckForNull SCMSourceCriteria criteria, @NonNull SCMHeadObserver observer,
-            @CheckForNull SCMHeadEvent<?> event, @NonNull final TaskListener listener)
-            throws IOException, InterruptedException {
+    protected final void retrieve(
+            @CheckForNull SCMSourceCriteria criteria,
+            @NonNull SCMHeadObserver observer,
+            @CheckForNull SCMHeadEvent<?> event,
+            @NonNull final TaskListener listener) throws IOException, InterruptedException {
         StandardCredentials credentials = Connector.lookupScanCredentials((Item) getOwner(), apiUri, credentialsId);
         // Github client and validation
         final GitHub github = Connector.connect(apiUri, credentials);
@@ -1017,7 +1024,8 @@ public class GitHubSCMSource extends AbstractGitSCMSource {
                                     new SCMSourceRequest.ProbeLambda<BranchSCMHead, SCMRevisionImpl>() {
                                         @NonNull
                                         @Override
-                                        public SCMSourceCriteria.Probe create(@NonNull BranchSCMHead head,
+                                        public SCMSourceCriteria.Probe create(
+                                                @NonNull BranchSCMHead head,
                                                 @Nullable SCMRevisionImpl revisionInfo)
                                                 throws IOException, InterruptedException {
                                             return new GitHubSCMProbe(apiUri, credentials, ghRepository, head,
@@ -1105,7 +1113,8 @@ public class GitHubSCMSource extends AbstractGitSCMSource {
                                     new SCMSourceRequest.ProbeLambda<GitHubTagSCMHead, GitTagSCMRevision>() {
                                         @NonNull
                                         @Override
-                                        public SCMSourceCriteria.Probe create(@NonNull GitHubTagSCMHead head,
+                                        public SCMSourceCriteria.Probe create(
+                                                @NonNull GitHubTagSCMHead head,
                                                 @Nullable GitTagSCMRevision revisionInfo)
                                                 throws IOException, InterruptedException {
                                             return new GitHubSCMProbe(apiUri, credentials, ghRepository, head,
@@ -1157,11 +1166,14 @@ public class GitHubSCMSource extends AbstractGitSCMSource {
         }
     }
 
-    private static void retrievePullRequest(final String apiUri, final StandardCredentials credentials,
-            @NonNull final GHRepository ghRepository, @NonNull final GHPullRequest pr,
+    private static void retrievePullRequest(
+            final String apiUri,
+            final StandardCredentials credentials,
+            @NonNull final GHRepository ghRepository,
+            @NonNull final GHPullRequest pr,
             @NonNull final Map<Boolean, Set<ChangeRequestCheckoutStrategy>> strategies,
-            @NonNull final GitHubSCMSourceRequest request, @NonNull final TaskListener listener)
-            throws IOException, InterruptedException {
+            @NonNull final GitHubSCMSourceRequest request,
+            @NonNull final TaskListener listener) throws IOException, InterruptedException {
 
         int number = pr.getNumber();
         listener.getLogger().format("%n    Checking pull request %s%n",
@@ -1198,7 +1210,8 @@ public class GitHubSCMSource extends AbstractGitSCMSource {
                     null, new SCMSourceRequest.ProbeLambda<PullRequestSCMHead, Void>() {
                         @NonNull
                         @Override
-                        public SCMSourceCriteria.Probe create(@NonNull PullRequestSCMHead head,
+                        public SCMSourceCriteria.Probe create(
+                                @NonNull PullRequestSCMHead head,
                                 @Nullable Void revisionInfo) throws IOException, InterruptedException {
                             boolean trusted = request.isTrusted(head);
                             if (!trusted) {
@@ -1473,8 +1486,10 @@ public class GitHubSCMSource extends AbstractGitSCMSource {
     }
 
     @NonNull
-    private Set<String> updateCollaboratorNames(@NonNull TaskListener listener,
-            @CheckForNull StandardCredentials credentials, @NonNull GHRepository ghRepository) throws IOException {
+    private Set<String> updateCollaboratorNames(
+            @NonNull TaskListener listener,
+            @CheckForNull StandardCredentials credentials,
+            @NonNull GHRepository ghRepository) throws IOException {
         if (credentials == null && (apiUri == null || GITHUB_URL.equals(apiUri))) {
             // anonymous access to GitHub will never get list of collaborators and will
             // burn an API call, so no point in even trying
@@ -1597,8 +1612,11 @@ public class GitHubSCMSource extends AbstractGitSCMSource {
         }
     }
 
-    private static PullRequestSCMRevision createPullRequestSCMRevision(GHPullRequest pr, PullRequestSCMHead prhead,
-            TaskListener listener, GHRepository ghRepository) throws IOException, InterruptedException {
+    private static PullRequestSCMRevision createPullRequestSCMRevision(
+            GHPullRequest pr,
+            PullRequestSCMHead prhead,
+            TaskListener listener,
+            GHRepository ghRepository) throws IOException, InterruptedException {
         String baseHash = pr.getBase().getSha();
         String prHeadHash = pr.getHead().getSha();
         String mergeHash = null;
@@ -1654,7 +1672,10 @@ public class GitHubSCMSource extends AbstractGitSCMSource {
         return new PullRequestSCMRevision(prhead, baseHash, prHeadHash, mergeHash);
     }
 
-    private static void ensureDetailedGHPullRequest(GHPullRequest pr, TaskListener listener, GitHub github,
+    private static void ensureDetailedGHPullRequest(
+            GHPullRequest pr,
+            TaskListener listener,
+            GitHub github,
             GHRepository ghRepository) throws IOException, InterruptedException {
         final long sleep = 1000;
         int retryCountdown = 4;
@@ -1795,7 +1816,9 @@ public class GitHubSCMSource extends AbstractGitSCMSource {
      */
     @NonNull
     @Override
-    protected List<Action> retrieveActions(@NonNull SCMHead head, @CheckForNull SCMHeadEvent event,
+    protected List<Action> retrieveActions(
+            @NonNull SCMHead head,
+            @CheckForNull SCMHeadEvent event,
             @NonNull TaskListener listener) throws IOException, InterruptedException {
         // TODO when we have support for trusted events, use the details from event if event was from trusted source
         List<Action> result = new ArrayList<>();
@@ -1956,8 +1979,10 @@ public class GitHubSCMSource extends AbstractGitSCMSource {
             return ud.withArguments(scmArguments);
         }
 
-        public ListBoxModel doFillCredentialsIdItems(@CheckForNull @AncestorInPath Item context,
-                @QueryParameter String apiUri, @QueryParameter String credentialsId) {
+        public ListBoxModel doFillCredentialsIdItems(
+                @CheckForNull @AncestorInPath Item context,
+                @QueryParameter String apiUri,
+                @QueryParameter String credentialsId) {
             if (context == null
                     ? !Jenkins.get().hasPermission(Jenkins.ADMINISTER)
                     : !context.hasPermission(Item.EXTENDED_READ)) {
@@ -1968,15 +1993,19 @@ public class GitHubSCMSource extends AbstractGitSCMSource {
 
         @RequirePOST
         @Restricted(NoExternalUse.class)
-        public FormValidation doCheckCredentialsId(@CheckForNull @AncestorInPath Item context,
-                @QueryParameter String apiUri, @QueryParameter String value) {
+        public FormValidation doCheckCredentialsId(
+                @CheckForNull @AncestorInPath Item context,
+                @QueryParameter String apiUri,
+                @QueryParameter String value) {
             return Connector.checkScanCredentials(context, apiUri, value);
         }
 
         @RequirePOST
         @Restricted(NoExternalUse.class)
-        public FormValidation doValidateRepositoryUrlAndCredentials(@CheckForNull @AncestorInPath Item context,
-                @QueryParameter String repositoryUrl, @QueryParameter String credentialsId) {
+        public FormValidation doValidateRepositoryUrlAndCredentials(
+                @CheckForNull @AncestorInPath Item context,
+                @QueryParameter String repositoryUrl,
+                @QueryParameter String credentialsId) {
             if (context == null && !Jenkins.get().hasPermission(Jenkins.ADMINISTER)
                     || context != null && !context.hasPermission(Item.EXTENDED_READ)) {
                 return FormValidation.error("Unable to validate repository information"); // not supposed to be seeing
@@ -2029,15 +2058,20 @@ public class GitHubSCMSource extends AbstractGitSCMSource {
 
         @RequirePOST
         @Restricted(NoExternalUse.class)
-        public FormValidation doCheckScanCredentialsId(@CheckForNull @AncestorInPath Item context,
-                @QueryParameter String apiUri, @QueryParameter String scanCredentialsId) {
+        public FormValidation doCheckScanCredentialsId(
+                @CheckForNull @AncestorInPath Item context,
+                @QueryParameter String apiUri,
+                @QueryParameter String scanCredentialsId) {
             return doCheckCredentialsId(context, apiUri, scanCredentialsId);
         }
 
         @Restricted(NoExternalUse.class)
-        public FormValidation doCheckBuildOriginBranchWithPR(@QueryParameter boolean buildOriginBranch,
-                @QueryParameter boolean buildOriginBranchWithPR, @QueryParameter boolean buildOriginPRMerge,
-                @QueryParameter boolean buildOriginPRHead, @QueryParameter boolean buildForkPRMerge,
+        public FormValidation doCheckBuildOriginBranchWithPR(
+                @QueryParameter boolean buildOriginBranch,
+                @QueryParameter boolean buildOriginBranchWithPR,
+                @QueryParameter boolean buildOriginPRMerge,
+                @QueryParameter boolean buildOriginPRHead,
+                @QueryParameter boolean buildForkPRMerge,
                 @QueryParameter boolean buildForkPRHead) {
             if (buildOriginBranch && !buildOriginBranchWithPR && !buildOriginPRMerge && !buildOriginPRHead
                     && !buildForkPRMerge && !buildForkPRHead) {
@@ -2049,8 +2083,10 @@ public class GitHubSCMSource extends AbstractGitSCMSource {
         }
 
         @Restricted(NoExternalUse.class)
-        public FormValidation doCheckBuildOriginPRHead(@QueryParameter boolean buildOriginBranchWithPR,
-                @QueryParameter boolean buildOriginPRMerge, @QueryParameter boolean buildOriginPRHead) {
+        public FormValidation doCheckBuildOriginPRHead(
+                @QueryParameter boolean buildOriginBranchWithPR,
+                @QueryParameter boolean buildOriginPRMerge,
+                @QueryParameter boolean buildOriginPRHead) {
             if (buildOriginBranchWithPR && buildOriginPRHead) {
                 return FormValidation
                         .warning("Redundant to build an origin PR both as a branch and as an unmerged PR.");
@@ -2066,9 +2102,12 @@ public class GitHubSCMSource extends AbstractGitSCMSource {
         public FormValidation doCheckBuildForkPRHead/*
                                                      * web method name controls UI position of message; we want this at
                                                      * the bottom
-                                                     */(@QueryParameter boolean buildOriginBranch,
-                @QueryParameter boolean buildOriginBranchWithPR, @QueryParameter boolean buildOriginPRMerge,
-                @QueryParameter boolean buildOriginPRHead, @QueryParameter boolean buildForkPRMerge,
+                                                     */(
+                @QueryParameter boolean buildOriginBranch,
+                @QueryParameter boolean buildOriginBranchWithPR,
+                @QueryParameter boolean buildOriginPRMerge,
+                @QueryParameter boolean buildOriginPRHead,
+                @QueryParameter boolean buildForkPRMerge,
                 @QueryParameter boolean buildForkPRHead) {
             if (!buildOriginBranch && !buildOriginBranchWithPR && !buildOriginPRMerge && !buildOriginPRHead
                     && !buildForkPRMerge && !buildForkPRHead) {
@@ -2096,8 +2135,10 @@ public class GitHubSCMSource extends AbstractGitSCMSource {
         }
 
         @RequirePOST
-        public ListBoxModel doFillOrganizationItems(@CheckForNull @AncestorInPath Item context,
-                @QueryParameter String apiUri, @QueryParameter String credentialsId) throws IOException {
+        public ListBoxModel doFillOrganizationItems(
+                @CheckForNull @AncestorInPath Item context,
+                @QueryParameter String apiUri,
+                @QueryParameter String credentialsId) throws IOException {
             if (credentialsId == null) {
                 return new ListBoxModel();
             }
@@ -2131,8 +2172,11 @@ public class GitHubSCMSource extends AbstractGitSCMSource {
             throw new FillErrorResponse(Messages.GitHubSCMSource_CouldNotConnectionGithub(credentialsId), true);
         }
         @RequirePOST
-        public ListBoxModel doFillRepositoryItems(@CheckForNull @AncestorInPath Item context,
-                @QueryParameter String apiUri, @QueryParameter String credentialsId, @QueryParameter String repoOwner,
+        public ListBoxModel doFillRepositoryItems(
+                @CheckForNull @AncestorInPath Item context,
+                @QueryParameter String apiUri,
+                @QueryParameter String credentialsId,
+                @QueryParameter String repoOwner,
                 @QueryParameter boolean configuredByUrl) throws IOException {
             if (configuredByUrl) {
                 return new ListBoxModel(); // Using the URL-based configuration, don't scan for repositories.
@@ -2624,8 +2668,12 @@ public class GitHubSCMSource extends AbstractGitSCMSource {
         private final GHRepository repo;
         private final StandardCredentials credentials;
 
-        public LazyContributorNames(GitHubSCMSourceRequest request, TaskListener listener, GitHub github,
-                GHRepository repo, StandardCredentials credentials) {
+        public LazyContributorNames(
+                GitHubSCMSourceRequest request,
+                TaskListener listener,
+                GitHub github,
+                GHRepository repo,
+                StandardCredentials credentials) {
             this.request = request;
             this.listener = listener;
             this.github = github;

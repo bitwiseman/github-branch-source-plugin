@@ -1296,7 +1296,9 @@ public class GitHubSCMNavigator extends SCMNavigator {
      */
     @NonNull
     @Override
-    public List<Action> retrieveActions(@NonNull SCMNavigatorOwner owner, @CheckForNull SCMNavigatorEvent event,
+    public List<Action> retrieveActions(
+            @NonNull SCMNavigatorOwner owner,
+            @CheckForNull SCMNavigatorEvent event,
             @NonNull TaskListener listener) throws IOException, InterruptedException {
         // TODO when we have support for trusted events, use the details from event if event was from trusted source
         listener.getLogger().printf("Looking up details of %s...%n", getRepoOwner());
@@ -1463,8 +1465,10 @@ public class GitHubSCMNavigator extends SCMNavigator {
          */
         @RequirePOST
         @Restricted(NoExternalUse.class) // stapler
-        public FormValidation doCheckCredentialsId(@CheckForNull @AncestorInPath Item context,
-                @QueryParameter String apiUri, @QueryParameter String credentialsId) {
+        public FormValidation doCheckCredentialsId(
+                @CheckForNull @AncestorInPath Item context,
+                @QueryParameter String apiUri,
+                @QueryParameter String credentialsId) {
             return Connector.checkScanCredentials(context, apiUri, credentialsId);
         }
 
@@ -1481,8 +1485,10 @@ public class GitHubSCMNavigator extends SCMNavigator {
          * @since 2.2.0
          */
         @Restricted(NoExternalUse.class) // stapler
-        public ListBoxModel doFillCredentialsIdItems(@CheckForNull @AncestorInPath Item context,
-                @QueryParameter String apiUri, @QueryParameter String credentialsId) {
+        public ListBoxModel doFillCredentialsIdItems(
+                @CheckForNull @AncestorInPath Item context,
+                @QueryParameter String apiUri,
+                @QueryParameter String credentialsId) {
             if (context == null
                     ? !Jenkins.get().hasPermission(Jenkins.ADMINISTER)
                     : !context.hasPermission(Item.EXTENDED_READ)) {

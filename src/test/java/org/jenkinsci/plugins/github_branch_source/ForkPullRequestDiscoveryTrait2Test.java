@@ -66,7 +66,8 @@ public class ForkPullRequestDiscoveryTrait2Test {
         assertRoundTrip(p, new ForkPullRequestDiscoveryTrait.TrustPermission(), true);
     }
 
-    private void assertRoundTrip(WorkflowMultiBranchProject p,
+    private void assertRoundTrip(
+            WorkflowMultiBranchProject p,
             SCMHeadAuthority<? super GitHubSCMSourceRequest, ? extends ChangeRequestSCMHead2, ? extends SCMRevision> trust,
             boolean configuredByUrl) throws Exception {
 

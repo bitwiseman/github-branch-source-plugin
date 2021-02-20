@@ -44,7 +44,8 @@ public abstract class AbstractGitHubNotificationStrategy {
      * @return a list of notification requests
      * @since 2.3.2
      */
-    public abstract List<GitHubNotificationRequest> notifications(GitHubNotificationContext notificationContext,
+    public abstract List<GitHubNotificationRequest> notifications(
+            GitHubNotificationContext notificationContext,
             TaskListener listener);
 
     /**

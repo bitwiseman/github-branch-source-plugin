@@ -91,7 +91,8 @@ public class ForkPullRequestDiscoveryTrait extends SCMSourceTrait {
      *            the authority to use.
      */
     @DataBoundConstructor
-    public ForkPullRequestDiscoveryTrait(int strategyId,
+    public ForkPullRequestDiscoveryTrait(
+            int strategyId,
             @NonNull SCMHeadAuthority<? super GitHubSCMSourceRequest, ? extends ChangeRequestSCMHead2, ? extends SCMRevision> trust) {
         this.strategyId = strategyId;
         this.trust = trust;
@@ -105,7 +106,8 @@ public class ForkPullRequestDiscoveryTrait extends SCMSourceTrait {
      * @param trust
      *            the authority.
      */
-    public ForkPullRequestDiscoveryTrait(@NonNull Set<ChangeRequestCheckoutStrategy> strategies,
+    public ForkPullRequestDiscoveryTrait(
+            @NonNull Set<ChangeRequestCheckoutStrategy> strategies,
             @NonNull SCMHeadAuthority<? super GitHubSCMSourceRequest, ? extends ChangeRequestSCMHead2, ? extends SCMRevision> trust) {
         this(
                 (strategies.contains(ChangeRequestCheckoutStrategy.MERGE) ? MERGE : NONE)

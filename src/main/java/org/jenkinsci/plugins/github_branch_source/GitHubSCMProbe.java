@@ -56,7 +56,11 @@ class GitHubSCMProbe extends SCMProbe implements GitHubClosable {
     private final String name;
     private transient boolean open = true;
 
-    public GitHubSCMProbe(String apiUri, StandardCredentials credentials, GHRepository repo, SCMHead head,
+    public GitHubSCMProbe(
+            String apiUri,
+            StandardCredentials credentials,
+            GHRepository repo,
+            SCMHead head,
             SCMRevision revision) throws IOException {
         this.gitHub = Connector.connect(apiUri, credentials);
         this.revision = revision;

@@ -113,7 +113,9 @@ public class GitHubSCMBuilder extends GitSCMBuilder<GitHubSCMBuilder> {
      * @param revision
      *            the (optional) {@link SCMRevision}
      */
-    public GitHubSCMBuilder(@NonNull GitHubSCMSource source, @NonNull SCMHead head,
+    public GitHubSCMBuilder(
+            @NonNull GitHubSCMSource source,
+            @NonNull SCMHead head,
             @CheckForNull SCMRevision revision) {
         super(head, revision, /* dummy value */guessRemote(source), source.getCredentialsId());
         this.context = source.getOwner();
@@ -232,7 +234,9 @@ public class GitHubSCMBuilder extends GitSCMBuilder<GitHubSCMBuilder> {
      * @return a {@link RepositoryUriResolver}
      */
     @NonNull
-    public static RepositoryUriResolver uriResolver(@CheckForNull Item context, @NonNull String apiUri,
+    public static RepositoryUriResolver uriResolver(
+            @CheckForNull Item context,
+            @NonNull String apiUri,
             @CheckForNull String credentialsId) {
         if (credentialsId == null) {
             return HTTPS;

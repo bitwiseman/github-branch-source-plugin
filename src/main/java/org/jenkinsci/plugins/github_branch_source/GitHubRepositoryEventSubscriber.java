@@ -127,7 +127,10 @@ public class GitHubRepositoryEventSubscriber extends GHEventsSubscriber {
         private final String repoOwner;
         private final String repository;
 
-        public NewSCMSourceEvent(long timestamp, String origin, GHEventPayload.Repository event,
+        public NewSCMSourceEvent(
+                long timestamp,
+                String origin,
+                GHEventPayload.Repository event,
                 GitHubRepositoryName repo) {
             super(Type.CREATED, timestamp, event, origin);
             this.repoHost = repo.getHost();

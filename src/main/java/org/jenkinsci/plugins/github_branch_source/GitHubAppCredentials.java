@@ -74,8 +74,12 @@ public class GitHubAppCredentials extends BaseStandardCredentials implements Sta
 
     @DataBoundConstructor
     @SuppressWarnings("unused") // by stapler
-    public GitHubAppCredentials(CredentialsScope scope, String id, @CheckForNull String description,
-            @NonNull String appID, @NonNull Secret privateKey) {
+    public GitHubAppCredentials(
+            CredentialsScope scope,
+            String id,
+            @CheckForNull String description,
+            @NonNull String appID,
+            @NonNull Secret privateKey) {
         super(scope, id, description);
         this.appID = appID;
         this.privateKey = privateKey;
@@ -148,8 +152,12 @@ public class GitHubAppCredentials extends BaseStandardCredentials implements Sta
 
     @SuppressWarnings("deprecation") // preview features are required for GitHub app integration, GitHub api adds
                                      // deprecated to all preview methods
-    static AppInstallationToken generateAppInstallationToken(GitHub gitHubApp, String appId, String appPrivateKey,
-            String apiUrl, String owner) {
+    static AppInstallationToken generateAppInstallationToken(
+            GitHub gitHubApp,
+            String appId,
+            String appPrivateKey,
+            String apiUrl,
+            String owner) {
         JenkinsJVM.checkJenkinsJVM();
         // We expect this to be fast but if anything hangs in here we do not want to block indefinitely
 
@@ -560,8 +568,10 @@ public class GitHubAppCredentials extends BaseStandardCredentials implements Sta
         @POST
         @SuppressWarnings("unused") // stapler
         @Restricted(NoExternalUse.class) // stapler
-        public FormValidation doTestConnection(@QueryParameter("appID") final String appID,
-                @QueryParameter("privateKey") final String privateKey, @QueryParameter("apiUri") final String apiUri,
+        public FormValidation doTestConnection(
+                @QueryParameter("appID") final String appID,
+                @QueryParameter("privateKey") final String privateKey,
+                @QueryParameter("apiUri") final String apiUri,
                 @QueryParameter("owner") final String owner
 
         ) {

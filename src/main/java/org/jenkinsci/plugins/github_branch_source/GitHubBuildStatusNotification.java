@@ -286,7 +286,12 @@ public class GitHubBuildStatusNotification {
     public static class JobCheckOutListener extends SCMListener {
 
         @Override
-        public void onCheckout(Run<?, ?> build, SCM scm, FilePath workspace, TaskListener listener, File changelogFile,
+        public void onCheckout(
+                Run<?, ?> build,
+                SCM scm,
+                FilePath workspace,
+                TaskListener listener,
+                File changelogFile,
                 SCMRevisionState pollingBaseline) throws Exception {
             createBuildCommitStatus(build, listener);
         }

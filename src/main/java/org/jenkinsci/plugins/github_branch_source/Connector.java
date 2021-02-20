@@ -158,7 +158,9 @@ public class Connector {
      * @deprecated use {@link #checkScanCredentials(Item, String, String)}
      */
     @Deprecated
-    public static FormValidation checkScanCredentials(@CheckForNull SCMSourceOwner context, String apiUri,
+    public static FormValidation checkScanCredentials(
+            @CheckForNull SCMSourceOwner context,
+            String apiUri,
             String scanCredentialsId) {
         return checkScanCredentials((Item) context, apiUri, scanCredentialsId);
     }
@@ -174,7 +176,9 @@ public class Connector {
      *            the credentials ID.
      * @return the {@link FormValidation} results.
      */
-    public static FormValidation checkScanCredentials(@CheckForNull Item context, String apiUri,
+    public static FormValidation checkScanCredentials(
+            @CheckForNull Item context,
+            String apiUri,
             String scanCredentialsId) {
         if (context == null && !Jenkins.get().hasPermission(Jenkins.ADMINISTER)
                 || context != null && !context.hasPermission(Item.EXTENDED_READ)) {
@@ -247,8 +251,10 @@ public class Connector {
      */
     @Deprecated
     @CheckForNull
-    public static StandardCredentials lookupScanCredentials(@CheckForNull SCMSourceOwner context,
-            @CheckForNull String apiUri, @CheckForNull String scanCredentialsId) {
+    public static StandardCredentials lookupScanCredentials(
+            @CheckForNull SCMSourceOwner context,
+            @CheckForNull String apiUri,
+            @CheckForNull String scanCredentialsId) {
         return lookupScanCredentials((Item) context, apiUri, scanCredentialsId);
     }
 
@@ -264,7 +270,9 @@ public class Connector {
      * @return the {@link StandardCredentials} or {@code null}
      */
     @CheckForNull
-    public static StandardCredentials lookupScanCredentials(@CheckForNull Item context, @CheckForNull String apiUri,
+    public static StandardCredentials lookupScanCredentials(
+            @CheckForNull Item context,
+            @CheckForNull String apiUri,
             @CheckForNull String scanCredentialsId) {
         if (Util.fixEmpty(scanCredentialsId) == null) {
             return null;
@@ -445,7 +453,10 @@ public class Connector {
     }
 
     @CheckForNull
-    private static Cache getCache(@Nonnull Jenkins jenkins, @Nonnull String apiUrl, @Nonnull String authHash,
+    private static Cache getCache(
+            @Nonnull Jenkins jenkins,
+            @Nonnull String apiUrl,
+            @Nonnull String authHash,
             @CheckForNull String username) {
         Cache cache = null;
         int cacheSize = GitHubSCMSource.getCacheSize();
@@ -561,8 +572,11 @@ public class Connector {
         }
     }
 
-    /* package */ static void checkConnectionValidity(String apiUri, @NonNull TaskListener listener,
-            StandardCredentials credentials, GitHub github) throws IOException {
+    /* package */ static void checkConnectionValidity(
+            String apiUri,
+            @NonNull TaskListener listener,
+            StandardCredentials credentials,
+            GitHub github) throws IOException {
         synchronized (checked) {
             Map<GitHub, Void> hubs = checked.get(listener);
             if (hubs != null && hubs.containsKey(github)) {
@@ -659,8 +673,11 @@ public class Connector {
         }
 
         @NonNull
-        private static GitHubConnection connect(@NonNull ConnectionId connectionId, @NonNull GitHub gitHub,
-                @CheckForNull Cache cache, boolean cleanupCacheFolder) {
+        private static GitHubConnection connect(
+                @NonNull ConnectionId connectionId,
+                @NonNull GitHub gitHub,
+                @CheckForNull Cache cache,
+                boolean cleanupCacheFolder) {
             GitHubConnection record = new GitHubConnection(gitHub, cache, cleanupCacheFolder);
             connections.put(connectionId, record);
             reverseLookup.put(record.gitHub, record);

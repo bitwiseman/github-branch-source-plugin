@@ -165,7 +165,11 @@ public class PushGHEventSubscriber extends GHEventsSubscriber {
         private final String repoOwner;
         private final String repository;
 
-        public SCMHeadEventImpl(Type type, long timestamp, GHEventPayload.Push pullRequest, GitHubRepositoryName repo,
+        public SCMHeadEventImpl(
+                Type type,
+                long timestamp,
+                GHEventPayload.Push pullRequest,
+                GitHubRepositoryName repo,
                 String origin) {
             super(type, timestamp, pullRequest, origin);
             this.repoHost = repo.getHost();

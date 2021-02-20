@@ -69,7 +69,8 @@ public class BranchSCMHead extends SCMHead {
         }
 
         @Override
-        public SCMRevision migrate(@NonNull GitHubSCMSource source,
+        public SCMRevision migrate(
+                @NonNull GitHubSCMSource source,
                 @NonNull AbstractGitSCMSource.SCMRevisionImpl revision) {
             return new AbstractGitSCMSource.SCMRevisionImpl(migrate(source, revision.getHead()), revision.getHash());
         }

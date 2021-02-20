@@ -96,7 +96,8 @@ public class GitHubNotificationTest {
     private final class TestNotificationStrategy extends AbstractGitHubNotificationStrategy {
 
         @Override
-        public List<GitHubNotificationRequest> notifications(GitHubNotificationContext notificationContext,
+        public List<GitHubNotificationRequest> notifications(
+                GitHubNotificationContext notificationContext,
                 TaskListener listener) {
             return null;
         }

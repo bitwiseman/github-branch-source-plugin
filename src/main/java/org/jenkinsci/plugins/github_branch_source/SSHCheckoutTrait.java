@@ -166,8 +166,10 @@ public class SSHCheckoutTrait extends SCMSourceTrait {
          */
         @Restricted(NoExternalUse.class)
         @SuppressWarnings("unused") // stapler form binding
-        public ListBoxModel doFillCredentialsIdItems(@CheckForNull @AncestorInPath Item context,
-                @QueryParameter String apiUri, @QueryParameter String credentialsId) {
+        public ListBoxModel doFillCredentialsIdItems(
+                @CheckForNull @AncestorInPath Item context,
+                @QueryParameter String apiUri,
+                @QueryParameter String credentialsId) {
             if (context == null
                     ? !Jenkins.get().hasPermission(Jenkins.ADMINISTER)
                     : !context.hasPermission(Item.EXTENDED_READ)) {
@@ -194,8 +196,10 @@ public class SSHCheckoutTrait extends SCMSourceTrait {
          */
         @Restricted(NoExternalUse.class)
         @SuppressWarnings("unused") // stapler form binding
-        public FormValidation doCheckCredentialsId(@CheckForNull @AncestorInPath Item context,
-                @QueryParameter String serverUrl, @QueryParameter String value) {
+        public FormValidation doCheckCredentialsId(
+                @CheckForNull @AncestorInPath Item context,
+                @QueryParameter String serverUrl,
+                @QueryParameter String value) {
             if (context == null
                     ? !Jenkins.get().hasPermission(Jenkins.ADMINISTER)
                     : !context.hasPermission(Item.EXTENDED_READ)) {

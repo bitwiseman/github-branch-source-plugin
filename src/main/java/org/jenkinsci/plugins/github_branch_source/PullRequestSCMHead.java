@@ -97,8 +97,15 @@ public class PullRequestSCMHead extends SCMHead implements ChangeRequestSCMHead2
         }
     }
 
-    public PullRequestSCMHead(@NonNull String name, String sourceOwner, String sourceRepo, String sourceBranch,
-            int number, BranchSCMHead target, SCMHeadOrigin origin, ChangeRequestCheckoutStrategy strategy) {
+    public PullRequestSCMHead(
+            @NonNull String name,
+            String sourceOwner,
+            String sourceRepo,
+            String sourceBranch,
+            int number,
+            BranchSCMHead target,
+            SCMHeadOrigin origin,
+            ChangeRequestCheckoutStrategy strategy) {
         super(name);
         this.merge = ChangeRequestCheckoutStrategy.MERGE == strategy;
         this.number = number;

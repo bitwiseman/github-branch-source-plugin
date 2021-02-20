@@ -94,8 +94,9 @@ public class OriginPullRequestDiscoveryTrait extends SCMSourceTrait {
      *            the {@link ChangeRequestCheckoutStrategy} instances.
      */
     public OriginPullRequestDiscoveryTrait(Set<ChangeRequestCheckoutStrategy> strategies) {
-        this((strategies.contains(ChangeRequestCheckoutStrategy.MERGE) ? MERGE : NONE)
-                + (strategies.contains(ChangeRequestCheckoutStrategy.HEAD) ? HEAD : NONE));
+        this(
+                (strategies.contains(ChangeRequestCheckoutStrategy.MERGE) ? MERGE : NONE)
+                        + (strategies.contains(ChangeRequestCheckoutStrategy.HEAD) ? HEAD : NONE));
     }
 
     /**

@@ -305,7 +305,14 @@ public class PullRequestSCMHead extends SCMHead implements ChangeRequestSCMHead2
     @Restricted(NoExternalUse.class)
     public static class FixMetadata extends PullRequestSCMHead {
         FixMetadata(String name, Boolean merge, int number, BranchSCMHead branchSCMHead) {
-            super(name, null, null, null, number, branchSCMHead, null,
+            super(
+                    name,
+                    null,
+                    null,
+                    null,
+                    number,
+                    branchSCMHead,
+                    null,
                     merge ? ChangeRequestCheckoutStrategy.MERGE : ChangeRequestCheckoutStrategy.HEAD);
         }
 

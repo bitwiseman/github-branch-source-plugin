@@ -285,8 +285,13 @@ public class PullRequestSCMHead extends SCMHead implements ChangeRequestSCMHead2
 
         @Override
         public PullRequestSCMHead migrate(@NonNull GitHubSCMSource source, @NonNull FixOrigin head) {
-            return new PullRequestSCMHead(head.getName(), head.getSourceOwner(), head.getSourceRepo(),
-                    head.getSourceBranch(), head.getNumber(), head.getTarget(),
+            return new PullRequestSCMHead(
+                    head.getName(),
+                    head.getSourceOwner(),
+                    head.getSourceRepo(),
+                    head.getSourceBranch(),
+                    head.getNumber(),
+                    head.getTarget(),
                     source.getRepoOwner().equalsIgnoreCase(head.getSourceOwner())
                             ? SCMHeadOrigin.DEFAULT
                             : new SCMHeadOrigin.Fork(head.getSourceOwner()),
@@ -343,9 +348,13 @@ public class PullRequestSCMHead extends SCMHead implements ChangeRequestSCMHead2
         @Override
         public PullRequestSCMHead migrate(@NonNull GitHubSCMSource source, @NonNull FixMetadata head) {
             PullRequestSource src = source.retrievePullRequestSource(head.getNumber());
-            return new PullRequestSCMHead(head.getName(), src == null ? null : src.getSourceOwner(),
-                    src == null ? null : src.getSourceRepo(), src == null ? null : src.getSourceBranch(),
-                    head.getNumber(), head.getTarget(),
+            return new PullRequestSCMHead(
+                    head.getName(),
+                    src == null ? null : src.getSourceOwner(),
+                    src == null ? null : src.getSourceRepo(),
+                    src == null ? null : src.getSourceBranch(),
+                    head.getNumber(),
+                    head.getTarget(),
                     src != null && source.getRepoOwner().equalsIgnoreCase(src.getSourceOwner())
                             ? SCMHeadOrigin.DEFAULT
                             : new SCMHeadOrigin.Fork(head.getSourceOwner()),

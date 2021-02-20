@@ -132,14 +132,26 @@ public class PushGHEventSubscriber extends GHEventsSubscriber {
                 }
 
                 if (p.isCreated()) {
-                    fireAfterDelay(new SCMHeadEventImpl(SCMEvent.Type.CREATED, event.getTimestamp(), p,
-                            changedRepository, event.getOrigin()));
+                    fireAfterDelay(new SCMHeadEventImpl(
+                            SCMEvent.Type.CREATED,
+                            event.getTimestamp(),
+                            p,
+                            changedRepository,
+                            event.getOrigin()));
                 } else if (p.isDeleted()) {
-                    fireAfterDelay(new SCMHeadEventImpl(SCMEvent.Type.REMOVED, event.getTimestamp(), p,
-                            changedRepository, event.getOrigin()));
+                    fireAfterDelay(new SCMHeadEventImpl(
+                            SCMEvent.Type.REMOVED,
+                            event.getTimestamp(),
+                            p,
+                            changedRepository,
+                            event.getOrigin()));
                 } else {
-                    fireAfterDelay(new SCMHeadEventImpl(SCMEvent.Type.UPDATED, event.getTimestamp(), p,
-                            changedRepository, event.getOrigin()));
+                    fireAfterDelay(new SCMHeadEventImpl(
+                            SCMEvent.Type.UPDATED,
+                            event.getTimestamp(),
+                            p,
+                            changedRepository,
+                            event.getOrigin()));
                 }
             } else {
                 LOGGER.log(Level.WARNING, "{0} does not match expected repository name pattern", repoUrl);

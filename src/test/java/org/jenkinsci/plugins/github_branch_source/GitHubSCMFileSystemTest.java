@@ -56,22 +56,45 @@ public class GitHubSCMFileSystemTest extends AbstractGitHubWireMockTest {
     public static SCMHead master = new BranchSCMHead("master");
     private final SCMRevision revision;
 
-    public static PullRequestSCMHead prHead = new PullRequestSCMHead("PR-2", "stephenc", "yolo", "master", 2,
-            (BranchSCMHead) master, SCMHeadOrigin.Fork.DEFAULT, ChangeRequestCheckoutStrategy.HEAD);
-    public static PullRequestSCMRevision prHeadRevision = new PullRequestSCMRevision(prHead,
-            "8f1314fc3c8284d8c6d5886d473db98f2126071c", "c0e024f89969b976da165eecaa71e09dc60c3da1");
+    public static PullRequestSCMHead prHead = new PullRequestSCMHead(
+            "PR-2",
+            "stephenc",
+            "yolo",
+            "master",
+            2,
+            (BranchSCMHead) master,
+            SCMHeadOrigin.Fork.DEFAULT,
+            ChangeRequestCheckoutStrategy.HEAD);
+    public static PullRequestSCMRevision prHeadRevision = new PullRequestSCMRevision(
+            prHead,
+            "8f1314fc3c8284d8c6d5886d473db98f2126071c",
+            "c0e024f89969b976da165eecaa71e09dc60c3da1");
 
-    public static PullRequestSCMHead prMerge = new PullRequestSCMHead("PR-2", "stephenc", "yolo", "master", 2,
-            (BranchSCMHead) master, SCMHeadOrigin.Fork.DEFAULT, ChangeRequestCheckoutStrategy.MERGE);
-    public static PullRequestSCMRevision prMergeRevision = new PullRequestSCMRevision(prMerge,
-            "8f1314fc3c8284d8c6d5886d473db98f2126071c", "c0e024f89969b976da165eecaa71e09dc60c3da1",
+    public static PullRequestSCMHead prMerge = new PullRequestSCMHead(
+            "PR-2",
+            "stephenc",
+            "yolo",
+            "master",
+            2,
+            (BranchSCMHead) master,
+            SCMHeadOrigin.Fork.DEFAULT,
+            ChangeRequestCheckoutStrategy.MERGE);
+    public static PullRequestSCMRevision prMergeRevision = new PullRequestSCMRevision(
+            prMerge,
+            "8f1314fc3c8284d8c6d5886d473db98f2126071c",
+            "c0e024f89969b976da165eecaa71e09dc60c3da1",
             "38814ca33833ff5583624c29f305be9133f27a40");
 
-    public static PullRequestSCMRevision prMergeInvalidRevision = new PullRequestSCMRevision(prMerge,
-            "8f1314fc3c8284d8c6d5886d473db98f2126071c", "c0e024f89969b976da165eecaa71e09dc60c3da1", null);
+    public static PullRequestSCMRevision prMergeInvalidRevision = new PullRequestSCMRevision(
+            prMerge,
+            "8f1314fc3c8284d8c6d5886d473db98f2126071c",
+            "c0e024f89969b976da165eecaa71e09dc60c3da1",
+            null);
 
-    public static PullRequestSCMRevision prMergeNotMergeableRevision = new PullRequestSCMRevision(prMerge,
-            "8f1314fc3c8284d8c6d5886d473db98f2126071c", "c0e024f89969b976da165eecaa71e09dc60c3da1",
+    public static PullRequestSCMRevision prMergeNotMergeableRevision = new PullRequestSCMRevision(
+            prMerge,
+            "8f1314fc3c8284d8c6d5886d473db98f2126071c",
+            "c0e024f89969b976da165eecaa71e09dc60c3da1",
             PullRequestSCMRevision.NOT_MERGEABLE_HASH);
 
     private GitHubSCMSource source;
@@ -91,8 +114,13 @@ public class GitHubSCMFileSystemTest extends AbstractGitHubWireMockTest {
     @Override
     public void prepareMockGitHub() {
         super.prepareMockGitHub();
-        source = new GitHubSCMSource(null, "http://localhost:" + githubApi.port(), GitHubSCMSource.DescriptorImpl.SAME,
-                null, "cloudbeers", "yolo");
+        source = new GitHubSCMSource(
+                null,
+                "http://localhost:" + githubApi.port(),
+                GitHubSCMSource.DescriptorImpl.SAME,
+                null,
+                "cloudbeers",
+                "yolo");
     }
 
     @Override

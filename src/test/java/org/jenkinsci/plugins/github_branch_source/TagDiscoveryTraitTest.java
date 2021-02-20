@@ -50,8 +50,15 @@ public class TagDiscoveryTraitTest {
             TagDiscoveryTrait.TagSCMHeadAuthority instance = new TagDiscoveryTrait.TagSCMHeadAuthority();
             assertThat(instance.isTrusted(probe, new SCMHead("v1.0.0")), is(false));
             assertThat(instance.isTrusted(probe,
-                    new PullRequestSCMHead("PR-1", "does-not-exists", "http://does-not-exist.test", "feature/1", 1,
-                            new BranchSCMHead("master"), SCMHeadOrigin.DEFAULT, ChangeRequestCheckoutStrategy.MERGE)),
+                    new PullRequestSCMHead(
+                            "PR-1",
+                            "does-not-exists",
+                            "http://does-not-exist.test",
+                            "feature/1",
+                            1,
+                            new BranchSCMHead("master"),
+                            SCMHeadOrigin.DEFAULT,
+                            ChangeRequestCheckoutStrategy.MERGE)),
                     is(false));
             assertThat(instance.isTrusted(probe, new GitHubTagSCMHead("v1.0.0", 0L)), is(true));
         }
@@ -63,8 +70,15 @@ public class TagDiscoveryTraitTest {
             TagDiscoveryTrait.TagSCMHeadAuthority instance = new TagDiscoveryTrait.TagSCMHeadAuthority();
             assertThat(instance.isTrusted(probe, new SCMHead("v1.0.0")), is(false));
             assertThat(instance.isTrusted(probe,
-                    new PullRequestSCMHead("PR-1", "does-not-exists", "http://does-not-exist.test", "feature/1", 1,
-                            new BranchSCMHead("master"), SCMHeadOrigin.DEFAULT, ChangeRequestCheckoutStrategy.MERGE)),
+                    new PullRequestSCMHead(
+                            "PR-1",
+                            "does-not-exists",
+                            "http://does-not-exist.test",
+                            "feature/1",
+                            1,
+                            new BranchSCMHead("master"),
+                            SCMHeadOrigin.DEFAULT,
+                            ChangeRequestCheckoutStrategy.MERGE)),
                     is(false));
             assertThat(instance.isTrusted(probe, new GitHubTagSCMHead("v1.0.0", 0L)), is(true));
         }

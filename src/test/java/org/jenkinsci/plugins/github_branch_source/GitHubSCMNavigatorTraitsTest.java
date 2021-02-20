@@ -804,7 +804,10 @@ public class GitHubSCMNavigatorTraitsTest {
     @WithoutJenkins
     @Test
     public void given__legacyCode__when__constructor_cloud__then__discoveryTraitDefaults() throws Exception {
-        GitHubSCMNavigator instance = new GitHubSCMNavigator(null, "cloudbeers", "bcaef157-f105-407f-b150-df7722eab6c1",
+        GitHubSCMNavigator instance = new GitHubSCMNavigator(
+                null,
+                "cloudbeers",
+                "bcaef157-f105-407f-b150-df7722eab6c1",
                 "SAME");
         assertThat(instance.id(), is("https://api.github.com::cloudbeers"));
         assertThat(instance.getRepoOwner(), is("cloudbeers"));
@@ -825,8 +828,11 @@ public class GitHubSCMNavigatorTraitsTest {
 
     @Test
     public void given__legacyCode__when__constructor_server__then__discoveryTraitDefaults() throws Exception {
-        GitHubSCMNavigator instance = new GitHubSCMNavigator("https://github.test/api/v3", "cloudbeers",
-                "bcaef157-f105-407f-b150-df7722eab6c1", "8b2e4f77-39c5-41a9-b63b-8d367350bfdf");
+        GitHubSCMNavigator instance = new GitHubSCMNavigator(
+                "https://github.test/api/v3",
+                "cloudbeers",
+                "bcaef157-f105-407f-b150-df7722eab6c1",
+                "8b2e4f77-39c5-41a9-b63b-8d367350bfdf");
         assertThat(instance.id(), is("https://github.test/api/v3::cloudbeers"));
         assertThat(instance.getRepoOwner(), is("cloudbeers"));
         assertThat(instance.getApiUri(), is("https://github.test/api/v3"));
@@ -975,7 +981,10 @@ public class GitHubSCMNavigatorTraitsTest {
 
     @Test
     public void given__legacyCode__when__checkoutCredentials_ANONYMOUS__then__traitAdded() {
-        GitHubSCMNavigator instance = new GitHubSCMNavigator(null, "test", "scan",
+        GitHubSCMNavigator instance = new GitHubSCMNavigator(
+                null,
+                "test",
+                "scan",
                 GitHubSCMSource.DescriptorImpl.ANONYMOUS);
         assertThat(instance.getCheckoutCredentialsId(), is(GitHubSCMSource.DescriptorImpl.ANONYMOUS));
         assertThat(instance.getTraits(), Matchers

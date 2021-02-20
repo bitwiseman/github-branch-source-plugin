@@ -74,13 +74,27 @@ public class DefaultGitHubNotificationStrategyTest {
                     new LogTaskListener(Logger.getLogger(getClass().getName()), Level.INFO));
             List<GitHubNotificationRequest> notificationsB = instance.notifications(
                     GitHubNotificationContext.build(job, run, src,
-                            new PullRequestSCMHead("test-pr", "owner", "repo", "branch", 1, testBranch,
-                                    SCMHeadOrigin.DEFAULT, ChangeRequestCheckoutStrategy.MERGE)),
+                            new PullRequestSCMHead(
+                                    "test-pr",
+                                    "owner",
+                                    "repo",
+                                    "branch",
+                                    1,
+                                    testBranch,
+                                    SCMHeadOrigin.DEFAULT,
+                                    ChangeRequestCheckoutStrategy.MERGE)),
                     new LogTaskListener(Logger.getLogger(getClass().getName()), Level.INFO));
             List<GitHubNotificationRequest> notificationsC = instance.notifications(
                     GitHubNotificationContext.build(job, run, src,
-                            new PullRequestSCMHead("test-pr", "owner", "repo", "branch", 1, testBranch,
-                                    SCMHeadOrigin.DEFAULT, ChangeRequestCheckoutStrategy.HEAD)),
+                            new PullRequestSCMHead(
+                                    "test-pr",
+                                    "owner",
+                                    "repo",
+                                    "branch",
+                                    1,
+                                    testBranch,
+                                    SCMHeadOrigin.DEFAULT,
+                                    ChangeRequestCheckoutStrategy.HEAD)),
                     new LogTaskListener(Logger.getLogger(getClass().getName()), Level.INFO));
             assertNotEquals(notificationsA, notificationsB);
             assertNotEquals(notificationsB, notificationsC);

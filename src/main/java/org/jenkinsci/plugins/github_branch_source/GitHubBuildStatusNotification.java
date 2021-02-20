@@ -77,7 +77,8 @@ public class GitHubBuildStatusNotification {
                         Result result = build.getResult();
                         String revisionToNotify = resolveHeadCommit(revision);
                         SCMHead head = revision.getHead();
-                        List<AbstractGitHubNotificationStrategy> strategies = new GitHubSCMSourceContext(null,
+                        List<AbstractGitHubNotificationStrategy> strategies = new GitHubSCMSourceContext(
+                                null,
                                 SCMHeadObserver.none()).withTraits(((GitHubSCMSource) src).getTraits())
                                         .notificationStrategies();
                         for (AbstractGitHubNotificationStrategy strategy : strategies) {

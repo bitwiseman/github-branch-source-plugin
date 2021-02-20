@@ -83,10 +83,19 @@ public class GitHubSCMBuilderTest {
     @Before
     public void setUp() throws IOException {
         owner = j.createProject(WorkflowMultiBranchProject.class);
-        Credentials userPasswordCredential = new UsernamePasswordCredentialsImpl(CredentialsScope.GLOBAL, "user-pass",
-                null, "git-user", "git-secret");
-        Credentials sshPrivateKeyCredential = new BasicSSHUserPrivateKey(CredentialsScope.GLOBAL, "user-key", "git",
-                new BasicSSHUserPrivateKey.UsersPrivateKeySource(), null, null);
+        Credentials userPasswordCredential = new UsernamePasswordCredentialsImpl(
+                CredentialsScope.GLOBAL,
+                "user-pass",
+                null,
+                "git-user",
+                "git-secret");
+        Credentials sshPrivateKeyCredential = new BasicSSHUserPrivateKey(
+                CredentialsScope.GLOBAL,
+                "user-key",
+                "git",
+                new BasicSSHUserPrivateKey.UsersPrivateKeySource(),
+                null,
+                null);
         SystemCredentialsProvider.getInstance().setDomainCredentialsMap(Collections.singletonMap(Domain.global(),
                 Arrays.asList(userPasswordCredential, sshPrivateKeyCredential)));
     }
@@ -698,7 +707,8 @@ public class GitHubSCMBuilderTest {
     public void given__server_branch_rev_anon__when__build__then__scmBuilt() throws Exception {
         createGitHubSCMSourceForTest(true, "https://github.test/tester/test-repo.git");
         BranchSCMHead head = new BranchSCMHead("test-branch");
-        AbstractGitSCMSource.SCMRevisionImpl revision = new AbstractGitSCMSource.SCMRevisionImpl(head,
+        AbstractGitSCMSource.SCMRevisionImpl revision = new AbstractGitSCMSource.SCMRevisionImpl(
+                head,
                 "cafebabedeadbeefcafebabedeadbeefcafebabe");
         source.setCredentialsId(null);
         GitHubSCMBuilder instance = new GitHubSCMBuilder(source, head, revision);
@@ -750,7 +760,8 @@ public class GitHubSCMBuilderTest {
     public void given__server_branch_rev_userpass__when__build__then__scmBuilt() throws Exception {
         createGitHubSCMSourceForTest(true, "https://github.test/tester/test-repo.git");
         BranchSCMHead head = new BranchSCMHead("test-branch");
-        AbstractGitSCMSource.SCMRevisionImpl revision = new AbstractGitSCMSource.SCMRevisionImpl(head,
+        AbstractGitSCMSource.SCMRevisionImpl revision = new AbstractGitSCMSource.SCMRevisionImpl(
+                head,
                 "cafebabedeadbeefcafebabedeadbeefcafebabe");
         source.setCredentialsId("user-pass");
         GitHubSCMBuilder instance = new GitHubSCMBuilder(source, head, revision);
@@ -802,7 +813,8 @@ public class GitHubSCMBuilderTest {
     public void given__server_branch_rev_userkey__when__build__then__scmBuilt() throws Exception {
         createGitHubSCMSourceForTest(true, "https://github.test/tester/test-repo.git");
         BranchSCMHead head = new BranchSCMHead("test-branch");
-        AbstractGitSCMSource.SCMRevisionImpl revision = new AbstractGitSCMSource.SCMRevisionImpl(head,
+        AbstractGitSCMSource.SCMRevisionImpl revision = new AbstractGitSCMSource.SCMRevisionImpl(
+                head,
                 "cafebabedeadbeefcafebabedeadbeefcafebabe");
         source.setCredentialsId("user-key");
         GitHubSCMBuilder instance = new GitHubSCMBuilder(source, head, revision);
@@ -973,10 +985,18 @@ public class GitHubSCMBuilderTest {
     @Test
     public void given__cloud_pullHead_rev_anon__when__build__then__scmBuilt() throws Exception {
         createGitHubSCMSourceForTest(false, null);
-        PullRequestSCMHead head = new PullRequestSCMHead("PR-1", "qa", "qa-repo", "qa-branch", 1,
-                new BranchSCMHead("test-branch"), new SCMHeadOrigin.Fork("qa/qa-repo"),
+        PullRequestSCMHead head = new PullRequestSCMHead(
+                "PR-1",
+                "qa",
+                "qa-repo",
+                "qa-branch",
+                1,
+                new BranchSCMHead("test-branch"),
+                new SCMHeadOrigin.Fork("qa/qa-repo"),
                 ChangeRequestCheckoutStrategy.HEAD);
-        PullRequestSCMRevision revision = new PullRequestSCMRevision(head, "deadbeefcafebabedeadbeefcafebabedeadbeef",
+        PullRequestSCMRevision revision = new PullRequestSCMRevision(
+                head,
+                "deadbeefcafebabedeadbeefcafebabedeadbeef",
                 "cafebabedeadbeefcafebabedeadbeefcafebabe");
         source.setCredentialsId(null);
         GitHubSCMBuilder instance = new GitHubSCMBuilder(source, head, revision);
@@ -1027,10 +1047,18 @@ public class GitHubSCMBuilderTest {
     @Test
     public void given__cloud_pullHead_rev_userpass__when__build__then__scmBuilt() throws Exception {
         createGitHubSCMSourceForTest(false, null);
-        PullRequestSCMHead head = new PullRequestSCMHead("PR-1", "qa", "qa-repo", "qa-branch", 1,
-                new BranchSCMHead("test-branch"), new SCMHeadOrigin.Fork("qa/qa-repo"),
+        PullRequestSCMHead head = new PullRequestSCMHead(
+                "PR-1",
+                "qa",
+                "qa-repo",
+                "qa-branch",
+                1,
+                new BranchSCMHead("test-branch"),
+                new SCMHeadOrigin.Fork("qa/qa-repo"),
                 ChangeRequestCheckoutStrategy.HEAD);
-        PullRequestSCMRevision revision = new PullRequestSCMRevision(head, "deadbeefcafebabedeadbeefcafebabedeadbeef",
+        PullRequestSCMRevision revision = new PullRequestSCMRevision(
+                head,
+                "deadbeefcafebabedeadbeefcafebabedeadbeef",
                 "cafebabedeadbeefcafebabedeadbeefcafebabe");
         source.setCredentialsId("user-pass");
         GitHubSCMBuilder instance = new GitHubSCMBuilder(source, head, revision);
@@ -1080,10 +1108,18 @@ public class GitHubSCMBuilderTest {
 
     @Test
     public void given__cloud_pullHead_rev_userkey__when__build__then__scmBuilt() throws Exception {
-        PullRequestSCMHead head = new PullRequestSCMHead("PR-1", "qa", "qa-repo", "qa-branch", 1,
-                new BranchSCMHead("test-branch"), new SCMHeadOrigin.Fork("qa/qa-repo"),
+        PullRequestSCMHead head = new PullRequestSCMHead(
+                "PR-1",
+                "qa",
+                "qa-repo",
+                "qa-branch",
+                1,
+                new BranchSCMHead("test-branch"),
+                new SCMHeadOrigin.Fork("qa/qa-repo"),
                 ChangeRequestCheckoutStrategy.HEAD);
-        PullRequestSCMRevision revision = new PullRequestSCMRevision(head, "deadbeefcafebabedeadbeefcafebabedeadbeef",
+        PullRequestSCMRevision revision = new PullRequestSCMRevision(
+                head,
+                "deadbeefcafebabedeadbeefcafebabedeadbeef",
                 "cafebabedeadbeefcafebabedeadbeefcafebabe");
         createGitHubSCMSourceForTest(false, null);
         source.setCredentialsId("user-key");
@@ -1135,8 +1171,14 @@ public class GitHubSCMBuilderTest {
     @Test
     public void given__cloud_pullHead_norev_anon__when__build__then__scmBuilt() throws Exception {
         createGitHubSCMSourceForTest(false, null);
-        PullRequestSCMHead head = new PullRequestSCMHead("PR-1", "qa", "qa-repo", "qa-branch", 1,
-                new BranchSCMHead("test-branch"), new SCMHeadOrigin.Fork("qa/qa-repo"),
+        PullRequestSCMHead head = new PullRequestSCMHead(
+                "PR-1",
+                "qa",
+                "qa-repo",
+                "qa-branch",
+                1,
+                new BranchSCMHead("test-branch"),
+                new SCMHeadOrigin.Fork("qa/qa-repo"),
                 ChangeRequestCheckoutStrategy.HEAD);
         source.setCredentialsId(null);
         GitHubSCMBuilder instance = new GitHubSCMBuilder(source, head, null);
@@ -1177,8 +1219,14 @@ public class GitHubSCMBuilderTest {
     @Test
     public void given__cloud_pullHead_norev_userpass__when__build__then__scmBuilt() throws Exception {
         createGitHubSCMSourceForTest(false, null);
-        PullRequestSCMHead head = new PullRequestSCMHead("PR-1", "qa", "qa-repo", "qa-branch", 1,
-                new BranchSCMHead("test-branch"), new SCMHeadOrigin.Fork("qa/qa-repo"),
+        PullRequestSCMHead head = new PullRequestSCMHead(
+                "PR-1",
+                "qa",
+                "qa-repo",
+                "qa-branch",
+                1,
+                new BranchSCMHead("test-branch"),
+                new SCMHeadOrigin.Fork("qa/qa-repo"),
                 ChangeRequestCheckoutStrategy.HEAD);
         source.setCredentialsId("user-pass");
         GitHubSCMBuilder instance = new GitHubSCMBuilder(source, head, null);
@@ -1219,8 +1267,14 @@ public class GitHubSCMBuilderTest {
     @Test
     public void given__cloud_pullHead_norev_userkey__when__build__then__scmBuilt() throws Exception {
         createGitHubSCMSourceForTest(false, null);
-        PullRequestSCMHead head = new PullRequestSCMHead("PR-1", "qa", "qa-repo", "qa-branch", 1,
-                new BranchSCMHead("test-branch"), new SCMHeadOrigin.Fork("qa/qa-repo"),
+        PullRequestSCMHead head = new PullRequestSCMHead(
+                "PR-1",
+                "qa",
+                "qa-repo",
+                "qa-branch",
+                1,
+                new BranchSCMHead("test-branch"),
+                new SCMHeadOrigin.Fork("qa/qa-repo"),
                 ChangeRequestCheckoutStrategy.HEAD);
         source.setCredentialsId("user-key");
         GitHubSCMBuilder instance = new GitHubSCMBuilder(source, head, null);
@@ -1261,10 +1315,18 @@ public class GitHubSCMBuilderTest {
     @Test
     public void given__server_pullHead_rev_anon__when__build__then__scmBuilt() throws Exception {
         createGitHubSCMSourceForTest(true, "https://github.test/tester/test-repo.git");
-        PullRequestSCMHead head = new PullRequestSCMHead("PR-1", "qa", "qa-repo", "qa-branch", 1,
-                new BranchSCMHead("test-branch"), new SCMHeadOrigin.Fork("qa/qa-repo"),
+        PullRequestSCMHead head = new PullRequestSCMHead(
+                "PR-1",
+                "qa",
+                "qa-repo",
+                "qa-branch",
+                1,
+                new BranchSCMHead("test-branch"),
+                new SCMHeadOrigin.Fork("qa/qa-repo"),
                 ChangeRequestCheckoutStrategy.HEAD);
-        PullRequestSCMRevision revision = new PullRequestSCMRevision(head, "deadbeefcafebabedeadbeefcafebabedeadbeef",
+        PullRequestSCMRevision revision = new PullRequestSCMRevision(
+                head,
+                "deadbeefcafebabedeadbeefcafebabedeadbeef",
                 "cafebabedeadbeefcafebabedeadbeefcafebabe");
         source.setCredentialsId(null);
         GitHubSCMBuilder instance = new GitHubSCMBuilder(source, head, revision);
@@ -1315,10 +1377,18 @@ public class GitHubSCMBuilderTest {
     @Test
     public void given__server_pullHead_rev_userpass__when__build__then__scmBuilt() throws Exception {
         createGitHubSCMSourceForTest(true, "https://github.test/tester/test-repo.git");
-        PullRequestSCMHead head = new PullRequestSCMHead("PR-1", "qa", "qa-repo", "qa-branch", 1,
-                new BranchSCMHead("test-branch"), new SCMHeadOrigin.Fork("qa/qa-repo"),
+        PullRequestSCMHead head = new PullRequestSCMHead(
+                "PR-1",
+                "qa",
+                "qa-repo",
+                "qa-branch",
+                1,
+                new BranchSCMHead("test-branch"),
+                new SCMHeadOrigin.Fork("qa/qa-repo"),
                 ChangeRequestCheckoutStrategy.HEAD);
-        PullRequestSCMRevision revision = new PullRequestSCMRevision(head, "deadbeefcafebabedeadbeefcafebabedeadbeef",
+        PullRequestSCMRevision revision = new PullRequestSCMRevision(
+                head,
+                "deadbeefcafebabedeadbeefcafebabedeadbeef",
                 "cafebabedeadbeefcafebabedeadbeefcafebabe");
         source.setCredentialsId("user-pass");
         GitHubSCMBuilder instance = new GitHubSCMBuilder(source, head, revision);
@@ -1369,10 +1439,18 @@ public class GitHubSCMBuilderTest {
     @Test
     public void given__server_pullHead_rev_userkey__when__build__then__scmBuilt() throws Exception {
         createGitHubSCMSourceForTest(true, "https://github.test/tester/test-repo.git");
-        PullRequestSCMHead head = new PullRequestSCMHead("PR-1", "qa", "qa-repo", "qa-branch", 1,
-                new BranchSCMHead("test-branch"), new SCMHeadOrigin.Fork("qa/qa-repo"),
+        PullRequestSCMHead head = new PullRequestSCMHead(
+                "PR-1",
+                "qa",
+                "qa-repo",
+                "qa-branch",
+                1,
+                new BranchSCMHead("test-branch"),
+                new SCMHeadOrigin.Fork("qa/qa-repo"),
                 ChangeRequestCheckoutStrategy.HEAD);
-        PullRequestSCMRevision revision = new PullRequestSCMRevision(head, "deadbeefcafebabedeadbeefcafebabedeadbeef",
+        PullRequestSCMRevision revision = new PullRequestSCMRevision(
+                head,
+                "deadbeefcafebabedeadbeefcafebabedeadbeef",
                 "cafebabedeadbeefcafebabedeadbeefcafebabe");
         source.setCredentialsId("user-key");
         GitHubSCMBuilder instance = new GitHubSCMBuilder(source, head, revision);
@@ -1423,8 +1501,14 @@ public class GitHubSCMBuilderTest {
     @Test
     public void given__server_pullHead_norev_anon__when__build__then__scmBuilt() throws Exception {
         createGitHubSCMSourceForTest(true, "https://github.test/tester/test-repo.git");
-        PullRequestSCMHead head = new PullRequestSCMHead("PR-1", "qa", "qa-repo", "qa-branch", 1,
-                new BranchSCMHead("test-branch"), new SCMHeadOrigin.Fork("qa/qa-repo"),
+        PullRequestSCMHead head = new PullRequestSCMHead(
+                "PR-1",
+                "qa",
+                "qa-repo",
+                "qa-branch",
+                1,
+                new BranchSCMHead("test-branch"),
+                new SCMHeadOrigin.Fork("qa/qa-repo"),
                 ChangeRequestCheckoutStrategy.HEAD);
         source.setCredentialsId(null);
         GitHubSCMBuilder instance = new GitHubSCMBuilder(source, head, null);
@@ -1465,8 +1549,14 @@ public class GitHubSCMBuilderTest {
     @Test
     public void given__server_pullHead_norev_userpass__when__build__then__scmBuilt() throws Exception {
         createGitHubSCMSourceForTest(true, "https://github.test/tester/test-repo.git");
-        PullRequestSCMHead head = new PullRequestSCMHead("PR-1", "qa", "qa-repo", "qa-branch", 1,
-                new BranchSCMHead("test-branch"), new SCMHeadOrigin.Fork("qa/qa-repo"),
+        PullRequestSCMHead head = new PullRequestSCMHead(
+                "PR-1",
+                "qa",
+                "qa-repo",
+                "qa-branch",
+                1,
+                new BranchSCMHead("test-branch"),
+                new SCMHeadOrigin.Fork("qa/qa-repo"),
                 ChangeRequestCheckoutStrategy.HEAD);
         source.setCredentialsId("user-pass");
         GitHubSCMBuilder instance = new GitHubSCMBuilder(source, head, null);
@@ -1507,8 +1597,14 @@ public class GitHubSCMBuilderTest {
     @Test
     public void given__server_pullHead_norev_userkey__when__build__then__scmBuilt() throws Exception {
         createGitHubSCMSourceForTest(true, "https://github.test/tester/test-repo.git");
-        PullRequestSCMHead head = new PullRequestSCMHead("PR-1", "qa", "qa-repo", "qa-branch", 1,
-                new BranchSCMHead("test-branch"), new SCMHeadOrigin.Fork("qa/qa-repo"),
+        PullRequestSCMHead head = new PullRequestSCMHead(
+                "PR-1",
+                "qa",
+                "qa-repo",
+                "qa-branch",
+                1,
+                new BranchSCMHead("test-branch"),
+                new SCMHeadOrigin.Fork("qa/qa-repo"),
                 ChangeRequestCheckoutStrategy.HEAD);
         source.setCredentialsId("user-key");
         GitHubSCMBuilder instance = new GitHubSCMBuilder(source, head, null);
@@ -1549,10 +1645,18 @@ public class GitHubSCMBuilderTest {
     @Test
     public void given__cloud_pullMerge_rev_anon__when__build__then__scmBuilt() throws Exception {
         createGitHubSCMSourceForTest(false, null);
-        PullRequestSCMHead head = new PullRequestSCMHead("PR-1", "qa", "qa-repo", "qa-branch", 1,
-                new BranchSCMHead("test-branch"), new SCMHeadOrigin.Fork("qa/qa-repo"),
+        PullRequestSCMHead head = new PullRequestSCMHead(
+                "PR-1",
+                "qa",
+                "qa-repo",
+                "qa-branch",
+                1,
+                new BranchSCMHead("test-branch"),
+                new SCMHeadOrigin.Fork("qa/qa-repo"),
                 ChangeRequestCheckoutStrategy.MERGE);
-        PullRequestSCMRevision revision = new PullRequestSCMRevision(head, "deadbeefcafebabedeadbeefcafebabedeadbeef",
+        PullRequestSCMRevision revision = new PullRequestSCMRevision(
+                head,
+                "deadbeefcafebabedeadbeefcafebabedeadbeef",
                 "cafebabedeadbeefcafebabedeadbeefcafebabe");
         source.setCredentialsId(null);
         GitHubSCMBuilder instance = new GitHubSCMBuilder(source, head, revision);
@@ -1613,10 +1717,18 @@ public class GitHubSCMBuilderTest {
     @Test
     public void given__cloud_pullMerge_rev_userpass__when__build__then__scmBuilt() throws Exception {
         createGitHubSCMSourceForTest(false, null);
-        PullRequestSCMHead head = new PullRequestSCMHead("PR-1", "qa", "qa-repo", "qa-branch", 1,
-                new BranchSCMHead("test-branch"), new SCMHeadOrigin.Fork("qa/qa-repo"),
+        PullRequestSCMHead head = new PullRequestSCMHead(
+                "PR-1",
+                "qa",
+                "qa-repo",
+                "qa-branch",
+                1,
+                new BranchSCMHead("test-branch"),
+                new SCMHeadOrigin.Fork("qa/qa-repo"),
                 ChangeRequestCheckoutStrategy.MERGE);
-        PullRequestSCMRevision revision = new PullRequestSCMRevision(head, "deadbeefcafebabedeadbeefcafebabedeadbeef",
+        PullRequestSCMRevision revision = new PullRequestSCMRevision(
+                head,
+                "deadbeefcafebabedeadbeefcafebabedeadbeef",
                 "cafebabedeadbeefcafebabedeadbeefcafebabe");
         source.setCredentialsId("user-pass");
         GitHubSCMBuilder instance = new GitHubSCMBuilder(source, head, revision);
@@ -1677,10 +1789,18 @@ public class GitHubSCMBuilderTest {
     @Test
     public void given__cloud_pullMerge_rev_userkey__when__build__then__scmBuilt() throws Exception {
         createGitHubSCMSourceForTest(false, null);
-        PullRequestSCMHead head = new PullRequestSCMHead("PR-1", "qa", "qa-repo", "qa-branch", 1,
-                new BranchSCMHead("test-branch"), new SCMHeadOrigin.Fork("qa/qa-repo"),
+        PullRequestSCMHead head = new PullRequestSCMHead(
+                "PR-1",
+                "qa",
+                "qa-repo",
+                "qa-branch",
+                1,
+                new BranchSCMHead("test-branch"),
+                new SCMHeadOrigin.Fork("qa/qa-repo"),
                 ChangeRequestCheckoutStrategy.MERGE);
-        PullRequestSCMRevision revision = new PullRequestSCMRevision(head, "deadbeefcafebabedeadbeefcafebabedeadbeef",
+        PullRequestSCMRevision revision = new PullRequestSCMRevision(
+                head,
+                "deadbeefcafebabedeadbeefcafebabedeadbeef",
                 "cafebabedeadbeefcafebabedeadbeefcafebabe");
         source.setCredentialsId("user-key");
         GitHubSCMBuilder instance = new GitHubSCMBuilder(source, head, revision);
@@ -1741,8 +1861,14 @@ public class GitHubSCMBuilderTest {
     @Test
     public void given__cloud_pullMerge_norev_anon__when__build__then__scmBuilt() throws Exception {
         createGitHubSCMSourceForTest(false, null);
-        PullRequestSCMHead head = new PullRequestSCMHead("PR-1", "qa", "qa-repo", "qa-branch", 1,
-                new BranchSCMHead("test-branch"), new SCMHeadOrigin.Fork("qa/qa-repo"),
+        PullRequestSCMHead head = new PullRequestSCMHead(
+                "PR-1",
+                "qa",
+                "qa-repo",
+                "qa-branch",
+                1,
+                new BranchSCMHead("test-branch"),
+                new SCMHeadOrigin.Fork("qa/qa-repo"),
                 ChangeRequestCheckoutStrategy.MERGE);
         source.setCredentialsId(null);
         GitHubSCMBuilder instance = new GitHubSCMBuilder(source, head, null);
@@ -1792,8 +1918,14 @@ public class GitHubSCMBuilderTest {
     @Test
     public void given__cloud_pullMerge_norev_userpass__when__build__then__scmBuilt() throws Exception {
         createGitHubSCMSourceForTest(false, null);
-        PullRequestSCMHead head = new PullRequestSCMHead("PR-1", "qa", "qa-repo", "qa-branch", 1,
-                new BranchSCMHead("test-branch"), new SCMHeadOrigin.Fork("qa/qa-repo"),
+        PullRequestSCMHead head = new PullRequestSCMHead(
+                "PR-1",
+                "qa",
+                "qa-repo",
+                "qa-branch",
+                1,
+                new BranchSCMHead("test-branch"),
+                new SCMHeadOrigin.Fork("qa/qa-repo"),
                 ChangeRequestCheckoutStrategy.MERGE);
         source.setCredentialsId("user-pass");
         GitHubSCMBuilder instance = new GitHubSCMBuilder(source, head, null);
@@ -1843,8 +1975,14 @@ public class GitHubSCMBuilderTest {
     @Test
     public void given__cloud_pullMerge_norev_userkey__when__build__then__scmBuilt() throws Exception {
         createGitHubSCMSourceForTest(false, null);
-        PullRequestSCMHead head = new PullRequestSCMHead("PR-1", "qa", "qa-repo", "qa-branch", 1,
-                new BranchSCMHead("test-branch"), new SCMHeadOrigin.Fork("qa/qa-repo"),
+        PullRequestSCMHead head = new PullRequestSCMHead(
+                "PR-1",
+                "qa",
+                "qa-repo",
+                "qa-branch",
+                1,
+                new BranchSCMHead("test-branch"),
+                new SCMHeadOrigin.Fork("qa/qa-repo"),
                 ChangeRequestCheckoutStrategy.MERGE);
         source.setCredentialsId("user-key");
         GitHubSCMBuilder instance = new GitHubSCMBuilder(source, head, null);
@@ -1894,10 +2032,18 @@ public class GitHubSCMBuilderTest {
     @Test
     public void given__server_pullMerge_rev_anon__when__build__then__scmBuilt() throws Exception {
         createGitHubSCMSourceForTest(true, "https://github.test/tester/test-repo.git");
-        PullRequestSCMHead head = new PullRequestSCMHead("PR-1", "qa", "qa-repo", "qa-branch", 1,
-                new BranchSCMHead("test-branch"), new SCMHeadOrigin.Fork("qa/qa-repo"),
+        PullRequestSCMHead head = new PullRequestSCMHead(
+                "PR-1",
+                "qa",
+                "qa-repo",
+                "qa-branch",
+                1,
+                new BranchSCMHead("test-branch"),
+                new SCMHeadOrigin.Fork("qa/qa-repo"),
                 ChangeRequestCheckoutStrategy.MERGE);
-        PullRequestSCMRevision revision = new PullRequestSCMRevision(head, "deadbeefcafebabedeadbeefcafebabedeadbeef",
+        PullRequestSCMRevision revision = new PullRequestSCMRevision(
+                head,
+                "deadbeefcafebabedeadbeefcafebabedeadbeef",
                 "cafebabedeadbeefcafebabedeadbeefcafebabe");
         source.setCredentialsId(null);
         GitHubSCMBuilder instance = new GitHubSCMBuilder(source, head, revision);
@@ -1958,10 +2104,18 @@ public class GitHubSCMBuilderTest {
     @Test
     public void given__server_pullMerge_rev_userpass__when__build__then__scmBuilt() throws Exception {
         createGitHubSCMSourceForTest(true, "https://github.test/tester/test-repo.git");
-        PullRequestSCMHead head = new PullRequestSCMHead("PR-1", "qa", "qa-repo", "qa-branch", 1,
-                new BranchSCMHead("test-branch"), new SCMHeadOrigin.Fork("qa/qa-repo"),
+        PullRequestSCMHead head = new PullRequestSCMHead(
+                "PR-1",
+                "qa",
+                "qa-repo",
+                "qa-branch",
+                1,
+                new BranchSCMHead("test-branch"),
+                new SCMHeadOrigin.Fork("qa/qa-repo"),
                 ChangeRequestCheckoutStrategy.MERGE);
-        PullRequestSCMRevision revision = new PullRequestSCMRevision(head, "deadbeefcafebabedeadbeefcafebabedeadbeef",
+        PullRequestSCMRevision revision = new PullRequestSCMRevision(
+                head,
+                "deadbeefcafebabedeadbeefcafebabedeadbeef",
                 "cafebabedeadbeefcafebabedeadbeefcafebabe");
         source.setCredentialsId("user-pass");
         GitHubSCMBuilder instance = new GitHubSCMBuilder(source, head, revision);
@@ -2022,10 +2176,18 @@ public class GitHubSCMBuilderTest {
     @Test
     public void given__server_pullMerge_rev_userkey__when__build__then__scmBuilt() throws Exception {
         createGitHubSCMSourceForTest(true, "https://github.test/tester/test-repo.git");
-        PullRequestSCMHead head = new PullRequestSCMHead("PR-1", "qa", "qa-repo", "qa-branch", 1,
-                new BranchSCMHead("test-branch"), new SCMHeadOrigin.Fork("qa/qa-repo"),
+        PullRequestSCMHead head = new PullRequestSCMHead(
+                "PR-1",
+                "qa",
+                "qa-repo",
+                "qa-branch",
+                1,
+                new BranchSCMHead("test-branch"),
+                new SCMHeadOrigin.Fork("qa/qa-repo"),
                 ChangeRequestCheckoutStrategy.MERGE);
-        PullRequestSCMRevision revision = new PullRequestSCMRevision(head, "deadbeefcafebabedeadbeefcafebabedeadbeef",
+        PullRequestSCMRevision revision = new PullRequestSCMRevision(
+                head,
+                "deadbeefcafebabedeadbeefcafebabedeadbeef",
                 "cafebabedeadbeefcafebabedeadbeefcafebabe");
         source.setCredentialsId("user-key");
         GitHubSCMBuilder instance = new GitHubSCMBuilder(source, head, revision);
@@ -2086,8 +2248,14 @@ public class GitHubSCMBuilderTest {
     @Test
     public void given__server_pullMerge_norev_anon__when__build__then__scmBuilt() throws Exception {
         createGitHubSCMSourceForTest(true, "https://github.test/tester/test-repo.git");
-        PullRequestSCMHead head = new PullRequestSCMHead("PR-1", "qa", "qa-repo", "qa-branch", 1,
-                new BranchSCMHead("test-branch"), new SCMHeadOrigin.Fork("qa/qa-repo"),
+        PullRequestSCMHead head = new PullRequestSCMHead(
+                "PR-1",
+                "qa",
+                "qa-repo",
+                "qa-branch",
+                1,
+                new BranchSCMHead("test-branch"),
+                new SCMHeadOrigin.Fork("qa/qa-repo"),
                 ChangeRequestCheckoutStrategy.MERGE);
         source.setCredentialsId(null);
         GitHubSCMBuilder instance = new GitHubSCMBuilder(source, head, null);
@@ -2138,8 +2306,14 @@ public class GitHubSCMBuilderTest {
     @Test
     public void given__server_pullMerge_norev_userpass__when__build__then__scmBuilt() throws Exception {
         createGitHubSCMSourceForTest(true, "https://github.test/tester/test-repo.git");
-        PullRequestSCMHead head = new PullRequestSCMHead("PR-1", "qa", "qa-repo", "qa-branch", 1,
-                new BranchSCMHead("test-branch"), new SCMHeadOrigin.Fork("qa/qa-repo"),
+        PullRequestSCMHead head = new PullRequestSCMHead(
+                "PR-1",
+                "qa",
+                "qa-repo",
+                "qa-branch",
+                1,
+                new BranchSCMHead("test-branch"),
+                new SCMHeadOrigin.Fork("qa/qa-repo"),
                 ChangeRequestCheckoutStrategy.MERGE);
         source.setCredentialsId("user-pass");
         GitHubSCMBuilder instance = new GitHubSCMBuilder(source, head, null);
@@ -2190,8 +2364,14 @@ public class GitHubSCMBuilderTest {
     @Test
     public void given__server_pullMerge_norev_userkey__when__build__then__scmBuilt() throws Exception {
         createGitHubSCMSourceForTest(true, "https://github.test/tester/test-repo.git");
-        PullRequestSCMHead head = new PullRequestSCMHead("PR-1", "qa", "qa-repo", "qa-branch", 1,
-                new BranchSCMHead("test-branch"), new SCMHeadOrigin.Fork("qa/qa-repo"),
+        PullRequestSCMHead head = new PullRequestSCMHead(
+                "PR-1",
+                "qa",
+                "qa-repo",
+                "qa-branch",
+                1,
+                new BranchSCMHead("test-branch"),
+                new SCMHeadOrigin.Fork("qa/qa-repo"),
                 ChangeRequestCheckoutStrategy.MERGE);
         source.setCredentialsId("user-key");
         GitHubSCMBuilder instance = new GitHubSCMBuilder(source, head, null);

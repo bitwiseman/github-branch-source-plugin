@@ -49,7 +49,8 @@ public class GitHubSCMSourceRepositoryNameContributor extends GitHubRepositoryNa
                     GitHubSCMSource gitHubSCMSource = (GitHubSCMSource) o;
                     result.add(new GitHubRepositoryName(
                             RepositoryUriResolver.hostnameFromApiUri(gitHubSCMSource.getApiUri()),
-                            gitHubSCMSource.getRepoOwner(), gitHubSCMSource.getRepository()));
+                            gitHubSCMSource.getRepoOwner(),
+                            gitHubSCMSource.getRepository()));
 
                 }
             }

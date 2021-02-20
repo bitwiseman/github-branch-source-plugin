@@ -53,7 +53,8 @@ public class ForkPullRequestDiscoveryTraitTest {
         assumeThat(ctx.filters(), is(Collections.<SCMHeadFilter>emptyList()));
         assumeThat(ctx.authorities(), not(hasItem(instanceOf(ForkPullRequestDiscoveryTrait.TrustContributors.class))));
         ForkPullRequestDiscoveryTrait instance = new ForkPullRequestDiscoveryTrait(
-                EnumSet.of(ChangeRequestCheckoutStrategy.HEAD), new ForkPullRequestDiscoveryTrait.TrustContributors());
+                EnumSet.of(ChangeRequestCheckoutStrategy.HEAD),
+                new ForkPullRequestDiscoveryTrait.TrustContributors());
         instance.decorateContext(ctx);
         assertThat(ctx.wantBranches(), is(false));
         assertThat(ctx.wantPRs(), is(true));
@@ -72,7 +73,8 @@ public class ForkPullRequestDiscoveryTraitTest {
         assumeThat(ctx.filters(), is(Collections.<SCMHeadFilter>emptyList()));
         assumeThat(ctx.authorities(), not(hasItem(instanceOf(ForkPullRequestDiscoveryTrait.TrustContributors.class))));
         ForkPullRequestDiscoveryTrait instance = new ForkPullRequestDiscoveryTrait(
-                EnumSet.of(ChangeRequestCheckoutStrategy.MERGE), new ForkPullRequestDiscoveryTrait.TrustContributors());
+                EnumSet.of(ChangeRequestCheckoutStrategy.MERGE),
+                new ForkPullRequestDiscoveryTrait.TrustContributors());
         instance.decorateContext(ctx);
         assertThat(ctx.wantBranches(), is(false));
         assertThat(ctx.wantPRs(), is(true));
@@ -91,7 +93,8 @@ public class ForkPullRequestDiscoveryTraitTest {
         assumeThat(ctx.filters(), is(Collections.<SCMHeadFilter>emptyList()));
         assumeThat(ctx.authorities(), not(hasItem(instanceOf(ForkPullRequestDiscoveryTrait.TrustContributors.class))));
         ForkPullRequestDiscoveryTrait instance = new ForkPullRequestDiscoveryTrait(
-                EnumSet.allOf(ChangeRequestCheckoutStrategy.class), new ForkPullRequestDiscoveryTrait.TrustEveryone());
+                EnumSet.allOf(ChangeRequestCheckoutStrategy.class),
+                new ForkPullRequestDiscoveryTrait.TrustEveryone());
         instance.decorateContext(ctx);
         assertThat(ctx.wantBranches(), is(false));
         assertThat(ctx.wantPRs(), is(true));

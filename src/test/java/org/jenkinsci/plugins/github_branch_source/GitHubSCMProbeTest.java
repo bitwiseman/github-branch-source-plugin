@@ -51,9 +51,20 @@ public class GitHubSCMProbeTest {
         final GitHub github = Connector.connect("http://localhost:" + githubApi.port(), null);
 
         final GHRepository repo = github.getRepository("cloudbeers/yolo");
-        final PullRequestSCMHead head = new PullRequestSCMHead("PR-" + number, "cloudbeers", "yolo", "b", number,
-                new BranchSCMHead("master"), new SCMHeadOrigin.Fork("rsandell"), ChangeRequestCheckoutStrategy.MERGE);
-        probe = new GitHubSCMProbe("http://localhost:" + githubApi.port(), null, repo, head,
+        final PullRequestSCMHead head = new PullRequestSCMHead(
+                "PR-" + number,
+                "cloudbeers",
+                "yolo",
+                "b",
+                number,
+                new BranchSCMHead("master"),
+                new SCMHeadOrigin.Fork("rsandell"),
+                ChangeRequestCheckoutStrategy.MERGE);
+        probe = new GitHubSCMProbe(
+                "http://localhost:" + githubApi.port(),
+                null,
+                repo,
+                head,
                 new PullRequestSCMRevision(head, "a", "b"));
     }
 

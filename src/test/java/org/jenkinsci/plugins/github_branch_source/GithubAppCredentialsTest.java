@@ -86,7 +86,11 @@ public class GithubAppCredentialsTest extends AbstractGitHubWireMockTest {
     public static void setUpJenkins() throws Exception {
         // Add credential (Must have valid private key for Jwt to work, but App doesn't have to actually exist)
         store = CredentialsProvider.lookupStores(r.jenkins).iterator().next();
-        appCredentials = new GitHubAppCredentials(CredentialsScope.GLOBAL, myAppCredentialsId, "sample", "54321",
+        appCredentials = new GitHubAppCredentials(
+                CredentialsScope.GLOBAL,
+                myAppCredentialsId,
+                "sample",
+                "54321",
                 Secret.fromString(PKCS8_PRIVATE_KEY));
         appCredentials.setOwner("cloudbeers");
         store.addCredentials(Domain.global(), appCredentials);

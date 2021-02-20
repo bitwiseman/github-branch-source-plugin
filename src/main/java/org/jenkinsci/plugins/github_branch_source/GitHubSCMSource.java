@@ -396,7 +396,8 @@ public class GitHubSCMSource extends AbstractGitSCMSource {
         // legacy constructor means legacy defaults
         this.traits = new ArrayList<>();
         this.traits.add(new BranchDiscoveryTrait(true, true));
-        this.traits.add(new ForkPullRequestDiscoveryTrait(EnumSet.of(ChangeRequestCheckoutStrategy.MERGE),
+        this.traits.add(new ForkPullRequestDiscoveryTrait(
+                EnumSet.of(ChangeRequestCheckoutStrategy.MERGE),
                 new ForkPullRequestDiscoveryTrait.TrustPermission()));
         if (!DescriptorImpl.SAME.equals(checkoutCredentialsId)) {
             traits.add(new SSHCheckoutTrait(checkoutCredentialsId));
@@ -919,7 +920,8 @@ public class GitHubSCMSource extends AbstractGitSCMSource {
             }
         }
         if (buildForkPRMerge) {
-            traits.add(new ForkPullRequestDiscoveryTrait(EnumSet.of(ChangeRequestCheckoutStrategy.MERGE),
+            traits.add(new ForkPullRequestDiscoveryTrait(
+                    EnumSet.of(ChangeRequestCheckoutStrategy.MERGE),
                     new ForkPullRequestDiscoveryTrait.TrustPermission()));
         }
     }
@@ -957,7 +959,8 @@ public class GitHubSCMSource extends AbstractGitSCMSource {
             }
         }
         if (buildForkPRHead) {
-            traits.add(new ForkPullRequestDiscoveryTrait(EnumSet.of(ChangeRequestCheckoutStrategy.HEAD),
+            traits.add(new ForkPullRequestDiscoveryTrait(
+                    EnumSet.of(ChangeRequestCheckoutStrategy.HEAD),
                     new ForkPullRequestDiscoveryTrait.TrustPermission()));
         }
     }
@@ -1030,7 +1033,11 @@ public class GitHubSCMSource extends AbstractGitSCMSource {
                                                 @NonNull BranchSCMHead head,
                                                 @Nullable SCMRevisionImpl revisionInfo)
                                                 throws IOException, InterruptedException {
-                                            return new GitHubSCMProbe(apiUri, credentials, ghRepository, head,
+                                            return new GitHubSCMProbe(
+                                                    apiUri,
+                                                    credentials,
+                                                    ghRepository,
+                                                    head,
                                                     revisionInfo);
                                         }
                                     }, new CriteriaWitness(listener))) {
@@ -1119,7 +1126,11 @@ public class GitHubSCMSource extends AbstractGitSCMSource {
                                                 @NonNull GitHubTagSCMHead head,
                                                 @Nullable GitTagSCMRevision revisionInfo)
                                                 throws IOException, InterruptedException {
-                                            return new GitHubSCMProbe(apiUri, credentials, ghRepository, head,
+                                            return new GitHubSCMProbe(
+                                                    apiUri,
+                                                    credentials,
+                                                    ghRepository,
+                                                    head,
                                                     revisionInfo);
                                         }
                                     }, new CriteriaWitness(listener))) {
@@ -1219,8 +1230,12 @@ public class GitHubSCMSource extends AbstractGitSCMSource {
                             if (!trusted) {
                                 listener.getLogger().format("    (not from a trusted source)%n");
                             }
-                            return new GitHubSCMProbe(apiUri, credentials, ghRepository,
-                                    trusted ? head : head.getTarget(), null);
+                            return new GitHubSCMProbe(
+                                    apiUri,
+                                    credentials,
+                                    ghRepository,
+                                    trusted ? head : head.getTarget(),
+                                    null);
                         }
                     }, new SCMSourceRequest.LazyRevisionLambda<PullRequestSCMHead, SCMRevision, Void>() {
                         @NonNull
@@ -1399,7 +1414,9 @@ public class GitHubSCMSource extends AbstractGitSCMSource {
                                 return null;
                             }
                         }
-                        PullRequestSCMHead head = new PullRequestSCMHead(pr, headName,
+                        PullRequestSCMHead head = new PullRequestSCMHead(
+                                pr,
+                                headName,
                                 strategy == ChangeRequestCheckoutStrategy.MERGE);
                         if (head.isMerge()) {
                             ensureDetailedGHPullRequest(pr, listener, github, ghRepository);
@@ -1603,7 +1620,8 @@ public class GitHubSCMSource extends AbstractGitSCMSource {
                     }
                     return new GitTagSCMRevision(tagHead, sha);
                 } else {
-                    return new SCMRevisionImpl(head,
+                    return new SCMRevisionImpl(
+                            head,
                             ghRepository.getRef("heads/" + head.getName()).getObject().getSha());
                 }
             } catch (RateLimitExceededException rle) {
@@ -1728,7 +1746,8 @@ public class GitHubSCMSource extends AbstractGitSCMSource {
                                 GHRepository repository = pr.getHead().getRepository();
                                 // JENKINS-41246 repository may be null for deleted forks
                                 pullRequestSourceMap.put(pr.getNumber(),
-                                        new PullRequestSource(repository == null ? null : repository.getOwnerName(),
+                                        new PullRequestSource(
+                                                repository == null ? null : repository.getOwnerName(),
                                                 repository == null ? null : repository.getName(),
                                                 pr.getHead().getRef()));
                                 n++;
@@ -1890,7 +1909,9 @@ public class GitHubSCMSource extends AbstractGitSCMSource {
                                 credentials == null ? "anonymous access" : CredentialsNameProvider.name(credentials),
                                 repoOwner, repository, apiUri));
             }
-            result.add(new ObjectMetadataAction(null, ghRepository.getDescription(),
+            result.add(new ObjectMetadataAction(
+                    null,
+                    ghRepository.getDescription(),
                     Util.fixEmpty(ghRepository.getHomepage())));
             result.add(new GitHubLink("icon-github-repo", ghRepository.getHtmlUrl()));
             if (StringUtils.isNotBlank(ghRepository.getDefaultBranch())) {
@@ -2207,7 +2228,8 @@ public class GitHubSCMSource extends AbstractGitSCMSource {
                             LOGGER.log(Level.WARNING, e.getMessage(), e);
                             throw new FillErrorResponse(e.getMessage(), false);
                         } catch (IOException e) {
-                            LogRecord lr = new LogRecord(Level.WARNING,
+                            LogRecord lr = new LogRecord(
+                                    Level.WARNING,
                                     "Exception retrieving the repositories of the owner {0} on {1} with credentials {2}");
                             lr.setThrown(e);
                             lr.setParameters(new Object[]{ repoOwner, apiUri,
@@ -2232,7 +2254,8 @@ public class GitHubSCMSource extends AbstractGitSCMSource {
                     } catch (FileNotFoundException fnf) {
                         LOGGER.log(Level.FINE, "There is not any GH Organization named {0}", repoOwner);
                     } catch (IOException e) {
-                        LogRecord lr = new LogRecord(Level.WARNING,
+                        LogRecord lr = new LogRecord(
+                                Level.WARNING,
                                 "Exception retrieving the repositories of the organization {0} on {1} with credentials {2}");
                         lr.setThrown(e);
                         lr.setParameters(new Object[]{ repoOwner, apiUri,
@@ -2260,7 +2283,8 @@ public class GitHubSCMSource extends AbstractGitSCMSource {
                     } catch (FileNotFoundException fnf) {
                         LOGGER.log(Level.FINE, "There is not any GH User named {0}", repoOwner);
                     } catch (IOException e) {
-                        LogRecord lr = new LogRecord(Level.WARNING,
+                        LogRecord lr = new LogRecord(
+                                Level.WARNING,
                                 "Exception retrieving the repositories of the user {0} on {1} with credentials {2}");
                         lr.setThrown(e);
                         lr.setParameters(new Object[]{ repoOwner, apiUri,
@@ -2325,7 +2349,8 @@ public class GitHubSCMSource extends AbstractGitSCMSource {
             return Arrays.asList( // TODO finalize
                     new BranchDiscoveryTrait(true, false),
                     new OriginPullRequestDiscoveryTrait(EnumSet.of(ChangeRequestCheckoutStrategy.MERGE)),
-                    new ForkPullRequestDiscoveryTrait(EnumSet.of(ChangeRequestCheckoutStrategy.MERGE),
+                    new ForkPullRequestDiscoveryTrait(
+                            EnumSet.of(ChangeRequestCheckoutStrategy.MERGE),
                             new ForkPullRequestDiscoveryTrait.TrustPermission()));
         }
 
@@ -2374,8 +2399,9 @@ public class GitHubSCMSource extends AbstractGitSCMSource {
                     String branchName = branchNames.iterator().next();
                     request.listener().getLogger().format("%n  Getting remote pull requests from branch %s...%n",
                             branchName);
-                    return new CacheUpdatingIterable(repo.queryPullRequests().state(GHIssueState.OPEN)
-                            .head(repo.getOwnerName() + ":" + branchName).list());
+                    return new CacheUpdatingIterable(
+                            repo.queryPullRequests().state(GHIssueState.OPEN)
+                                    .head(repo.getOwnerName() + ":" + branchName).list());
                 }
                 request.listener().getLogger().format("%n  Getting remote pull requests...%n");
                 fullScanRequested = true;
@@ -2421,8 +2447,10 @@ public class GitHubSCMSource extends AbstractGitSCMSource {
                         // looked up this user already
                         user = users.get(user.getLogin());
                     }
-                    ContributorMetadataAction contributor = new ContributorMetadataAction(user.getLogin(),
-                            user.getName(), user.getEmail());
+                    ContributorMetadataAction contributor = new ContributorMetadataAction(
+                            user.getLogin(),
+                            user.getName(),
+                            user.getEmail());
                     pullRequestContributorCache.put(number, contributor);
                     // store the populated user record now that we have it
                     users.put(user.getLogin(), user);

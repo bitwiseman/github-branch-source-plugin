@@ -124,14 +124,26 @@ public class PullRequestGHEventSubscriber extends GHEventsSubscriber {
                 }
 
                 if ("opened".equals(action)) {
-                    fireAfterDelay(new SCMHeadEventImpl(SCMEvent.Type.CREATED, event.getTimestamp(), p,
-                            changedRepository, event.getOrigin()));
+                    fireAfterDelay(new SCMHeadEventImpl(
+                            SCMEvent.Type.CREATED,
+                            event.getTimestamp(),
+                            p,
+                            changedRepository,
+                            event.getOrigin()));
                 } else if ("reopened".equals(action) || "synchronize".equals(action) || "edited".equals(action)) {
-                    fireAfterDelay(new SCMHeadEventImpl(SCMEvent.Type.UPDATED, event.getTimestamp(), p,
-                            changedRepository, event.getOrigin()));
+                    fireAfterDelay(new SCMHeadEventImpl(
+                            SCMEvent.Type.UPDATED,
+                            event.getTimestamp(),
+                            p,
+                            changedRepository,
+                            event.getOrigin()));
                 } else if ("closed".equals(action)) {
-                    fireAfterDelay(new SCMHeadEventImpl(SCMEvent.Type.REMOVED, event.getTimestamp(), p,
-                            changedRepository, event.getOrigin()));
+                    fireAfterDelay(new SCMHeadEventImpl(
+                            SCMEvent.Type.REMOVED,
+                            event.getTimestamp(),
+                            p,
+                            changedRepository,
+                            event.getOrigin()));
                 }
             }
 
@@ -319,7 +331,9 @@ public class PullRequestGHEventSubscriber extends GHEventsSubscriber {
                         default :
                             // Give the event receiver the data we have so they can revalidate
                             head = new PullRequestSCMHead(ghPullRequest, branchName, false);
-                            revision = new PullRequestSCMRevision(head, ghPullRequest.getBase().getSha(),
+                            revision = new PullRequestSCMRevision(
+                                    head,
+                                    ghPullRequest.getBase().getSha(),
                                     ghPullRequest.getHead().getSha());
                             break;
                     }

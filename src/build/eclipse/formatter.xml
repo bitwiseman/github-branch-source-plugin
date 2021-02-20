@@ -3,6 +3,9 @@
     <profile kind="CodeFormatterProfile" name="Java Conventions - GitHub-api" version="17">
         <!-- Make various elements turn to colums when they wrap -->
         <!-- Basically the only way to create this is by downloading eclipse and working in their UI -->
+        <!-- The values for these constants can be found at
+         https://github.com/eclipse/eclipse.jdt.core/blob/96e9f521b7e23da75f7233bf47f80b8d9154df45/org.eclipse.jdt.core/formatter/org/eclipse/jdt/internal/formatter/DefaultCodeFormatterOptions.java#L41-L97
+         -->
 <!--        <setting id="org.eclipse.jdt.core.formatter.alignment_for_enum_constants" value="80"/>-->
 <!--        <setting id="org.eclipse.jdt.core.formatter.alignment_for_arguments_in_explicit_constructor_call" value="80"/>-->
 <!--        <setting id="org.eclipse.jdt.core.formatter.alignment_for_parameters_in_constructor_declaration" value="80"/>-->
@@ -14,8 +17,8 @@
 <!--        <setting id="org.eclipse.jdt.core.formatter.alignment_for_parameters_in_method_declaration" value="80"/>-->
         <setting id="org.eclipse.jdt.core.formatter.comment.line_length" value="120"/>
         <setting id="org.eclipse.jdt.core.formatter.lineSplit" value="120"/>
-<!--        <setting id="org.eclipse.jdt.core.formatter.insert_space_after_opening_brace_in_array_initializer" value="insert"/>-->
-<!--        <setting id="org.eclipse.jdt.core.formatter.insert_space_before_closing_brace_in_array_initializer" value="insert"/>-->
+        <setting id="org.eclipse.jdt.core.formatter.insert_space_after_opening_brace_in_array_initializer" value="insert"/>
+        <setting id="org.eclipse.jdt.core.formatter.insert_space_before_closing_brace_in_array_initializer" value="insert"/>
         <setting id="org.eclipse.jdt.core.formatter.tabulation.char" value="space"/>
     </profile>
     <!-- Keeping the "default" exported values for reference -->

@@ -80,11 +80,11 @@ public class GitHubOrgWebHook {
                 orghook.on();
             } catch (FileNotFoundException e) {
                 LOGGER.log(Level.WARNING, "Failed to register GitHub Org hook to {0} (missing permissions?): {1}",
-                        new Object[]{u.getHtmlUrl(), e.getMessage()});
+                        new Object[]{ u.getHtmlUrl(), e.getMessage() });
                 LOGGER.log(Level.FINE, null, e);
             } catch (RateLimitExceededException e) {
                 LOGGER.log(Level.WARNING, "Failed to register GitHub Org hook to {0}: {1}",
-                        new Object[]{u.getHtmlUrl(), e.getMessage()});
+                        new Object[]{ u.getHtmlUrl(), e.getMessage() });
                 LOGGER.log(Level.FINE, null, e);
             } catch (IOException e) {
                 LOGGER.log(Level.WARNING, "Failed to register GitHub Org hook to " + u.getHtmlUrl(), e);
@@ -119,11 +119,11 @@ public class GitHubOrgWebHook {
                 orghook.off();
             } catch (FileNotFoundException e) {
                 LOGGER.log(Level.WARNING, "Failed to deregister GitHub Org hook to {0} (missing permissions?): {1}",
-                        new Object[]{u.getHtmlUrl(), e.getMessage()});
+                        new Object[]{ u.getHtmlUrl(), e.getMessage() });
                 LOGGER.log(Level.FINE, null, e);
             } catch (RateLimitExceededException e) {
                 LOGGER.log(Level.WARNING, "Failed to deregister GitHub Org hook to {0}: {1}",
-                        new Object[]{u.getHtmlUrl(), e.getMessage()});
+                        new Object[]{ u.getHtmlUrl(), e.getMessage() });
                 LOGGER.log(Level.FINE, null, e);
             } catch (IOException e) {
                 LOGGER.log(Level.WARNING, "Failed to deregister GitHub Org hook to " + u.getHtmlUrl(), e);

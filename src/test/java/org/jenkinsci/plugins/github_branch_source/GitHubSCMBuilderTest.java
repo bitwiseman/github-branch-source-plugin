@@ -60,7 +60,7 @@ public class GitHubSCMBuilderTest {
 
     @Parameterized.Parameters
     public static Collection<Object[]> generateParams() {
-        return Arrays.asList(new Object[]{true}, new Object[]{false});
+        return Arrays.asList(new Object[]{ true }, new Object[]{ false });
     }
 
     public GitHubSCMBuilderTest(boolean configuredByUrl) {

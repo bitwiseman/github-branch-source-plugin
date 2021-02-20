@@ -275,7 +275,7 @@ public class GitHubSCMSourceRequest extends SCMSourceRequest {
      */
     public final Map<Boolean, Set<ChangeRequestCheckoutStrategy>> getPRStrategies() {
         Map<Boolean, Set<ChangeRequestCheckoutStrategy>> result = new HashMap<>();
-        for (Boolean fork : new Boolean[]{Boolean.TRUE, Boolean.FALSE}) {
+        for (Boolean fork : new Boolean[]{ Boolean.TRUE, Boolean.FALSE }) {
             result.put(fork, getPRStrategies(fork));
         }
         return result;

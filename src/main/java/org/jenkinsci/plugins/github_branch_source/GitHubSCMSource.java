@@ -2164,10 +2164,10 @@ public class GitHubSCMSource extends AbstractGitSCMSource {
                             LogRecord lr = new LogRecord(Level.WARNING,
                                     "Exception retrieving the repositories of the owner {0} on {1} with credentials {2}");
                             lr.setThrown(e);
-                            lr.setParameters(new Object[]{repoOwner, apiUri,
+                            lr.setParameters(new Object[]{ repoOwner, apiUri,
                                     credentials == null
                                             ? "anonymous access"
-                                            : CredentialsNameProvider.name(credentials)});
+                                            : CredentialsNameProvider.name(credentials) });
                             LOGGER.log(lr);
                             throw new FillErrorResponse(e.getMessage(), false);
                         }
@@ -2189,22 +2189,22 @@ public class GitHubSCMSource extends AbstractGitSCMSource {
                         LogRecord lr = new LogRecord(Level.WARNING,
                                 "Exception retrieving the repositories of the organization {0} on {1} with credentials {2}");
                         lr.setThrown(e);
-                        lr.setParameters(new Object[]{repoOwner, apiUri,
-                                credentials == null ? "anonymous access" : CredentialsNameProvider.name(credentials)});
+                        lr.setParameters(new Object[]{ repoOwner, apiUri,
+                                credentials == null ? "anonymous access" : CredentialsNameProvider.name(credentials) });
                         LOGGER.log(lr);
                         throw new FillErrorResponse(e.getMessage(), false);
                     }
                     if (org != null && repoOwner.equalsIgnoreCase(org.getLogin())) {
                         Set<String> result = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
                         LOGGER.log(Level.FINE, "as {0} looking for repositories in {1}",
-                                new Object[]{credentialsId, repoOwner});
+                                new Object[]{ credentialsId, repoOwner });
                         for (GHRepository repo : org.listRepositories(100)) {
                             LOGGER.log(Level.FINE, "as {0} found {1}/{2}",
-                                    new Object[]{credentialsId, repoOwner, repo.getName()});
+                                    new Object[]{ credentialsId, repoOwner, repo.getName() });
                             result.add(repo.getName());
                         }
                         LOGGER.log(Level.FINE, "as {0} result of {1} is {2}",
-                                new Object[]{credentialsId, repoOwner, result});
+                                new Object[]{ credentialsId, repoOwner, result });
                         return nameAndValueModel(result);
                     }
 
@@ -2217,8 +2217,8 @@ public class GitHubSCMSource extends AbstractGitSCMSource {
                         LogRecord lr = new LogRecord(Level.WARNING,
                                 "Exception retrieving the repositories of the user {0} on {1} with credentials {2}");
                         lr.setThrown(e);
-                        lr.setParameters(new Object[]{repoOwner, apiUri,
-                                credentials == null ? "anonymous access" : CredentialsNameProvider.name(credentials)});
+                        lr.setParameters(new Object[]{ repoOwner, apiUri,
+                                credentials == null ? "anonymous access" : CredentialsNameProvider.name(credentials) });
                         LOGGER.log(lr);
                         throw new FillErrorResponse(e.getMessage(), false);
                     }
@@ -2289,7 +2289,7 @@ public class GitHubSCMSource extends AbstractGitSCMSource {
             return new SCMHeadCategory[]{
                     new UncategorizedSCMHeadCategory(Messages._GitHubSCMSource_UncategorizedCategory()),
                     new ChangeRequestSCMHeadCategory(Messages._GitHubSCMSource_ChangeRequestCategory()),
-                    new TagSCMHeadCategory(Messages._GitHubSCMSource_TagCategory())};
+                    new TagSCMHeadCategory(Messages._GitHubSCMSource_TagCategory()) };
         }
 
     }

@@ -224,7 +224,7 @@ public class Connector {
                 } catch (IOException e) {
                     // ignore, never thrown
                     LOGGER.log(Level.WARNING, "Exception validating credentials {0} on {1}",
-                            new Object[]{CredentialsNameProvider.name(credentials), apiUri});
+                            new Object[]{ CredentialsNameProvider.name(credentials), apiUri });
                     return FormValidation.error("Exception validating credentials");
                 }
             }

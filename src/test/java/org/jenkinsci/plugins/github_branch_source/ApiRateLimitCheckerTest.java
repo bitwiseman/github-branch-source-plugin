@@ -667,7 +667,7 @@ public class ApiRateLimitCheckerTest extends AbstractGitHubWireMockTest {
         // buffer for this limit will be limit/20 = 250
         // burst for this will be limit/5 = 1000
         // Ideal calculated at 45, 30, 15, and 0 minutes
-        int[] morePreciseIdeal = {50, 237, 424, 612};
+        int[] morePreciseIdeal = { 50, 237, 424, 612 };
 
         // deadline set for those times as well
         for (int i = 0; i < 4; i++) {
@@ -678,7 +678,7 @@ public class ApiRateLimitCheckerTest extends AbstractGitHubWireMockTest {
          * With the limit at 400: the burst will be limit/10 and buffer will be limit/20
          */
         limit = 400;
-        morePreciseIdeal = new int[]{20, 104, 189, 274};
+        morePreciseIdeal = new int[]{ 20, 104, 189, 274 };
 
         // deadline set for those times as well
         for (int i = 0; i < 4; i++) {
@@ -689,7 +689,7 @@ public class ApiRateLimitCheckerTest extends AbstractGitHubWireMockTest {
          * With the limit at 1000: the burst will be limit/5 and buffer will be 15
          */
         limit = 200;
-        morePreciseIdeal = new int[]{15, 56, 97, 138};
+        morePreciseIdeal = new int[]{ 15, 56, 97, 138 };
 
         // deadline set for those times as well
         for (int i = 0; i < 4; i++) {
@@ -735,7 +735,7 @@ public class ApiRateLimitCheckerTest extends AbstractGitHubWireMockTest {
         int limit = 1000;
         // estimate the ideal(which does not apply in this scenario)
         // Rate limit
-        int[] morePreciseIdeal = {49, 237, 424, 612};
+        int[] morePreciseIdeal = { 49, 237, 424, 612 };
 
         // Rate limit records that expire early than the last returned are ignored as invalid
         // Must be the same or greater

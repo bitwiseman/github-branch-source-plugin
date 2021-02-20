@@ -82,9 +82,9 @@ public class GitHubSCMFileSystemTest extends AbstractGitHubWireMockTest {
 
     @Parameterized.Parameters(name = "{index}: revision={0}")
     public static String[] revisions() {
-        return new String[]{"c0e024f89969b976da165eecaa71e09dc60c3da1", // Pull Request #2, unmerged but exposed on
-                                                                        // target repo
-                "e301dc6d5bb7e6e18d80e85f19caa92c74e15e96", null};
+        return new String[]{ "c0e024f89969b976da165eecaa71e09dc60c3da1", // Pull Request #2, unmerged but exposed on
+                                                                         // target repo
+                "e301dc6d5bb7e6e18d80e85f19caa92c74e15e96", null };
     }
 
     @Before

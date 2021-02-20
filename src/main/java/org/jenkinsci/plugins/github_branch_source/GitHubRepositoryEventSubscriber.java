@@ -89,7 +89,7 @@ public class GitHubRepositoryEventSubscriber extends GHEventsSubscriber {
             String action = p.getAction();
             String repoUrl = p.getRepository().getHtmlUrl().toExternalForm();
             LOGGER.log(Level.FINE, "Received {0} for {1} from {2}",
-                    new Object[]{event.getGHEvent(), repoUrl, event.getOrigin()});
+                    new Object[]{ event.getGHEvent(), repoUrl, event.getOrigin() });
             boolean fork = p.getRepository().isFork();
             Matcher matcher = REPOSITORY_NAME_PATTERN.matcher(repoUrl);
             if (matcher.matches()) {
@@ -100,7 +100,7 @@ public class GitHubRepositoryEventSubscriber extends GHEventsSubscriber {
                 }
                 if (!"created".equals(action)) {
                     LOGGER.log(FINE, "Repository {0} was {1} not created, will be ignored",
-                            new Object[]{repo.getRepositoryName(), action});
+                            new Object[]{ repo.getRepositoryName(), action });
                     return;
                 }
                 if (!fork) {
@@ -116,7 +116,7 @@ public class GitHubRepositoryEventSubscriber extends GHEventsSubscriber {
             }
         } catch (IOException e) {
             LogRecord lr = new LogRecord(Level.WARNING, "Could not parse {0} event from {1} with payload: {2}");
-            lr.setParameters(new Object[]{event.getGHEvent(), event.getOrigin(), event.getPayload()});
+            lr.setParameters(new Object[]{ event.getGHEvent(), event.getOrigin(), event.getPayload() });
             lr.setThrown(e);
             LOGGER.log(lr);
         }

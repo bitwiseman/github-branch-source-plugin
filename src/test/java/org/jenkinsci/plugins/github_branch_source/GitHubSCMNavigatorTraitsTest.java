@@ -937,8 +937,8 @@ public class GitHubSCMNavigatorTraitsTest {
     @Test
     public void given__legacyCode__when__setPattern_custom__then__patternSetAndTraitUpdated() {
         GitHubSCMNavigator instance = new GitHubSCMNavigator("test");
-        instance.setTraits(new SCMTrait[]{new BranchDiscoveryTrait(true, false), new RegexSCMSourceFilterTrait("job.*"),
-                new SSHCheckoutTrait("dummy")});
+        instance.setTraits(new SCMTrait[]{ new BranchDiscoveryTrait(true, false),
+                new RegexSCMSourceFilterTrait("job.*"), new SSHCheckoutTrait("dummy") });
         assertThat(instance.getPattern(), is("job.*"));
         assertThat(instance.getTraits(), Matchers.hasItem(instanceOf(RegexSCMSourceFilterTrait.class)));
         instance.setPattern("project.*");
@@ -1000,8 +1000,8 @@ public class GitHubSCMNavigatorTraitsTest {
     @Test
     public void given__legacyCode_withoutExcludes__when__setIncludes_value__then__traitUpdated() {
         GitHubSCMNavigator instance = new GitHubSCMNavigator("test");
-        instance.setTraits(new SCMTrait[]{new BranchDiscoveryTrait(true, false), new RegexSCMSourceFilterTrait("job.*"),
-                new WildcardSCMHeadFilterTrait("feature/*", "")});
+        instance.setTraits(new SCMTrait[]{ new BranchDiscoveryTrait(true, false),
+                new RegexSCMSourceFilterTrait("job.*"), new WildcardSCMHeadFilterTrait("feature/*", "") });
         assertThat(instance.getIncludes(), is("feature/*"));
         assertThat(instance.getExcludes(), is(""));
         assertThat(instance.getTraits(), Matchers.hasItem(allOf(instanceOf(WildcardSCMHeadFilterTrait.class),
@@ -1047,8 +1047,9 @@ public class GitHubSCMNavigatorTraitsTest {
     @Test
     public void given__legacyCode_withExcludes__when__setIncludes_value__then__traitUpdated() {
         GitHubSCMNavigator instance = new GitHubSCMNavigator("test");
-        instance.setTraits(new SCMTrait[]{new BranchDiscoveryTrait(true, false), new RegexSCMSourceFilterTrait("job.*"),
-                new WildcardSCMHeadFilterTrait("feature/*", "feature/ignore")});
+        instance.setTraits(
+                new SCMTrait[]{ new BranchDiscoveryTrait(true, false), new RegexSCMSourceFilterTrait("job.*"),
+                        new WildcardSCMHeadFilterTrait("feature/*", "feature/ignore") });
         assertThat(instance.getIncludes(), is("feature/*"));
         assertThat(instance.getExcludes(), is("feature/ignore"));
         assertThat(instance.getTraits(), Matchers.hasItem(allOf(instanceOf(WildcardSCMHeadFilterTrait.class),

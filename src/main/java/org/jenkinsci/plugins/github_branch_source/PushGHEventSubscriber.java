@@ -122,7 +122,7 @@ public class PushGHEventSubscriber extends GHEventsSubscriber {
                     GHEventPayload.Push.class);
             String repoUrl = p.getRepository().getHtmlUrl().toExternalForm();
             LOGGER.log(Level.FINE, "Received {0} for {1} from {2}",
-                    new Object[]{event.getGHEvent(), repoUrl, event.getOrigin()});
+                    new Object[]{ event.getGHEvent(), repoUrl, event.getOrigin() });
             Matcher matcher = REPOSITORY_NAME_PATTERN.matcher(repoUrl);
             if (matcher.matches()) {
                 final GitHubRepositoryName changedRepository = GitHubRepositoryName.create(repoUrl);
@@ -148,7 +148,7 @@ public class PushGHEventSubscriber extends GHEventsSubscriber {
             throw e;
         } catch (Throwable e) {
             LogRecord lr = new LogRecord(Level.WARNING, "Could not parse {0} event from {1} with payload: {2}");
-            lr.setParameters(new Object[]{event.getGHEvent(), event.getOrigin(), event.getPayload()});
+            lr.setParameters(new Object[]{ event.getGHEvent(), event.getOrigin(), event.getPayload() });
             lr.setThrown(e);
             LOGGER.log(lr);
         }

@@ -83,15 +83,18 @@ public class GitHubBuildStatusNotification {
                                         .notificationStrategies();
                         for (AbstractGitHubNotificationStrategy strategy : strategies) {
                             // TODO allow strategies to combine/cooperate on a notification
-                            GitHubNotificationContext notificationContext = GitHubNotificationContext.build(null, build,
-                                    src, head);
+                            GitHubNotificationContext notificationContext = GitHubNotificationContext
+                                    .build(null, build, src, head);
                             List<GitHubNotificationRequest> details = strategy.notifications(notificationContext,
                                     listener);
                             for (GitHubNotificationRequest request : details) {
                                 boolean ignoreError = request.isIgnoreError();
                                 try {
-                                    repo.createCommitStatus(revisionToNotify, request.getState(), request.getUrl(),
-                                            request.getMessage(), request.getContext());
+                                    repo.createCommitStatus(revisionToNotify,
+                                            request.getState(),
+                                            request.getUrl(),
+                                            request.getMessage(),
+                                            request.getContext());
                                 } catch (FileNotFoundException fnfe) {
                                     if (!ignoreError) {
                                         listener.getLogger()
@@ -99,10 +102,11 @@ public class GitHubBuildStatusNotification {
                                                         + "credentials belong to a member of the organization or a collaborator of the "
                                                         + "repository and repo:status scope is selected%n%n");
                                         if (LOGGER.isLoggable(Level.FINE)) {
-                                            LOGGER.log(Level.FINE, "Could not update commit status, for run "
-                                                    + build.getFullDisplayName() + " please check if your scan "
-                                                    + "credentials belong to a member of the organization or a "
-                                                    + "collaborator of the repository and repo:status scope is selected",
+                                            LOGGER.log(Level.FINE,
+                                                    "Could not update commit status, for run "
+                                                            + build.getFullDisplayName() + " please check if your scan "
+                                                            + "credentials belong to a member of the organization or a "
+                                                            + "collaborator of the repository and repo:status scope is selected",
                                                     fnfe);
                                         }
                                     }
@@ -238,15 +242,18 @@ public class GitHubBuildStatusNotification {
                                         .notificationStrategies();
                                 for (AbstractGitHubNotificationStrategy strategy : strategies) {
                                     // TODO allow strategies to combine/cooperate on a notification
-                                    GitHubNotificationContext notificationContext = GitHubNotificationContext.build(job,
-                                            null, source, head);
+                                    GitHubNotificationContext notificationContext = GitHubNotificationContext
+                                            .build(job, null, source, head);
                                     List<GitHubNotificationRequest> details = strategy
                                             .notifications(notificationContext, null);
                                     for (GitHubNotificationRequest request : details) {
                                         boolean ignoreErrors = request.isIgnoreError();
                                         try {
-                                            repo.createCommitStatus(hash, request.getState(), request.getUrl(),
-                                                    request.getMessage(), request.getContext());
+                                            repo.createCommitStatus(hash,
+                                                    request.getState(),
+                                                    request.getUrl(),
+                                                    request.getMessage(),
+                                                    request.getContext());
                                         } catch (FileNotFoundException e) {
                                             if (!ignoreErrors) {
                                                 LOGGER.log(Level.WARNING,
@@ -269,7 +276,8 @@ public class GitHubBuildStatusNotification {
                                 "Could not update commit status to PENDING. Message: " + e.getMessage(),
                                 LOGGER.isLoggable(Level.FINE) ? e : null);
                     } catch (InterruptedException e) {
-                        LOGGER.log(Level.WARNING, "Could not update commit status to PENDING. Rate limit exhausted",
+                        LOGGER.log(Level.WARNING,
+                                "Could not update commit status to PENDING. Rate limit exhausted",
                                 LOGGER.isLoggable(Level.FINE) ? e : null);
                         LOGGER.log(Level.FINE, null, e);
                     }

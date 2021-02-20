@@ -53,7 +53,9 @@ public class GitHubConsoleNote extends ConsoleNote {
 
     @Override
     public ConsoleAnnotator annotate(Object context, MarkupText text, int charPos) {
-        text.addMarkup(0, text.length(), String.format("<span class='greyed'><small>%tT</small> ", timestamp),
+        text.addMarkup(0,
+                text.length(),
+                String.format("<span class='greyed'><small>%tT</small> ", timestamp),
                 "</span>");
         return null;
     }

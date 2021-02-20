@@ -105,18 +105,25 @@ public class ApiRateLimitCheckerTest extends AbstractGitHubWireMockTest {
             String limit = Integer.toString(scenarioResponse.limit);
             String remaining = Integer.toString(scenarioResponse.remaining);
             String reset = Long.toString(scenarioResponse.reset.toInstant().getEpochSecond());
-            String body = "{"
-                    + String.format(
-                            " \"rate\": { \"limit\": %s, \"remaining\": %s, \"reset\": %s },", limit, remaining, reset)
+            String body = "{" + String
+                    .format(" \"rate\": { \"limit\": %s, \"remaining\": %s, \"reset\": %s },", limit, remaining, reset)
                     + " \"resources\": {"
-                    + String.format(" \"core\": { \"limit\": %s, \"remaining\": %s, \"reset\": %s },", limit, remaining,
+                    + String.format(" \"core\": { \"limit\": %s, \"remaining\": %s, \"reset\": %s },",
+                            limit,
+                            remaining,
                             reset)
-                    + String.format(" \"search\": { \"limit\": %s, \"remaining\": %s, \"reset\": %s },", limit,
-                            remaining, reset)
-                    + String.format(" \"graphql\": { \"limit\": %s, \"remaining\": %s, \"reset\": %s },", limit,
-                            remaining, reset)
+                    + String.format(" \"search\": { \"limit\": %s, \"remaining\": %s, \"reset\": %s },",
+                            limit,
+                            remaining,
+                            reset)
+                    + String.format(" \"graphql\": { \"limit\": %s, \"remaining\": %s, \"reset\": %s },",
+                            limit,
+                            remaining,
+                            reset)
                     + String.format(" \"integration_manifest\": { \"limit\": %s, \"remaining\": %s, \"reset\": %s }",
-                            limit, remaining, reset)
+                            limit,
+                            remaining,
+                            reset)
                     + " } }";
             ScenarioMappingBuilder scenario = get(urlEqualTo("/rate_limit")).inScenario(scenarioName)
                     .whenScenarioStateIs(state)
@@ -502,10 +509,12 @@ public class ApiRateLimitCheckerTest extends AbstractGitHubWireMockTest {
 
         // Expect a triggered throttle for normalize
         // GitHubRateLimitChecker add 1 second to notification loop, this hides the entropy value
-        assertEquals(3, countOfOutputLinesContaining(
-                "Current quota for Github API usage has 0 remaining (250 over budget). Next quota of 5000 due now. Sleeping for 1 sec."));
-        assertEquals(4, countOfOutputLinesContaining(
-                "Jenkins is attempting to evenly distribute GitHub API requests. To configure a different rate limiting strategy, such as having Jenkins restrict GitHub API requests only when near or above the GitHub rate limit, go to \"GitHub API usage\" under \"Configure System\" in the Jenkins settings."));
+        assertEquals(3,
+                countOfOutputLinesContaining(
+                        "Current quota for Github API usage has 0 remaining (250 over budget). Next quota of 5000 due now. Sleeping for 1 sec."));
+        assertEquals(4,
+                countOfOutputLinesContaining(
+                        "Jenkins is attempting to evenly distribute GitHub API requests. To configure a different rate limiting strategy, such as having Jenkins restrict GitHub API requests only when near or above the GitHub rate limit, go to \"GitHub API usage\" under \"Configure System\" in the Jenkins settings."));
         assertEquals(4, countOfOutputLinesContaining("Sleeping"));
         assertEquals(2, countOfOutputLinesContaining("now only 59 min remaining"));
         // Refresh functionality was removed
@@ -768,8 +777,9 @@ public class ApiRateLimitCheckerTest extends AbstractGitHubWireMockTest {
         assertEquals(1, countOfOutputLinesContaining("Current quota"));
         // Making sure the budget messages are correct
         assertEquals(1, countOfOutputLinesContaining("1 over budget"));
-        assertEquals(1, countOfOutputLinesContaining(
-                "Jenkins is restricting GitHub API requests only when near or above the rate limit. To configure a different rate limiting strategy, such as having Jenkins attempt to evenly distribute GitHub API requests, go to \"GitHub API usage\" under \"Configure System\" in the Jenkins settings."));
+        assertEquals(1,
+                countOfOutputLinesContaining(
+                        "Jenkins is restricting GitHub API requests only when near or above the rate limit. To configure a different rate limiting strategy, such as having Jenkins attempt to evenly distribute GitHub API requests, go to \"GitHub API usage\" under \"Configure System\" in the Jenkins settings."));
     }
 
     /**

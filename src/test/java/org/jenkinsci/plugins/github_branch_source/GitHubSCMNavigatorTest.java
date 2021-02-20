@@ -116,8 +116,13 @@ public class GitHubSCMNavigatorTest extends AbstractGitHubWireMockTest {
         final Set<String> projectNames = new HashSet<>();
         final SCMSourceObserver observer = getObserver(projectNames);
 
-        navigator.visitSources(SCMSourceObserver.filter(observer, "Hello-World", "github-branch-source-plugin",
-                "unknown", "basic", "yolo", "yolo-archived"));
+        navigator.visitSources(SCMSourceObserver.filter(observer,
+                "Hello-World",
+                "github-branch-source-plugin",
+                "unknown",
+                "basic",
+                "yolo",
+                "yolo-archived"));
 
         assertThat(projectNames, containsInAnyOrder("basic", "yolo", "yolo-archived"));
     }
@@ -130,8 +135,13 @@ public class GitHubSCMNavigatorTest extends AbstractGitHubWireMockTest {
         List<SCMTrait<? extends SCMTrait<?>>> traits = new ArrayList<>(navigator.getTraits());
         traits.add(new TeamSlugTrait("justice-league"));
         navigator.setTraits(traits);
-        navigator.visitSources(SCMSourceObserver.filter(observer, "Hello-World", "github-branch-source-plugin",
-                "unknown", "basic", "yolo", "yolo-archived"));
+        navigator.visitSources(SCMSourceObserver.filter(observer,
+                "Hello-World",
+                "github-branch-source-plugin",
+                "unknown",
+                "basic",
+                "yolo",
+                "yolo-archived"));
 
         assertThat(projectNames,
                 containsInAnyOrder("Hello-World", "github-branch-source-plugin", "basic", "yolo-archived"));
@@ -402,7 +412,8 @@ public class GitHubSCMNavigatorTest extends AbstractGitHubWireMockTest {
             try (ACLContext ctx = ACL.as(User.getById("admin", true).impersonate())) {
                 ListBoxModel rsp = d.doFillCredentialsIdItems(dummy, "", "does-not-exist");
                 assertThat("Expecting only the provided value so that form config unchanged", rsp, hasSize(1));
-                assertThat("Expecting only the provided value so that form config unchanged", rsp.get(0).value,
+                assertThat("Expecting only the provided value so that form config unchanged",
+                        rsp.get(0).value,
                         is("does-not-exist"));
                 rsp = d.doFillCredentialsIdItems(null, "", "does-not-exist");
                 assertThat("Expecting just the empty entry", rsp, hasSize(1));
@@ -414,7 +425,8 @@ public class GitHubSCMNavigatorTest extends AbstractGitHubWireMockTest {
                 assertThat("Expecting just the empty entry", rsp.get(0).value, is(""));
                 rsp = d.doFillCredentialsIdItems(null, "", "does-not-exist");
                 assertThat("Expecting only the provided value so that form config unchanged", rsp, hasSize(1));
-                assertThat("Expecting only the provided value so that form config unchanged", rsp.get(0).value,
+                assertThat("Expecting only the provided value so that form config unchanged",
+                        rsp.get(0).value,
                         is("does-not-exist"));
             }
             try (ACLContext ctx = ACL.as(User.getById("jim", true).impersonate())) {
@@ -425,7 +437,8 @@ public class GitHubSCMNavigatorTest extends AbstractGitHubWireMockTest {
             try (ACLContext ctx = ACL.as(User.getById("sue", true).impersonate())) {
                 ListBoxModel rsp = d.doFillCredentialsIdItems(dummy, "", "does-not-exist");
                 assertThat("Expecting only the provided value so that form config unchanged", rsp, hasSize(1));
-                assertThat("Expecting only the provided value so that form config unchanged", rsp.get(0).value,
+                assertThat("Expecting only the provided value so that form config unchanged",
+                        rsp.get(0).value,
                         is("does-not-exist"));
             }
         } finally {

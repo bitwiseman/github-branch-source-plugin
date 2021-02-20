@@ -228,8 +228,10 @@ public class ForkPullRequestDiscoveryTrait extends SCMSourceTrait {
         @NonNull
         @SuppressWarnings("unused") // stapler
         public List<SCMHeadAuthorityDescriptor> getTrustDescriptors() {
-            return SCMHeadAuthority._for(GitHubSCMSourceRequest.class, PullRequestSCMHead.class,
-                    PullRequestSCMRevision.class, SCMHeadOrigin.Fork.class);
+            return SCMHeadAuthority._for(GitHubSCMSourceRequest.class,
+                    PullRequestSCMHead.class,
+                    PullRequestSCMRevision.class,
+                    SCMHeadOrigin.Fork.class);
         }
 
         /**

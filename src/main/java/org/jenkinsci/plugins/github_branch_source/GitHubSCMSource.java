@@ -1025,10 +1025,12 @@ public class GitHubSCMSource extends AbstractGitSCMSource {
                             count++;
                             String branchName = branch.getName();
                             listener.getLogger()
-                                    .format("%n    Checking branch %s%n", HyperlinkNote
-                                            .encodeTo(resolvedRepositoryUrl + "/tree/" + branchName, branchName));
+                                    .format("%n    Checking branch %s%n",
+                                            HyperlinkNote.encodeTo(resolvedRepositoryUrl + "/tree/" + branchName,
+                                                    branchName));
                             BranchSCMHead head = new BranchSCMHead(branchName);
-                            if (request.process(head, new SCMRevisionImpl(head, branch.getSHA1()),
+                            if (request.process(head,
+                                    new SCMRevisionImpl(head, branch.getSHA1()),
                                     new SCMSourceRequest.ProbeLambda<BranchSCMHead, SCMRevisionImpl>() {
                                         @NonNull
                                         @Override
@@ -1043,7 +1045,8 @@ public class GitHubSCMSource extends AbstractGitSCMSource {
                                                     head,
                                                     revisionInfo);
                                         }
-                                    }, new CriteriaWitness(listener))) {
+                                    },
+                                    new CriteriaWitness(listener))) {
                                 listener.getLogger()
                                         .format("%n  %d branches were processed (query completed)%n", count);
                                 break;
@@ -1070,7 +1073,12 @@ public class GitHubSCMSource extends AbstractGitSCMSource {
                         for (final GHPullRequest pr : request.getPullRequests()) {
                             int number = pr.getNumber();
                             try {
-                                retrievePullRequest(apiUri, credentials, ghRepository, pr, strategies, request,
+                                retrievePullRequest(apiUri,
+                                        credentials,
+                                        ghRepository,
+                                        pr,
+                                        strategies,
+                                        request,
                                         listener);
                             } catch (FileNotFoundException e) {
                                 listener.getLogger().format("%n  Error while processing pull request %d%n", number);
@@ -1097,8 +1105,9 @@ public class GitHubSCMSource extends AbstractGitSCMSource {
                             tagName = tagName.substring(Constants.R_TAGS.length());
                             count++;
                             listener.getLogger()
-                                    .format("%n    Checking tag %s%n", HyperlinkNote
-                                            .encodeTo(resolvedRepositoryUrl + "/tree/" + tagName, tagName));
+                                    .format("%n    Checking tag %s%n",
+                                            HyperlinkNote.encodeTo(resolvedRepositoryUrl + "/tree/" + tagName,
+                                                    tagName));
                             long tagDate = 0L;
                             String sha = tag.getObject().getSha();
                             if ("tag".equalsIgnoreCase(tag.getObject().getType())) {
@@ -1122,7 +1131,8 @@ public class GitHubSCMSource extends AbstractGitSCMSource {
                                 }
                             }
                             GitHubTagSCMHead head = new GitHubTagSCMHead(tagName, tagDate);
-                            if (request.process(head, new GitTagSCMRevision(head, sha),
+                            if (request.process(head,
+                                    new GitTagSCMRevision(head, sha),
                                     new SCMSourceRequest.ProbeLambda<GitHubTagSCMHead, GitTagSCMRevision>() {
                                         @NonNull
                                         @Override
@@ -1137,7 +1147,8 @@ public class GitHubSCMSource extends AbstractGitSCMSource {
                                                     head,
                                                     revisionInfo);
                                         }
-                                    }, new CriteriaWitness(listener))) {
+                                    },
+                                    new CriteriaWitness(listener))) {
                                 listener.getLogger().format("%n  %d tags were processed (query completed)%n", count);
                                 break;
                             }
@@ -1225,7 +1236,8 @@ public class GitHubSCMSource extends AbstractGitSCMSource {
             }
 
             if (request.process(new PullRequestSCMHead(pr, branchName, strategy == ChangeRequestCheckoutStrategy.MERGE),
-                    null, new SCMSourceRequest.ProbeLambda<PullRequestSCMHead, Void>() {
+                    null,
+                    new SCMSourceRequest.ProbeLambda<PullRequestSCMHead, Void>() {
                         @NonNull
                         @Override
                         public SCMSourceCriteria.Probe create(
@@ -1242,7 +1254,8 @@ public class GitHubSCMSource extends AbstractGitSCMSource {
                                     trusted ? head : head.getTarget(),
                                     null);
                         }
-                    }, new SCMSourceRequest.LazyRevisionLambda<PullRequestSCMHead, SCMRevision, Void>() {
+                    },
+                    new SCMSourceRequest.LazyRevisionLambda<PullRequestSCMHead, SCMRevision, Void>() {
                         @NonNull
                         @Override
                         public SCMRevision create(@NonNull PullRequestSCMHead head, @Nullable Void ignored)
@@ -1250,7 +1263,9 @@ public class GitHubSCMSource extends AbstractGitSCMSource {
 
                             return createPullRequestSCMRevision(pr, head, listener, ghRepository);
                         }
-                    }, new MergabilityWitness(pr, strategy, listener), new CriteriaWitness(listener))) {
+                    },
+                    new MergabilityWitness(pr, strategy, listener),
+                    new CriteriaWitness(listener))) {
                 listener.getLogger().format("%n  Pull request %d processed (query completed)%n", number);
             }
         }
@@ -1299,8 +1314,9 @@ public class GitHubSCMSource extends AbstractGitSCMSource {
                     if (name.startsWith(Constants.R_HEADS) && wantBranches) {
                         String branchName = name.substring(Constants.R_HEADS.length());
                         listener.getLogger()
-                                .format("%n  Found branch %s%n", HyperlinkNote
-                                        .encodeTo(resolvedRepositoryUrl + "/tree/" + branchName, branchName));
+                                .format("%n  Found branch %s%n",
+                                        HyperlinkNote.encodeTo(resolvedRepositoryUrl + "/tree/" + branchName,
+                                                branchName));
                         result.add(branchName);
                         continue;
                     }
@@ -1309,8 +1325,9 @@ public class GitHubSCMSource extends AbstractGitSCMSource {
                         if (index != -1) {
                             String number = name.substring(R_PULL.length(), index);
                             listener.getLogger()
-                                    .format("%n  Found pull request %s%n", HyperlinkNote
-                                            .encodeTo(resolvedRepositoryUrl + "/pull/" + number, "#" + number));
+                                    .format("%n  Found pull request %s%n",
+                                            HyperlinkNote.encodeTo(resolvedRepositoryUrl + "/pull/" + number,
+                                                    "#" + number));
                             // we are allowed to return "invalid" names so if the user has configured, say
                             // origin as single strategy and fork as multiple strategies
                             // we will return PR-5, PR-5-merge and PR-5-head in the result set
@@ -1399,7 +1416,9 @@ public class GitHubSCMSource extends AbstractGitSCMSource {
                                 // invalid name
                                 listener.getLogger()
                                         .format("Resolved %s as pull request %d but indeterminate checkout strategy, "
-                                                + "please try %s or %s%n", headName, number,
+                                                + "please try %s or %s%n",
+                                                headName,
+                                                number,
                                                 headName + "-" + ChangeRequestCheckoutStrategy.HEAD.name(),
                                                 headName + "-" + ChangeRequestCheckoutStrategy.MERGE.name());
                                 return null;
@@ -1416,7 +1435,10 @@ public class GitHubSCMSource extends AbstractGitSCMSource {
                                 // invalid name;
                                 listener.getLogger()
                                         .format("Resolved %s as pull request %d but unknown checkout strategy %s, "
-                                                + "please try %s or %s%n", headName, number, prMatcher.group(2),
+                                                + "please try %s or %s%n",
+                                                headName,
+                                                number,
+                                                prMatcher.group(2),
                                                 headName + "-" + ChangeRequestCheckoutStrategy.HEAD.name(),
                                                 headName + "-" + ChangeRequestCheckoutStrategy.MERGE.name());
                                 return null;
@@ -1437,18 +1459,25 @@ public class GitHubSCMSource extends AbstractGitSCMSource {
                                     prRev.validateMergeHash();
                                 } catch (AbortException e) {
                                     listener.getLogger()
-                                            .format("Resolved %s as pull request %d: %s.%n%n", headName, number,
+                                            .format("Resolved %s as pull request %d: %s.%n%n",
+                                                    headName,
+                                                    number,
                                                     e.getMessage());
                                     return null;
                                 }
                                 listener.getLogger()
                                         .format("Resolved %s as pull request %d at revision %s merged onto %s as %s%n",
-                                                headName, number, prRev.getPullHash(), prRev.getBaseHash(),
+                                                headName,
+                                                number,
+                                                prRev.getPullHash(),
+                                                prRev.getBaseHash(),
                                                 prRev.getMergeHash());
                                 break;
                             default :
                                 listener.getLogger()
-                                        .format("Resolved %s as pull request %d at revision %s%n", headName, number,
+                                        .format("Resolved %s as pull request %d at revision %s%n",
+                                                headName,
+                                                number,
                                                 prRev.getPullHash());
                                 break;
                         }
@@ -1466,7 +1495,9 @@ public class GitHubSCMSource extends AbstractGitSCMSource {
                 GHBranch branch = ghRepository.getBranch(headName);
                 if (branch != null) {
                     listener.getLogger()
-                            .format("Resolved %s as branch %s at revision %s%n", headName, branch.getName(),
+                            .format("Resolved %s as branch %s at revision %s%n",
+                                    headName,
+                                    branch.getName(),
                                     branch.getSHA1());
                     return new SCMRevisionImpl(new BranchSCMHead(headName), branch.getSHA1());
                 }
@@ -1663,7 +1694,8 @@ public class GitHubSCMSource extends AbstractGitSCMSource {
                 } catch (FileNotFoundException e) {
                     listener.getLogger()
                             .format("Pull request %s : github merge_commit_sha not found (%s). Close and reopen the PR to reset its merge hash.%n",
-                                    pr.getNumber(), proposedMergeHash);
+                                    pr.getNumber(),
+                                    proposedMergeHash);
                 } catch (IOException e) {
                     throw new AbortException(
                             "Error while retrieving pull request " + pr.getNumber() + " merge hash : " + e.toString());
@@ -1675,13 +1707,18 @@ public class GitHubSCMSource extends AbstractGitSCMSource {
                     if (parents.size() != 2) {
                         listener.getLogger()
                                 .format("WARNING: Invalid github merge_commit_sha for pull request %s : merge commit %s with parents - %s.%n",
-                                        pr.getNumber(), proposedMergeHash, StringUtils.join(parents, "+"));
+                                        pr.getNumber(),
+                                        proposedMergeHash,
+                                        StringUtils.join(parents, "+"));
                     } else if (!parents.contains(prHeadHash)) {
                         // This is maintains the existing behavior from pre-2.5.x when the merge_commit_sha is out of
                         // sync from the requested prHead
                         listener.getLogger()
                                 .format("WARNING: Invalid  github merge_commit_sha for pull request %s : Head commit %s does match merge commit %s with parents - %s.%n",
-                                        pr.getNumber(), prHeadHash, proposedMergeHash, StringUtils.join(parents, "+"));
+                                        pr.getNumber(),
+                                        prHeadHash,
+                                        proposedMergeHash,
+                                        StringUtils.join(parents, "+"));
                     } else {
                         // We found a merge_commit_sha with 2 parents and one matches the prHeadHash
                         // Use the other parent hash as the base. This keeps the merge hash in sync with head and base.
@@ -1714,7 +1751,8 @@ public class GitHubSCMSource extends AbstractGitSCMSource {
         while (pr.getMergeable() == null && retryCountdown > 1) {
             listener.getLogger()
                     .format("Waiting for GitHub to create a merge commit for pull request %d.  Retrying %d more times...%n",
-                            pr.getNumber(), retryCountdown);
+                            pr.getNumber(),
+                            retryCountdown);
             retryCountdown -= 1;
             Thread.sleep(sleep);
         }
@@ -1742,8 +1780,8 @@ public class GitHubSCMSource extends AbstractGitSCMSource {
                 if (StringUtils.isNotBlank(repository)) {
                     String fullName = repoOwner + "/" + repository;
                     LOGGER.log(Level.INFO, "Getting remote pull requests from {0}", fullName);
-                    StandardCredentials credentials = Connector.lookupScanCredentials((Item) getOwner(), apiUri,
-                            credentialsId);
+                    StandardCredentials credentials = Connector
+                            .lookupScanCredentials((Item) getOwner(), apiUri, credentialsId);
                     LogTaskListener listener = new LogTaskListener(LOGGER, Level.INFO);
                     try {
                         GitHub github = Connector.connect(apiUri, credentials);
@@ -1768,7 +1806,8 @@ public class GitHubSCMSource extends AbstractGitSCMSource {
                         }
                     } catch (IOException | InterruptedException e) {
                         LOGGER.log(Level.WARNING,
-                                "Could not get all pull requests from " + fullName + ", there may be rebuilds", e);
+                                "Could not get all pull requests from " + fullName + ", there may be rebuilds",
+                                e);
                     }
                 }
             }
@@ -1827,7 +1866,9 @@ public class GitHubSCMSource extends AbstractGitSCMSource {
             PullRequestSCMRevision rev = (PullRequestSCMRevision) revision;
             listener.getLogger()
                     .format("Loading trusted files from base branch %s at %s rather than %s%n",
-                            head.getTarget().getName(), rev.getBaseHash(), rev.getPullHash());
+                            head.getTarget().getName(),
+                            rev.getBaseHash(),
+                            rev.getPullHash());
             return new SCMRevisionImpl(head.getTarget(), rev.getBaseHash());
         }
         return revision;
@@ -1920,7 +1961,9 @@ public class GitHubSCMSource extends AbstractGitSCMSource {
                 throw new AbortException(
                         String.format("Invalid scan credentials when using %s to connect to %s/%s on %s",
                                 credentials == null ? "anonymous access" : CredentialsNameProvider.name(credentials),
-                                repoOwner, repository, apiUri));
+                                repoOwner,
+                                repository,
+                                apiUri));
             }
             result.add(new ObjectMetadataAction(
                     null,
@@ -2278,14 +2321,17 @@ public class GitHubSCMSource extends AbstractGitSCMSource {
                     }
                     if (org != null && repoOwner.equalsIgnoreCase(org.getLogin())) {
                         Set<String> result = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
-                        LOGGER.log(Level.FINE, "as {0} looking for repositories in {1}",
+                        LOGGER.log(Level.FINE,
+                                "as {0} looking for repositories in {1}",
                                 new Object[]{ credentialsId, repoOwner });
                         for (GHRepository repo : org.listRepositories(100)) {
-                            LOGGER.log(Level.FINE, "as {0} found {1}/{2}",
+                            LOGGER.log(Level.FINE,
+                                    "as {0} found {1}/{2}",
                                     new Object[]{ credentialsId, repoOwner, repo.getName() });
                             result.add(repo.getName());
                         }
-                        LOGGER.log(Level.FINE, "as {0} result of {1} is {2}",
+                        LOGGER.log(Level.FINE,
+                                "as {0} result of {1} is {2}",
                                 new Object[]{ credentialsId, repoOwner, result });
                         return nameAndValueModel(result);
                     }
@@ -2350,10 +2396,12 @@ public class GitHubSCMSource extends AbstractGitSCMSource {
                 }
             }
             List<NamedArrayList<? extends SCMTraitDescriptor<?>>> result = new ArrayList<>();
-            NamedArrayList.select(all, Messages.GitHubSCMNavigator_withinRepository(),
+            NamedArrayList.select(all,
+                    Messages.GitHubSCMNavigator_withinRepository(),
                     NamedArrayList.anyOf(NamedArrayList.withAnnotation(Discovery.class),
                             NamedArrayList.withAnnotation(Selection.class)),
-                    true, result);
+                    true,
+                    result);
             NamedArrayList.select(all, Messages.GitHubSCMNavigator_general(), null, true, result);
             return result;
         }
@@ -2475,7 +2523,8 @@ public class GitHubSCMSource extends AbstractGitSCMSource {
                     request.listener()
                             .getLogger()
                             .format("%n  Could not find user %s for pull request %d.%n",
-                                    user == null ? "null" : user.getLogin(), number);
+                                    user == null ? "null" : user.getLogin(),
+                                    number);
                     throw new WrappedException(e);
                 } catch (IOException e) {
                     throw new WrappedException(e);
@@ -2762,7 +2811,9 @@ public class GitHubSCMSource extends AbstractGitSCMSource {
                 return collaboratorNames;
             }
             listener.getLogger()
-                    .format("Connecting to %s to obtain list of collaborators for %s/%s%n", apiUri, repoOwner,
+                    .format("Connecting to %s to obtain list of collaborators for %s/%s%n",
+                            apiUri,
+                            repoOwner,
                             repository);
             StandardCredentials credentials = Connector.lookupScanCredentials((Item) getOwner(), apiUri, credentialsId);
             // Github client and validation
@@ -2825,10 +2876,13 @@ public class GitHubSCMSource extends AbstractGitSCMSource {
         public GHPermissionType fetch(String username) throws IOException, InterruptedException {
             if (repo == null) {
                 listener.getLogger()
-                        .format("Connecting to %s to check permissions of obtain list of %s for %s/%s%n", apiUri,
-                                username, repoOwner, repository);
-                StandardCredentials credentials = Connector.lookupScanCredentials((Item) getOwner(), apiUri,
-                        credentialsId);
+                        .format("Connecting to %s to check permissions of obtain list of %s for %s/%s%n",
+                                apiUri,
+                                username,
+                                repoOwner,
+                                repository);
+                StandardCredentials credentials = Connector
+                        .lookupScanCredentials((Item) getOwner(), apiUri, credentialsId);
                 github = Connector.connect(apiUri, credentials);
                 String fullName = repoOwner + "/" + repository;
                 repo = github.getRepository(fullName);

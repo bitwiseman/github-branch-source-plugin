@@ -48,7 +48,9 @@ public enum ApiRateLimitChecker {
                                     - Math.max(0, (long) (targetFraction * MILLIS_PER_HOUR)) + ENTROPY.nextInt(1000);
                             writeLog(String.format(
                                     "Jenkins-Imposed API Limiter: Current quota for Github API usage has %d remaining (%d over budget). Next quota of %d in %s. Sleeping for %s.",
-                                    rateLimit.getRemaining(), ideal - rateLimit.getRemaining(), rateLimit.getLimit(),
+                                    rateLimit.getRemaining(),
+                                    ideal - rateLimit.getRemaining(),
+                                    rateLimit.getLimit(),
                                     Util.getTimeSpanString(rateLimitResetMillis),
                                     // The GitHubRateLimitChecker adds a one second sleep to each notification loop
                                     Util.getTimeSpanString(1000 + expiration - now)));
@@ -247,14 +249,18 @@ public enum ApiRateLimitChecker {
                 expiration = now + ENTROPY.nextInt(EXPIRATION_WAIT_MILLIS);
                 writeLog(String.format(
                         "Jenkins-Imposed API Limiter: Current quota for Github API usage has %d remaining (%d over budget). Next quota of %d due now. Sleeping for %s.",
-                        rateLimit.getRemaining(), buffer - rateLimit.getRemaining(), rateLimit.getLimit(),
+                        rateLimit.getRemaining(),
+                        buffer - rateLimit.getRemaining(),
+                        rateLimit.getLimit(),
                         // The GitHubRateLimitChecker adds a one second sleep to each notification loop
                         Util.getTimeSpanString(1000 + expiration - now)));
             } else {
                 expiration = rateLimit.getResetDate().getTime() + ENTROPY.nextInt(EXPIRATION_WAIT_MILLIS);
                 writeLog(String.format(
                         "Jenkins-Imposed API Limiter: Current quota for Github API usage has %d remaining (%d over budget). Next quota of %d in %s. Sleeping until reset.",
-                        rateLimit.getRemaining(), buffer - rateLimit.getRemaining(), rateLimit.getLimit(),
+                        rateLimit.getRemaining(),
+                        buffer - rateLimit.getRemaining(),
+                        rateLimit.getLimit(),
                         Util.getTimeSpanString(rateLimitResetMillis)));
             }
             return expiration;

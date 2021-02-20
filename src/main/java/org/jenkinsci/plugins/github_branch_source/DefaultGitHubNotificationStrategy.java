@@ -41,10 +41,12 @@ public final class DefaultGitHubNotificationStrategy extends AbstractGitHubNotif
     public List<GitHubNotificationRequest> notifications(
             GitHubNotificationContext notificationContext,
             TaskListener listener) {
-        return Collections.singletonList(GitHubNotificationRequest.build(
-                notificationContext.getDefaultContext(listener), notificationContext.getDefaultUrl(listener),
-                notificationContext.getDefaultMessage(listener), notificationContext.getDefaultState(listener),
-                notificationContext.getDefaultIgnoreError(listener)));
+        return Collections
+                .singletonList(GitHubNotificationRequest.build(notificationContext.getDefaultContext(listener),
+                        notificationContext.getDefaultUrl(listener),
+                        notificationContext.getDefaultMessage(listener),
+                        notificationContext.getDefaultState(listener),
+                        notificationContext.getDefaultIgnoreError(listener)));
     }
 
     /**

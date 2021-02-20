@@ -73,7 +73,9 @@ public class DefaultGitHubNotificationStrategyTest {
                     GitHubNotificationContext.build(job, run, src, testBranch),
                     new LogTaskListener(Logger.getLogger(getClass().getName()), Level.INFO));
             List<GitHubNotificationRequest> notificationsB = instance.notifications(
-                    GitHubNotificationContext.build(job, run, src,
+                    GitHubNotificationContext.build(job,
+                            run,
+                            src,
                             new PullRequestSCMHead(
                                     "test-pr",
                                     "owner",
@@ -85,7 +87,9 @@ public class DefaultGitHubNotificationStrategyTest {
                                     ChangeRequestCheckoutStrategy.MERGE)),
                     new LogTaskListener(Logger.getLogger(getClass().getName()), Level.INFO));
             List<GitHubNotificationRequest> notificationsC = instance.notifications(
-                    GitHubNotificationContext.build(job, run, src,
+                    GitHubNotificationContext.build(job,
+                            run,
+                            src,
                             new PullRequestSCMHead(
                                     "test-pr",
                                     "owner",

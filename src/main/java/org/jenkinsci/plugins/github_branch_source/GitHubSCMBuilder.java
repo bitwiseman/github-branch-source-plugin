@@ -242,7 +242,8 @@ public class GitHubSCMBuilder extends GitSCMBuilder<GitHubSCMBuilder> {
             return HTTPS;
         } else {
             StandardCredentials credentials = CredentialsMatchers.firstOrNull(CredentialsProvider.lookupCredentials(
-                    StandardCredentials.class, context,
+                    StandardCredentials.class,
+                    context,
                     context instanceof Queue.Task ? ((Queue.Task) context).getDefaultAuthentication() : ACL.SYSTEM,
                     URIRequirementBuilder.create()
                             .withHostname(RepositoryUriResolver.hostnameFromApiUri(apiUri))

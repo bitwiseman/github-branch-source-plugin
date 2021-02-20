@@ -126,7 +126,8 @@ public class GithubAppCredentialsTest extends AbstractGitHubWireMockTest {
                 .willSetStateTo("1")
                 .withRequestBody(equalToJson(
                         "{\"permissions\":{\"pull_requests\":\"write\",\"metadata\":\"read\",\"checks\":\"write\",\"contents\":\"read\"}}",
-                        true, false))
+                        true,
+                        false))
                 .willReturn(aResponse().withHeader("Content-Type", "application/json; charset=utf-8")
                         .withBody("{\n" + "  \"token\": \"super-secret-token\",\n" +
                         // This token will go stale at the soonest allowed time but will not expire for the duration of
@@ -142,7 +143,8 @@ public class GithubAppCredentialsTest extends AbstractGitHubWireMockTest {
                 .willSetStateTo("2")
                 .withRequestBody(equalToJson(
                         "{\"permissions\":{\"pull_requests\":\"write\",\"metadata\":\"read\",\"checks\":\"write\",\"contents\":\"read\"}}",
-                        true, false))
+                        true,
+                        false))
                 .willReturn(aResponse().withStatus(404)
                         .withStatusMessage("404 Not Found")
                         .withHeader("Content-Type", "application/json; charset=utf-8")
@@ -154,7 +156,8 @@ public class GithubAppCredentialsTest extends AbstractGitHubWireMockTest {
                 .willSetStateTo("3")
                 .withRequestBody(equalToJson(
                         "{\"permissions\":{\"pull_requests\":\"write\",\"metadata\":\"read\",\"checks\":\"write\",\"contents\":\"read\"}}",
-                        true, false))
+                        true,
+                        false))
                 .willReturn(aResponse().withStatus(404)
                         .withStatusMessage("404 Not Found")
                         .withHeader("Content-Type", "application/json; charset=utf-8")
@@ -166,7 +169,8 @@ public class GithubAppCredentialsTest extends AbstractGitHubWireMockTest {
                 .willSetStateTo("4")
                 .withRequestBody(equalToJson(
                         "{\"permissions\":{\"pull_requests\":\"write\",\"metadata\":\"read\",\"checks\":\"write\",\"contents\":\"read\"}}",
-                        true, false))
+                        true,
+                        false))
                 .willReturn(aResponse().withHeader("Content-Type", "application/json; charset=utf-8")
                         .withBody("{\n" + "  \"token\": \"super-secret-token\",\n" +
                         // token is already expired, but will not go stale for at least the minimum time
@@ -180,7 +184,8 @@ public class GithubAppCredentialsTest extends AbstractGitHubWireMockTest {
                 .willSetStateTo("5")
                 .withRequestBody(equalToJson(
                         "{\"permissions\":{\"pull_requests\":\"write\",\"metadata\":\"read\",\"checks\":\"write\",\"contents\":\"read\"}}",
-                        true, false))
+                        true,
+                        false))
                 .willReturn(aResponse().withStatus(404)
                         .withStatusMessage("404 Not Found")
                         .withHeader("Content-Type", "application/json; charset=utf-8")
@@ -192,7 +197,8 @@ public class GithubAppCredentialsTest extends AbstractGitHubWireMockTest {
                 .willSetStateTo("6")
                 .withRequestBody(equalToJson(
                         "{\"permissions\":{\"pull_requests\":\"write\",\"metadata\":\"read\",\"checks\":\"write\",\"contents\":\"read\"}}",
-                        true, false))
+                        true,
+                        false))
                 .willReturn(aResponse().withHeader("Content-Type", "application/json; charset=utf-8")
                         .withBody("{\n" + "  \"token\": \"super-secret-token\",\n" + "  \"expires_at\": \""
                                 + printDate(new Date()) + "\"" + // 2019-08-10T05:54:58Z
@@ -205,7 +211,8 @@ public class GithubAppCredentialsTest extends AbstractGitHubWireMockTest {
                                      // requests will fail
                 .withRequestBody(equalToJson(
                         "{\"permissions\":{\"pull_requests\":\"write\",\"metadata\":\"read\",\"checks\":\"write\",\"contents\":\"read\"}}",
-                        true, false))
+                        true,
+                        false))
                 .willReturn(aResponse().withHeader("Content-Type", "application/json; charset=utf-8")
                         .withBody("{\n" + "  \"token\": \"super-secret-token\",\n" + "  \"expires_at\": \""
                                 + printDate(new Date()) + "\"" + // 2019-08-10T05:54:58Z
@@ -252,22 +259,24 @@ public class GithubAppCredentialsTest extends AbstractGitHubWireMockTest {
             List<String> credentialsLog = getOutputLines();
 
             // Verify correct messages from GitHubAppCredential logger indicating token was retrieved on agent
-            assertThat("Creds should cache on master", credentialsLog, contains(
-                    // refresh on controller
-                    "Generating App Installation Token for app ID 54321",
+            assertThat("Creds should cache on master",
+                    credentialsLog,
+                    contains(
+                            // refresh on controller
+                            "Generating App Installation Token for app ID 54321",
+                            // next call uses cached token
+                            // sleep and then refresh stale token
+                            "Generating App Installation Token for app ID 54321",
+                            // next call (error forced by wiremock)
+                            "Failed to generate new GitHub App Installation Token for app ID 54321: cached token is stale but has not expired",
+                            // next call refreshes the still stale token
+                            "Generating App Installation Token for app ID 54321",
+                            // sleep and then refresh stale token hits another error forced by wiremock
+                            "Failed to generate new GitHub App Installation Token for app ID 54321: cached token is stale but has not expired",
+                            // next call refreshes the still stale token
+                            "Generating App Installation Token for app ID 54321"
                     // next call uses cached token
-                    // sleep and then refresh stale token
-                    "Generating App Installation Token for app ID 54321",
-                    // next call (error forced by wiremock)
-                    "Failed to generate new GitHub App Installation Token for app ID 54321: cached token is stale but has not expired",
-                    // next call refreshes the still stale token
-                    "Generating App Installation Token for app ID 54321",
-                    // sleep and then refresh stale token hits another error forced by wiremock
-                    "Failed to generate new GitHub App Installation Token for app ID 54321: cached token is stale but has not expired",
-                    // next call refreshes the still stale token
-                    "Generating App Installation Token for app ID 54321"
-            // next call uses cached token
-            ));
+                    ));
         } finally {
             GitHubAppCredentials.AppInstallationToken.NOT_STALE_MINIMUM_SECONDS = notStaleSeconds;
             logRecorder.doClear();
@@ -290,9 +299,13 @@ public class GithubAppCredentialsTest extends AbstractGitHubWireMockTest {
 
             final String gitCheckoutStep = String.format("    git url: REPO, credentialsId: '%s'", myAppCredentialsId);
 
-            final String jenkinsfile = String.join("\n", "// run checkout several times", "node ('my-agent') {",
-                    "    echo 'First Checkout on agent should use cached token passed via remoting'", gitCheckoutStep,
-                    "    echo 'Multiple checkouts in quick succession should use cached token'", gitCheckoutStep,
+            final String jenkinsfile = String.join("\n",
+                    "// run checkout several times",
+                    "node ('my-agent') {",
+                    "    echo 'First Checkout on agent should use cached token passed via remoting'",
+                    gitCheckoutStep,
+                    "    echo 'Multiple checkouts in quick succession should use cached token'",
+                    gitCheckoutStep,
                     "    sleep " + (GitHubAppCredentials.AppInstallationToken.NOT_STALE_MINIMUM_SECONDS + 2),
                     "    echo 'Checkout after token is stale refreshes via remoting - fallback due to unexpired token'",
                     gitCheckoutStep,
@@ -302,8 +315,10 @@ public class GithubAppCredentialsTest extends AbstractGitHubWireMockTest {
                     "    echo 'Checkout after token is stale refreshes via remoting - error on controller is not catastrophic'",
                     gitCheckoutStep,
                     "    echo 'Checkout after error will refresh again on controller - new token expired but not stale'",
-                    gitCheckoutStep, "    echo 'Multiple checkouts in quick succession should use cached token'",
-                    gitCheckoutStep, "}");
+                    gitCheckoutStep,
+                    "    echo 'Multiple checkouts in quick succession should use cached token'",
+                    gitCheckoutStep,
+                    "}");
 
             // Create a repo with the above Jenkinsfile
             sampleRepo.init();
@@ -325,7 +340,8 @@ public class GithubAppCredentialsTest extends AbstractGitHubWireMockTest {
 
             // Verify correct messages from GitHubAppCredential logger indicating token was retrieved on agent
             assertThat("Creds should cache on master, pass to agent, and refresh agent from master once",
-                    credentialsLog, contains(
+                    credentialsLog,
+                    contains(
                             // (agent log added out of order, see below)
                             "Generating App Installation Token for app ID 54321 on agent", // 1
                             "Failed to generate new GitHub App Installation Token for app ID 54321 on agent: cached token is stale but has not expired", // 2

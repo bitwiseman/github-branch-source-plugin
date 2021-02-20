@@ -104,8 +104,12 @@ public class PullRequestSCMRevisionTest extends AbstractGitHubWireMockTest {
                 is(new PullRequestSCMRevision(currentHead, "master-revision", "pr-branch-revision", "any")));
         assertThat(currentRevision,
                 is(new PullRequestSCMRevision(currentHead, "master-revision-changed", "pr-branch-revision", "any")));
-        assertThat(currentRevision, not(
-                is(new PullRequestSCMRevision(currentHead, "master-revision", "pr-branch-revision-changed", "any"))));
+        assertThat(currentRevision,
+                not(is(new PullRequestSCMRevision(
+                        currentHead,
+                        "master-revision",
+                        "pr-branch-revision-changed",
+                        "any"))));
 
         assertThat(currentRevision,
                 not(is(new PullRequestSCMRevision(otherHead, "master-revision", "pr-branch-revision", null))));
@@ -147,8 +151,12 @@ public class PullRequestSCMRevisionTest extends AbstractGitHubWireMockTest {
                 is(new PullRequestSCMRevision(currentHead, "master-revision", "pr-branch-revision", "any")));
         assertThat(currentRevision,
                 is(new PullRequestSCMRevision(currentHead, "master-revision-changed", "pr-branch-revision", "any")));
-        assertThat(currentRevision, not(
-                is(new PullRequestSCMRevision(currentHead, "master-revision", "pr-branch-revision-changed", "any"))));
+        assertThat(currentRevision,
+                not(is(new PullRequestSCMRevision(
+                        currentHead,
+                        "master-revision",
+                        "pr-branch-revision-changed",
+                        "any"))));
 
         assertThat(currentRevision,
                 not(is(new PullRequestSCMRevision(otherHead, "master-revision", "pr-branch-revision", null))));
@@ -187,10 +195,18 @@ public class PullRequestSCMRevisionTest extends AbstractGitHubWireMockTest {
                 is(new PullRequestSCMRevision(currentHead, "master-revision", "pr-branch-revision", null)));
         assertThat(currentRevision,
                 is(new PullRequestSCMRevision(currentHead, "master-revision", "pr-branch-revision", "any")));
-        assertThat(currentRevision, not(
-                is(new PullRequestSCMRevision(currentHead, "master-revision-changed", "pr-branch-revision", "any"))));
-        assertThat(currentRevision, not(
-                is(new PullRequestSCMRevision(currentHead, "master-revision", "pr-branch-revision-changed", "any"))));
+        assertThat(currentRevision,
+                not(is(new PullRequestSCMRevision(
+                        currentHead,
+                        "master-revision-changed",
+                        "pr-branch-revision",
+                        "any"))));
+        assertThat(currentRevision,
+                not(is(new PullRequestSCMRevision(
+                        currentHead,
+                        "master-revision",
+                        "pr-branch-revision-changed",
+                        "any"))));
 
         assertThat(currentRevision,
                 not(is(new PullRequestSCMRevision(otherHead, "master-revision", "pr-branch-revision", null))));
@@ -234,10 +250,18 @@ public class PullRequestSCMRevisionTest extends AbstractGitHubWireMockTest {
                 is(new PullRequestSCMRevision(currentHead, "master-revision", "pr-branch-revision", null)));
         assertThat(currentRevision,
                 is(new PullRequestSCMRevision(currentHead, "master-revision", "pr-branch-revision", "any")));
-        assertThat(currentRevision, not(
-                is(new PullRequestSCMRevision(currentHead, "master-revision-changed", "pr-branch-revision", "any"))));
-        assertThat(currentRevision, not(
-                is(new PullRequestSCMRevision(currentHead, "master-revision", "pr-branch-revision-changed", "any"))));
+        assertThat(currentRevision,
+                not(is(new PullRequestSCMRevision(
+                        currentHead,
+                        "master-revision-changed",
+                        "pr-branch-revision",
+                        "any"))));
+        assertThat(currentRevision,
+                not(is(new PullRequestSCMRevision(
+                        currentHead,
+                        "master-revision",
+                        "pr-branch-revision-changed",
+                        "any"))));
 
         assertThat(currentRevision,
                 not(is(new PullRequestSCMRevision(otherHead, "master-revision", "pr-branch-revision", null))));
@@ -277,10 +301,18 @@ public class PullRequestSCMRevisionTest extends AbstractGitHubWireMockTest {
                 is(new PullRequestSCMRevision(currentHead, "master-revision", "pr-branch-revision", null)));
         assertThat(currentRevision,
                 is(new PullRequestSCMRevision(currentHead, "master-revision", "pr-branch-revision", "any")));
-        assertThat(currentRevision, not(
-                is(new PullRequestSCMRevision(currentHead, "master-revision-changed", "pr-branch-revision", "any"))));
-        assertThat(currentRevision, not(
-                is(new PullRequestSCMRevision(currentHead, "master-revision", "pr-branch-revision-changed", "any"))));
+        assertThat(currentRevision,
+                not(is(new PullRequestSCMRevision(
+                        currentHead,
+                        "master-revision-changed",
+                        "pr-branch-revision",
+                        "any"))));
+        assertThat(currentRevision,
+                not(is(new PullRequestSCMRevision(
+                        currentHead,
+                        "master-revision",
+                        "pr-branch-revision-changed",
+                        "any"))));
 
         assertThat(currentRevision,
                 not(is(new PullRequestSCMRevision(otherHead, "master-revision", "pr-branch-revision", null))));

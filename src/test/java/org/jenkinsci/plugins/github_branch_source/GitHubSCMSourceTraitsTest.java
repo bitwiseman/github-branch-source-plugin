@@ -70,13 +70,14 @@ public class GitHubSCMSourceTraitsTest {
         recreated.setIncludes("i*");
         recreated.setExcludes("production");
         recreated.setScanCredentialsId("foo");
-        assertThat(DescribableModel.uninstantiate2_(recreated).toString(), is("@github(" + "credentialsId=foo,"
-                + "id=test," + "repoOwner=repo-owner," + "repository=repo," + "traits=["
-                + "@gitHubBranchDiscovery$org.jenkinsci.plugins.github_branch_source.BranchDiscoveryTrait(strategyId=1), "
-                + "@gitHubPullRequestDiscovery$OriginPullRequestDiscoveryTrait(strategyId=1), "
-                + "@gitHubForkDiscovery$ForkPullRequestDiscoveryTrait(" + "strategyId=2,"
-                + "trust=@gitHubTrustPermissions$TrustPermission()), "
-                + "@headWildcardFilter$WildcardSCMHeadFilterTrait(excludes=production,includes=i*)])"));
+        assertThat(DescribableModel.uninstantiate2_(recreated).toString(),
+                is("@github(" + "credentialsId=foo," + "id=test," + "repoOwner=repo-owner," + "repository=repo,"
+                        + "traits=["
+                        + "@gitHubBranchDiscovery$org.jenkinsci.plugins.github_branch_source.BranchDiscoveryTrait(strategyId=1), "
+                        + "@gitHubPullRequestDiscovery$OriginPullRequestDiscoveryTrait(strategyId=1), "
+                        + "@gitHubForkDiscovery$ForkPullRequestDiscoveryTrait(" + "strategyId=2,"
+                        + "trust=@gitHubTrustPermissions$TrustPermission()), "
+                        + "@headWildcardFilter$WildcardSCMHeadFilterTrait(excludes=production,includes=i*)])"));
     }
 
     @Test
@@ -127,17 +128,22 @@ public class GitHubSCMSourceTraitsTest {
     @Test
     public void basic_cloud() throws Exception {
         GitHubSCMSource instance = load();
-        assertThat(instance.getId(), is("org.jenkinsci.plugins.github_branch_source.GitHubSCMNavigator"
-                + "::https://api.github.com" + "::cloudbeers" + "::stunning-adventure"));
+        assertThat(instance.getId(),
+                is("org.jenkinsci.plugins.github_branch_source.GitHubSCMNavigator" + "::https://api.github.com"
+                        + "::cloudbeers" + "::stunning-adventure"));
         assertThat(instance.getApiUri(), is(GitHubSCMSource.GITHUB_URL));
         assertThat(instance.getRepoOwner(), is("cloudbeers"));
         assertThat(instance.getRepository(), is("stunning-adventure"));
         assertThat(instance.getCredentialsId(), is("e4d8c11a-0d24-472f-b86b-4b017c160e9a"));
-        assertThat(instance.getTraits(), containsInAnyOrder(
-                Matchers.allOf(instanceOf(BranchDiscoveryTrait.class), hasProperty("buildBranch", is(true)),
-                        hasProperty("buildBranchesWithPR", is(true))),
-                Matchers.allOf(instanceOf(ForkPullRequestDiscoveryTrait.class), hasProperty("strategyId", is(1)),
-                        hasProperty("trust", instanceOf(ForkPullRequestDiscoveryTrait.TrustPermission.class)))));
+        assertThat(instance.getTraits(),
+                containsInAnyOrder(
+                        Matchers.allOf(instanceOf(BranchDiscoveryTrait.class),
+                                hasProperty("buildBranch", is(true)),
+                                hasProperty("buildBranchesWithPR", is(true))),
+                        Matchers.allOf(instanceOf(ForkPullRequestDiscoveryTrait.class),
+                                hasProperty("strategyId", is(1)),
+                                hasProperty("trust",
+                                        instanceOf(ForkPullRequestDiscoveryTrait.TrustPermission.class)))));
         // Legacy API
         assertThat(instance.getCheckoutCredentialsId(), is(GitHubSCMSource.DescriptorImpl.SAME));
         assertThat(instance.getIncludes(), is("*"));
@@ -153,18 +159,24 @@ public class GitHubSCMSourceTraitsTest {
     @Test
     public void basic_server() throws Exception {
         GitHubSCMSource instance = load();
-        assertThat(instance.getId(), is("org.jenkinsci.plugins.github_branch_source.GitHubSCMNavigator"
-                + "::https://github.test/api/v3" + "::cloudbeers" + "::stunning-adventure"));
+        assertThat(instance.getId(),
+                is("org.jenkinsci.plugins.github_branch_source.GitHubSCMNavigator" + "::https://github.test/api/v3"
+                        + "::cloudbeers" + "::stunning-adventure"));
         assertThat(instance.getApiUri(), is("https://github.test/api/v3"));
         assertThat(instance.getRepoOwner(), is("cloudbeers"));
         assertThat(instance.getRepository(), is("stunning-adventure"));
         assertThat(instance.getCredentialsId(), is("e4d8c11a-0d24-472f-b86b-4b017c160e9a"));
-        assertThat(instance.getTraits(), containsInAnyOrder(
-                Matchers.allOf(instanceOf(BranchDiscoveryTrait.class), hasProperty("buildBranch", is(true)),
-                        hasProperty("buildBranchesWithPR", is(false))),
-                Matchers.allOf(instanceOf(OriginPullRequestDiscoveryTrait.class), hasProperty("strategyId", is(2))),
-                Matchers.allOf(instanceOf(ForkPullRequestDiscoveryTrait.class), hasProperty("strategyId", is(2)),
-                        hasProperty("trust", instanceOf(ForkPullRequestDiscoveryTrait.TrustPermission.class)))));
+        assertThat(instance.getTraits(),
+                containsInAnyOrder(
+                        Matchers.allOf(instanceOf(BranchDiscoveryTrait.class),
+                                hasProperty("buildBranch", is(true)),
+                                hasProperty("buildBranchesWithPR", is(false))),
+                        Matchers.allOf(instanceOf(OriginPullRequestDiscoveryTrait.class),
+                                hasProperty("strategyId", is(2))),
+                        Matchers.allOf(instanceOf(ForkPullRequestDiscoveryTrait.class),
+                                hasProperty("strategyId", is(2)),
+                                hasProperty("trust",
+                                        instanceOf(ForkPullRequestDiscoveryTrait.TrustPermission.class)))));
         // Legacy API
         assertThat(instance.getCheckoutCredentialsId(), is(GitHubSCMSource.DescriptorImpl.SAME));
         assertThat(instance.getIncludes(), is("*"));
@@ -180,20 +192,25 @@ public class GitHubSCMSourceTraitsTest {
     @Test
     public void custom_checkout_credentials() throws Exception {
         GitHubSCMSource instance = load();
-        assertThat(instance.getId(), is("org.jenkinsci.plugins.github_branch_source.GitHubSCMNavigator"
-                + "::https://github.test/api/v3" + "::cloudbeers" + "::stunning-adventure"));
+        assertThat(instance.getId(),
+                is("org.jenkinsci.plugins.github_branch_source.GitHubSCMNavigator" + "::https://github.test/api/v3"
+                        + "::cloudbeers" + "::stunning-adventure"));
         assertThat(instance.getApiUri(), is("https://github.test/api/v3"));
         assertThat(instance.getRepoOwner(), is("cloudbeers"));
         assertThat(instance.getRepository(), is("stunning-adventure"));
         assertThat(instance.getCredentialsId(), is("e4d8c11a-0d24-472f-b86b-4b017c160e9a"));
-        assertThat(instance.getTraits(), containsInAnyOrder(
-                Matchers.allOf(instanceOf(BranchDiscoveryTrait.class), hasProperty("buildBranch", is(true)),
-                        hasProperty("buildBranchesWithPR", is(false))),
-                Matchers.allOf(instanceOf(OriginPullRequestDiscoveryTrait.class), hasProperty("strategyId", is(2))),
-                Matchers.allOf(instanceOf(ForkPullRequestDiscoveryTrait.class), hasProperty("strategyId", is(2)),
-                        hasProperty("trust", instanceOf(ForkPullRequestDiscoveryTrait.TrustPermission.class))),
-                Matchers.allOf(Matchers.instanceOf(SSHCheckoutTrait.class),
-                        hasProperty("credentialsId", is("other-credentials")))));
+        assertThat(instance.getTraits(),
+                containsInAnyOrder(
+                        Matchers.allOf(instanceOf(BranchDiscoveryTrait.class),
+                                hasProperty("buildBranch", is(true)),
+                                hasProperty("buildBranchesWithPR", is(false))),
+                        Matchers.allOf(instanceOf(OriginPullRequestDiscoveryTrait.class),
+                                hasProperty("strategyId", is(2))),
+                        Matchers.allOf(instanceOf(ForkPullRequestDiscoveryTrait.class),
+                                hasProperty("strategyId", is(2)),
+                                hasProperty("trust", instanceOf(ForkPullRequestDiscoveryTrait.TrustPermission.class))),
+                        Matchers.allOf(Matchers.instanceOf(SSHCheckoutTrait.class),
+                                hasProperty("credentialsId", is("other-credentials")))));
         // Legacy API
         assertThat(instance.getCheckoutCredentialsId(), is("other-credentials"));
         assertThat(instance.getIncludes(), is("*"));
@@ -210,18 +227,24 @@ public class GitHubSCMSourceTraitsTest {
     @Test
     public void same_checkout_credentials() throws Exception {
         GitHubSCMSource instance = load();
-        assertThat(instance.getId(), is("org.jenkinsci.plugins.github_branch_source.GitHubSCMNavigator"
-                + "::https://github.test/api/v3" + "::cloudbeers" + "::stunning-adventure"));
+        assertThat(instance.getId(),
+                is("org.jenkinsci.plugins.github_branch_source.GitHubSCMNavigator" + "::https://github.test/api/v3"
+                        + "::cloudbeers" + "::stunning-adventure"));
         assertThat(instance.getApiUri(), is("https://github.test/api/v3"));
         assertThat(instance.getRepoOwner(), is("cloudbeers"));
         assertThat(instance.getRepository(), is("stunning-adventure"));
         assertThat(instance.getCredentialsId(), is("e4d8c11a-0d24-472f-b86b-4b017c160e9a"));
-        assertThat(instance.getTraits(), containsInAnyOrder(
-                Matchers.allOf(instanceOf(BranchDiscoveryTrait.class), hasProperty("buildBranch", is(true)),
-                        hasProperty("buildBranchesWithPR", is(false))),
-                Matchers.allOf(instanceOf(OriginPullRequestDiscoveryTrait.class), hasProperty("strategyId", is(2))),
-                Matchers.allOf(instanceOf(ForkPullRequestDiscoveryTrait.class), hasProperty("strategyId", is(2)),
-                        hasProperty("trust", instanceOf(ForkPullRequestDiscoveryTrait.TrustPermission.class)))));
+        assertThat(instance.getTraits(),
+                containsInAnyOrder(
+                        Matchers.allOf(instanceOf(BranchDiscoveryTrait.class),
+                                hasProperty("buildBranch", is(true)),
+                                hasProperty("buildBranchesWithPR", is(false))),
+                        Matchers.allOf(instanceOf(OriginPullRequestDiscoveryTrait.class),
+                                hasProperty("strategyId", is(2))),
+                        Matchers.allOf(instanceOf(ForkPullRequestDiscoveryTrait.class),
+                                hasProperty("strategyId", is(2)),
+                                hasProperty("trust",
+                                        instanceOf(ForkPullRequestDiscoveryTrait.TrustPermission.class)))));
         // Legacy API
         assertThat(instance.getCheckoutCredentialsId(), is(GitHubSCMSource.DescriptorImpl.SAME));
         assertThat(instance.getIncludes(), is("*"));
@@ -237,19 +260,24 @@ public class GitHubSCMSourceTraitsTest {
     @Test
     public void exclude_branches() throws Exception {
         GitHubSCMSource instance = load();
-        assertThat(instance.getId(), is("org.jenkinsci.plugins.github_branch_source.GitHubSCMNavigator"
-                + "::https://api.github.com" + "::cloudbeers" + "::stunning-adventure"));
+        assertThat(instance.getId(),
+                is("org.jenkinsci.plugins.github_branch_source.GitHubSCMNavigator" + "::https://api.github.com"
+                        + "::cloudbeers" + "::stunning-adventure"));
         assertThat(instance.getApiUri(), is(GitHubSCMSource.GITHUB_URL));
         assertThat(instance.getRepoOwner(), is("cloudbeers"));
         assertThat(instance.getRepository(), is("stunning-adventure"));
         assertThat(instance.getCredentialsId(), is("e4d8c11a-0d24-472f-b86b-4b017c160e9a"));
-        assertThat(instance.getTraits(), containsInAnyOrder(
-                Matchers.allOf(instanceOf(BranchDiscoveryTrait.class), hasProperty("buildBranch", is(true)),
-                        hasProperty("buildBranchesWithPR", is(true))),
-                Matchers.allOf(instanceOf(ForkPullRequestDiscoveryTrait.class), hasProperty("strategyId", is(1)),
-                        hasProperty("trust", instanceOf(ForkPullRequestDiscoveryTrait.TrustPermission.class))),
-                Matchers.allOf(instanceOf(WildcardSCMHeadFilterTrait.class), hasProperty("includes", is("*")),
-                        hasProperty("excludes", is("master")))));
+        assertThat(instance.getTraits(),
+                containsInAnyOrder(
+                        Matchers.allOf(instanceOf(BranchDiscoveryTrait.class),
+                                hasProperty("buildBranch", is(true)),
+                                hasProperty("buildBranchesWithPR", is(true))),
+                        Matchers.allOf(instanceOf(ForkPullRequestDiscoveryTrait.class),
+                                hasProperty("strategyId", is(1)),
+                                hasProperty("trust", instanceOf(ForkPullRequestDiscoveryTrait.TrustPermission.class))),
+                        Matchers.allOf(instanceOf(WildcardSCMHeadFilterTrait.class),
+                                hasProperty("includes", is("*")),
+                                hasProperty("excludes", is("master")))));
         // Legacy API
         assertThat(instance.getCheckoutCredentialsId(), is(GitHubSCMSource.DescriptorImpl.SAME));
         assertThat(instance.getIncludes(), is("*"));
@@ -265,19 +293,24 @@ public class GitHubSCMSourceTraitsTest {
     @Test
     public void limit_branches() throws Exception {
         GitHubSCMSource instance = load();
-        assertThat(instance.getId(), is("org.jenkinsci.plugins.github_branch_source.GitHubSCMNavigator"
-                + "::https://api.github.com" + "::cloudbeers" + "::stunning-adventure"));
+        assertThat(instance.getId(),
+                is("org.jenkinsci.plugins.github_branch_source.GitHubSCMNavigator" + "::https://api.github.com"
+                        + "::cloudbeers" + "::stunning-adventure"));
         assertThat(instance.getApiUri(), is(GitHubSCMSource.GITHUB_URL));
         assertThat(instance.getRepoOwner(), is("cloudbeers"));
         assertThat(instance.getRepository(), is("stunning-adventure"));
         assertThat(instance.getCredentialsId(), is("e4d8c11a-0d24-472f-b86b-4b017c160e9a"));
-        assertThat(instance.getTraits(), containsInAnyOrder(
-                Matchers.allOf(instanceOf(BranchDiscoveryTrait.class), hasProperty("buildBranch", is(true)),
-                        hasProperty("buildBranchesWithPR", is(true))),
-                Matchers.allOf(instanceOf(ForkPullRequestDiscoveryTrait.class), hasProperty("strategyId", is(1)),
-                        hasProperty("trust", instanceOf(ForkPullRequestDiscoveryTrait.TrustPermission.class))),
-                Matchers.allOf(instanceOf(WildcardSCMHeadFilterTrait.class), hasProperty("includes", is("feature/*")),
-                        hasProperty("excludes", is("")))));
+        assertThat(instance.getTraits(),
+                containsInAnyOrder(
+                        Matchers.allOf(instanceOf(BranchDiscoveryTrait.class),
+                                hasProperty("buildBranch", is(true)),
+                                hasProperty("buildBranchesWithPR", is(true))),
+                        Matchers.allOf(instanceOf(ForkPullRequestDiscoveryTrait.class),
+                                hasProperty("strategyId", is(1)),
+                                hasProperty("trust", instanceOf(ForkPullRequestDiscoveryTrait.TrustPermission.class))),
+                        Matchers.allOf(instanceOf(WildcardSCMHeadFilterTrait.class),
+                                hasProperty("includes", is("feature/*")),
+                                hasProperty("excludes", is("")))));
         // Legacy API
         assertThat(instance.getCheckoutCredentialsId(), is(GitHubSCMSource.DescriptorImpl.SAME));
         assertThat(instance.getIncludes(), is("feature/*"));
@@ -293,19 +326,23 @@ public class GitHubSCMSourceTraitsTest {
     @Test
     public void use_agent_checkout() throws Exception {
         GitHubSCMSource instance = load();
-        assertThat(instance.getId(), is("org.jenkinsci.plugins.github_branch_source.GitHubSCMNavigator"
-                + "::https://api.github.com" + "::cloudbeers" + "::stunning-adventure"));
+        assertThat(instance.getId(),
+                is("org.jenkinsci.plugins.github_branch_source.GitHubSCMNavigator" + "::https://api.github.com"
+                        + "::cloudbeers" + "::stunning-adventure"));
         assertThat(instance.getApiUri(), is(GitHubSCMSource.GITHUB_URL));
         assertThat(instance.getRepoOwner(), is("cloudbeers"));
         assertThat(instance.getRepository(), is("stunning-adventure"));
         assertThat(instance.getCredentialsId(), is("e4d8c11a-0d24-472f-b86b-4b017c160e9a"));
-        assertThat(instance.getTraits(), containsInAnyOrder(
-                Matchers.allOf(instanceOf(BranchDiscoveryTrait.class), hasProperty("buildBranch", is(true)),
-                        hasProperty("buildBranchesWithPR", is(true))),
-                Matchers.allOf(instanceOf(ForkPullRequestDiscoveryTrait.class), hasProperty("strategyId", is(1)),
-                        hasProperty("trust", instanceOf(ForkPullRequestDiscoveryTrait.TrustPermission.class))),
-                Matchers.allOf(Matchers.instanceOf(SSHCheckoutTrait.class),
-                        hasProperty("credentialsId", is(nullValue())))));
+        assertThat(instance.getTraits(),
+                containsInAnyOrder(
+                        Matchers.allOf(instanceOf(BranchDiscoveryTrait.class),
+                                hasProperty("buildBranch", is(true)),
+                                hasProperty("buildBranchesWithPR", is(true))),
+                        Matchers.allOf(instanceOf(ForkPullRequestDiscoveryTrait.class),
+                                hasProperty("strategyId", is(1)),
+                                hasProperty("trust", instanceOf(ForkPullRequestDiscoveryTrait.TrustPermission.class))),
+                        Matchers.allOf(Matchers.instanceOf(SSHCheckoutTrait.class),
+                                hasProperty("credentialsId", is(nullValue())))));
         // Legacy API
         assertThat(instance.getCheckoutCredentialsId(), is(GitHubSCMSource.DescriptorImpl.ANONYMOUS));
         assertThat(instance.getIncludes(), is("*"));
@@ -332,12 +369,15 @@ public class GitHubSCMSourceTraitsTest {
         assertThat(instance.getRepoOwner(), is("cloudbeers"));
         assertThat(instance.getRepository(), is("stunning-adventure"));
         assertThat(instance.getCredentialsId(), is("e4d8c11a-0d24-472f-b86b-4b017c160e9a"));
-        assertThat(instance.getTraits(), containsInAnyOrder(
-                Matchers.allOf(instanceOf(BranchDiscoveryTrait.class), hasProperty("buildBranch", is(true)),
-                        hasProperty("buildBranchesWithPR", is(true))),
-                Matchers.allOf(instanceOf(ForkPullRequestDiscoveryTrait.class),
-                        hasProperty("strategies", is(EnumSet.of(ChangeRequestCheckoutStrategy.MERGE))),
-                        hasProperty("trust", instanceOf(ForkPullRequestDiscoveryTrait.TrustPermission.class)))));
+        assertThat(instance.getTraits(),
+                containsInAnyOrder(
+                        Matchers.allOf(instanceOf(BranchDiscoveryTrait.class),
+                                hasProperty("buildBranch", is(true)),
+                                hasProperty("buildBranchesWithPR", is(true))),
+                        Matchers.allOf(instanceOf(ForkPullRequestDiscoveryTrait.class),
+                                hasProperty("strategies", is(EnumSet.of(ChangeRequestCheckoutStrategy.MERGE))),
+                                hasProperty("trust",
+                                        instanceOf(ForkPullRequestDiscoveryTrait.TrustPermission.class)))));
         // Legacy API
         assertThat(instance.getCheckoutCredentialsId(), is(GitHubSCMSource.DescriptorImpl.SAME));
         assertThat(instance.getIncludes(), is("*"));
@@ -366,7 +406,8 @@ public class GitHubSCMSourceTraitsTest {
         assertThat(instance.getCredentialsId(), is("e4d8c11a-0d24-472f-b86b-4b017c160e9a"));
         assertThat(instance.getTraits(),
                 containsInAnyOrder(
-                        Matchers.allOf(instanceOf(BranchDiscoveryTrait.class), hasProperty("buildBranch", is(true)),
+                        Matchers.allOf(instanceOf(BranchDiscoveryTrait.class),
+                                hasProperty("buildBranch", is(true)),
                                 hasProperty("buildBranchesWithPR", is(true))),
                         Matchers.allOf(instanceOf(ForkPullRequestDiscoveryTrait.class),
                                 hasProperty("strategies", is(EnumSet.of(ChangeRequestCheckoutStrategy.MERGE))),
@@ -431,7 +472,8 @@ public class GitHubSCMSourceTraitsTest {
                 new SSHCheckoutTrait("value")));
         assertThat(instance.getTraits(),
                 containsInAnyOrder(
-                        Matchers.allOf(instanceOf(BranchDiscoveryTrait.class), hasProperty("buildBranch", is(true)),
+                        Matchers.allOf(instanceOf(BranchDiscoveryTrait.class),
+                                hasProperty("buildBranch", is(true)),
                                 hasProperty("buildBranchesWithPR", is(false))),
                         Matchers.allOf(instanceOf(SSHCheckoutTrait.class), hasProperty("credentialsId", is("value")))));
     }
@@ -474,8 +516,10 @@ public class GitHubSCMSourceTraitsTest {
                 Arrays.asList(new BranchDiscoveryTrait(true, false), new WildcardSCMHeadFilterTrait("feature/*", "")));
         assertThat(instance.getIncludes(), is("feature/*"));
         assertThat(instance.getExcludes(), is(""));
-        assertThat(instance.getTraits(), Matchers.hasItem(allOf(instanceOf(WildcardSCMHeadFilterTrait.class),
-                hasProperty("includes", is("feature/*")), hasProperty("excludes", is("")))));
+        assertThat(instance.getTraits(),
+                Matchers.hasItem(allOf(instanceOf(WildcardSCMHeadFilterTrait.class),
+                        hasProperty("includes", is("feature/*")),
+                        hasProperty("excludes", is("")))));
         instance.setIncludes("*");
         assertThat(instance.getIncludes(), is("*"));
         assertThat(instance.getExcludes(), is(""));
@@ -489,13 +533,17 @@ public class GitHubSCMSourceTraitsTest {
                 Arrays.asList(new BranchDiscoveryTrait(true, false), new WildcardSCMHeadFilterTrait("feature/*", "")));
         assertThat(instance.getIncludes(), is("feature/*"));
         assertThat(instance.getExcludes(), is(""));
-        assertThat(instance.getTraits(), Matchers.hasItem(allOf(instanceOf(WildcardSCMHeadFilterTrait.class),
-                hasProperty("includes", is("feature/*")), hasProperty("excludes", is("")))));
+        assertThat(instance.getTraits(),
+                Matchers.hasItem(allOf(instanceOf(WildcardSCMHeadFilterTrait.class),
+                        hasProperty("includes", is("feature/*")),
+                        hasProperty("excludes", is("")))));
         instance.setIncludes("bug/*");
         assertThat(instance.getIncludes(), is("bug/*"));
         assertThat(instance.getExcludes(), is(""));
-        assertThat(instance.getTraits(), Matchers.hasItem(allOf(instanceOf(WildcardSCMHeadFilterTrait.class),
-                hasProperty("includes", is("bug/*")), hasProperty("excludes", is("")))));
+        assertThat(instance.getTraits(),
+                Matchers.hasItem(allOf(instanceOf(WildcardSCMHeadFilterTrait.class),
+                        hasProperty("includes", is("bug/*")),
+                        hasProperty("excludes", is("")))));
     }
 
     @Test
@@ -508,51 +556,66 @@ public class GitHubSCMSourceTraitsTest {
         instance.setIncludes("feature/*");
         assertThat(instance.getIncludes(), is("feature/*"));
         assertThat(instance.getExcludes(), is(""));
-        assertThat(instance.getTraits(), Matchers.hasItem(allOf(instanceOf(WildcardSCMHeadFilterTrait.class),
-                hasProperty("includes", is("feature/*")), hasProperty("excludes", is("")))));
+        assertThat(instance.getTraits(),
+                Matchers.hasItem(allOf(instanceOf(WildcardSCMHeadFilterTrait.class),
+                        hasProperty("includes", is("feature/*")),
+                        hasProperty("excludes", is("")))));
     }
 
     @Test
     public void given__legacyCode_withExcludes__when__setIncludes_default__then__traitUpdated() {
         GitHubSCMSource instance = new GitHubSCMSource("testing", "test-repo");
         instance.setTraits(Arrays.asList(new BranchDiscoveryTrait(true, false),
-                new WildcardSCMHeadFilterTrait("feature/*", "feature/ignore"), new SSHCheckoutTrait("someValue")));
+                new WildcardSCMHeadFilterTrait("feature/*", "feature/ignore"),
+                new SSHCheckoutTrait("someValue")));
         assertThat(instance.getIncludes(), is("feature/*"));
         assertThat(instance.getExcludes(), is("feature/ignore"));
-        assertThat(instance.getTraits(), Matchers.hasItem(allOf(instanceOf(WildcardSCMHeadFilterTrait.class),
-                hasProperty("includes", is("feature/*")), hasProperty("excludes", is("feature/ignore")))));
+        assertThat(instance.getTraits(),
+                Matchers.hasItem(allOf(instanceOf(WildcardSCMHeadFilterTrait.class),
+                        hasProperty("includes", is("feature/*")),
+                        hasProperty("excludes", is("feature/ignore")))));
         instance.setIncludes("*");
         assertThat(instance.getIncludes(), is("*"));
         assertThat(instance.getExcludes(), is("feature/ignore"));
-        assertThat(instance.getTraits(), Matchers.hasItem(allOf(instanceOf(WildcardSCMHeadFilterTrait.class),
-                hasProperty("includes", is("*")), hasProperty("excludes", is("feature/ignore")))));
+        assertThat(instance.getTraits(),
+                Matchers.hasItem(allOf(instanceOf(WildcardSCMHeadFilterTrait.class),
+                        hasProperty("includes", is("*")),
+                        hasProperty("excludes", is("feature/ignore")))));
     }
 
     @Test
     public void given__legacyCode_withExcludes__when__setIncludes_value__then__traitUpdated() {
         GitHubSCMSource instance = new GitHubSCMSource("testing", "test-repo");
         instance.setTraits(Arrays.asList(new BranchDiscoveryTrait(true, false),
-                new WildcardSCMHeadFilterTrait("feature/*", "feature/ignore"), new SSHCheckoutTrait("someValue")));
+                new WildcardSCMHeadFilterTrait("feature/*", "feature/ignore"),
+                new SSHCheckoutTrait("someValue")));
         assertThat(instance.getIncludes(), is("feature/*"));
         assertThat(instance.getExcludes(), is("feature/ignore"));
-        assertThat(instance.getTraits(), Matchers.hasItem(allOf(instanceOf(WildcardSCMHeadFilterTrait.class),
-                hasProperty("includes", is("feature/*")), hasProperty("excludes", is("feature/ignore")))));
+        assertThat(instance.getTraits(),
+                Matchers.hasItem(allOf(instanceOf(WildcardSCMHeadFilterTrait.class),
+                        hasProperty("includes", is("feature/*")),
+                        hasProperty("excludes", is("feature/ignore")))));
         instance.setIncludes("bug/*");
         assertThat(instance.getIncludes(), is("bug/*"));
         assertThat(instance.getExcludes(), is("feature/ignore"));
-        assertThat(instance.getTraits(), Matchers.hasItem(allOf(instanceOf(WildcardSCMHeadFilterTrait.class),
-                hasProperty("includes", is("bug/*")), hasProperty("excludes", is("feature/ignore")))));
+        assertThat(instance.getTraits(),
+                Matchers.hasItem(allOf(instanceOf(WildcardSCMHeadFilterTrait.class),
+                        hasProperty("includes", is("bug/*")),
+                        hasProperty("excludes", is("feature/ignore")))));
     }
 
     @Test
     public void given__legacyCode_withoutIncludes__when__setExcludes_default__then__traitRemoved() {
         GitHubSCMSource instance = new GitHubSCMSource("testing", "test-repo");
         instance.setTraits(Arrays.asList(new BranchDiscoveryTrait(true, false),
-                new WildcardSCMHeadFilterTrait("*", "feature/ignore"), new SSHCheckoutTrait("someValue")));
+                new WildcardSCMHeadFilterTrait("*", "feature/ignore"),
+                new SSHCheckoutTrait("someValue")));
         assertThat(instance.getIncludes(), is("*"));
         assertThat(instance.getExcludes(), is("feature/ignore"));
-        assertThat(instance.getTraits(), Matchers.hasItem(allOf(instanceOf(WildcardSCMHeadFilterTrait.class),
-                hasProperty("includes", is("*")), hasProperty("excludes", is("feature/ignore")))));
+        assertThat(instance.getTraits(),
+                Matchers.hasItem(allOf(instanceOf(WildcardSCMHeadFilterTrait.class),
+                        hasProperty("includes", is("*")),
+                        hasProperty("excludes", is("feature/ignore")))));
         instance.setExcludes("");
         assertThat(instance.getIncludes(), is("*"));
         assertThat(instance.getExcludes(), is(""));
@@ -563,16 +626,21 @@ public class GitHubSCMSourceTraitsTest {
     public void given__legacyCode_withoutIncludes__when__setExcludes_value__then__traitUpdated() {
         GitHubSCMSource instance = new GitHubSCMSource("testing", "test-repo");
         instance.setTraits(Arrays.asList(new BranchDiscoveryTrait(true, false),
-                new WildcardSCMHeadFilterTrait("*", "feature/ignore"), new SSHCheckoutTrait("someValue")));
+                new WildcardSCMHeadFilterTrait("*", "feature/ignore"),
+                new SSHCheckoutTrait("someValue")));
         assertThat(instance.getIncludes(), is("*"));
         assertThat(instance.getExcludes(), is("feature/ignore"));
-        assertThat(instance.getTraits(), Matchers.hasItem(allOf(instanceOf(WildcardSCMHeadFilterTrait.class),
-                hasProperty("includes", is("*")), hasProperty("excludes", is("feature/ignore")))));
+        assertThat(instance.getTraits(),
+                Matchers.hasItem(allOf(instanceOf(WildcardSCMHeadFilterTrait.class),
+                        hasProperty("includes", is("*")),
+                        hasProperty("excludes", is("feature/ignore")))));
         instance.setExcludes("bug/ignore");
         assertThat(instance.getIncludes(), is("*"));
         assertThat(instance.getExcludes(), is("bug/ignore"));
-        assertThat(instance.getTraits(), Matchers.hasItem(allOf(instanceOf(WildcardSCMHeadFilterTrait.class),
-                hasProperty("includes", is("*")), hasProperty("excludes", is("bug/ignore")))));
+        assertThat(instance.getTraits(),
+                Matchers.hasItem(allOf(instanceOf(WildcardSCMHeadFilterTrait.class),
+                        hasProperty("includes", is("*")),
+                        hasProperty("excludes", is("bug/ignore")))));
     }
 
     @Test
@@ -585,40 +653,52 @@ public class GitHubSCMSourceTraitsTest {
         instance.setExcludes("feature/ignore");
         assertThat(instance.getIncludes(), is("*"));
         assertThat(instance.getExcludes(), is("feature/ignore"));
-        assertThat(instance.getTraits(), Matchers.hasItem(allOf(instanceOf(WildcardSCMHeadFilterTrait.class),
-                hasProperty("includes", is("*")), hasProperty("excludes", is("feature/ignore")))));
+        assertThat(instance.getTraits(),
+                Matchers.hasItem(allOf(instanceOf(WildcardSCMHeadFilterTrait.class),
+                        hasProperty("includes", is("*")),
+                        hasProperty("excludes", is("feature/ignore")))));
     }
 
     @Test
     public void given__legacyCode_withIncludes__when__setExcludes_default__then__traitUpdated() {
         GitHubSCMSource instance = new GitHubSCMSource("testing", "test-repo");
         instance.setTraits(Arrays.asList(new BranchDiscoveryTrait(true, false),
-                new WildcardSCMHeadFilterTrait("feature/*", "feature/ignore"), new SSHCheckoutTrait("someValue")));
+                new WildcardSCMHeadFilterTrait("feature/*", "feature/ignore"),
+                new SSHCheckoutTrait("someValue")));
         assertThat(instance.getIncludes(), is("feature/*"));
         assertThat(instance.getExcludes(), is("feature/ignore"));
-        assertThat(instance.getTraits(), Matchers.hasItem(allOf(instanceOf(WildcardSCMHeadFilterTrait.class),
-                hasProperty("includes", is("feature/*")), hasProperty("excludes", is("feature/ignore")))));
+        assertThat(instance.getTraits(),
+                Matchers.hasItem(allOf(instanceOf(WildcardSCMHeadFilterTrait.class),
+                        hasProperty("includes", is("feature/*")),
+                        hasProperty("excludes", is("feature/ignore")))));
         instance.setExcludes("");
         assertThat(instance.getIncludes(), is("feature/*"));
         assertThat(instance.getExcludes(), is(""));
-        assertThat(instance.getTraits(), Matchers.hasItem(allOf(instanceOf(WildcardSCMHeadFilterTrait.class),
-                hasProperty("includes", is("feature/*")), hasProperty("excludes", is("")))));
+        assertThat(instance.getTraits(),
+                Matchers.hasItem(allOf(instanceOf(WildcardSCMHeadFilterTrait.class),
+                        hasProperty("includes", is("feature/*")),
+                        hasProperty("excludes", is("")))));
     }
 
     @Test
     public void given__legacyCode_withIncludes__when__setExcludes_value__then__traitUpdated() {
         GitHubSCMSource instance = new GitHubSCMSource("testing", "test-repo");
         instance.setTraits(Arrays.asList(new BranchDiscoveryTrait(true, false),
-                new WildcardSCMHeadFilterTrait("feature/*", ""), new SSHCheckoutTrait("someValue")));
+                new WildcardSCMHeadFilterTrait("feature/*", ""),
+                new SSHCheckoutTrait("someValue")));
         assertThat(instance.getIncludes(), is("feature/*"));
         assertThat(instance.getExcludes(), is(""));
-        assertThat(instance.getTraits(), Matchers.hasItem(allOf(instanceOf(WildcardSCMHeadFilterTrait.class),
-                hasProperty("includes", is("feature/*")), hasProperty("excludes", is("")))));
+        assertThat(instance.getTraits(),
+                Matchers.hasItem(allOf(instanceOf(WildcardSCMHeadFilterTrait.class),
+                        hasProperty("includes", is("feature/*")),
+                        hasProperty("excludes", is("")))));
         instance.setExcludes("feature/ignore");
         assertThat(instance.getIncludes(), is("feature/*"));
         assertThat(instance.getExcludes(), is("feature/ignore"));
-        assertThat(instance.getTraits(), Matchers.hasItem(allOf(instanceOf(WildcardSCMHeadFilterTrait.class),
-                hasProperty("includes", is("feature/*")), hasProperty("excludes", is("feature/ignore")))));
+        assertThat(instance.getTraits(),
+                Matchers.hasItem(allOf(instanceOf(WildcardSCMHeadFilterTrait.class),
+                        hasProperty("includes", is("feature/*")),
+                        hasProperty("excludes", is("feature/ignore")))));
     }
 
     @Test
@@ -630,567 +710,768 @@ public class GitHubSCMSourceTraitsTest {
     @Test
     public void build_000001() throws Exception {
         GitHubSCMSource instance = load();
-        assertThat(instance.getTraits(), contains(
-                Matchers.allOf(instanceOf(ForkPullRequestDiscoveryTrait.class), hasProperty("strategyId", is(2)))));
+        assertThat(instance.getTraits(),
+                contains(Matchers.allOf(instanceOf(ForkPullRequestDiscoveryTrait.class),
+                        hasProperty("strategyId", is(2)))));
     }
 
     @Test
     public void build_000010() throws Exception {
         GitHubSCMSource instance = load();
-        assertThat(instance.getTraits(), contains(
-                Matchers.allOf(instanceOf(ForkPullRequestDiscoveryTrait.class), hasProperty("strategyId", is(1)))));
+        assertThat(instance.getTraits(),
+                contains(Matchers.allOf(instanceOf(ForkPullRequestDiscoveryTrait.class),
+                        hasProperty("strategyId", is(1)))));
     }
 
     @Test
     public void build_000011() throws Exception {
         GitHubSCMSource instance = load();
-        assertThat(instance.getTraits(), contains(
-                Matchers.allOf(instanceOf(ForkPullRequestDiscoveryTrait.class), hasProperty("strategyId", is(3)))));
+        assertThat(instance.getTraits(),
+                contains(Matchers.allOf(instanceOf(ForkPullRequestDiscoveryTrait.class),
+                        hasProperty("strategyId", is(3)))));
     }
 
     @Test
     public void build_000100() throws Exception {
         GitHubSCMSource instance = load();
-        assertThat(instance.getTraits(), contains(
-                Matchers.allOf(instanceOf(OriginPullRequestDiscoveryTrait.class), hasProperty("strategyId", is(2)))));
+        assertThat(instance.getTraits(),
+                contains(Matchers.allOf(instanceOf(OriginPullRequestDiscoveryTrait.class),
+                        hasProperty("strategyId", is(2)))));
     }
 
     @Test
     public void build_000101() throws Exception {
         GitHubSCMSource instance = load();
-        assertThat(instance.getTraits(), containsInAnyOrder(
-                Matchers.allOf(instanceOf(OriginPullRequestDiscoveryTrait.class), hasProperty("strategyId", is(2))),
-                Matchers.allOf(instanceOf(ForkPullRequestDiscoveryTrait.class), hasProperty("strategyId", is(2)))));
+        assertThat(instance.getTraits(),
+                containsInAnyOrder(
+                        Matchers.allOf(instanceOf(OriginPullRequestDiscoveryTrait.class),
+                                hasProperty("strategyId", is(2))),
+                        Matchers.allOf(instanceOf(ForkPullRequestDiscoveryTrait.class),
+                                hasProperty("strategyId", is(2)))));
     }
 
     @Test
     public void build_000110() throws Exception {
         GitHubSCMSource instance = load();
-        assertThat(instance.getTraits(), containsInAnyOrder(
-                Matchers.allOf(instanceOf(OriginPullRequestDiscoveryTrait.class), hasProperty("strategyId", is(2))),
-                Matchers.allOf(instanceOf(ForkPullRequestDiscoveryTrait.class), hasProperty("strategyId", is(1)))));
+        assertThat(instance.getTraits(),
+                containsInAnyOrder(
+                        Matchers.allOf(instanceOf(OriginPullRequestDiscoveryTrait.class),
+                                hasProperty("strategyId", is(2))),
+                        Matchers.allOf(instanceOf(ForkPullRequestDiscoveryTrait.class),
+                                hasProperty("strategyId", is(1)))));
     }
 
     @Test
     public void build_000111() throws Exception {
         GitHubSCMSource instance = load();
-        assertThat(instance.getTraits(), containsInAnyOrder(
-                Matchers.allOf(instanceOf(OriginPullRequestDiscoveryTrait.class), hasProperty("strategyId", is(2))),
-                Matchers.allOf(instanceOf(ForkPullRequestDiscoveryTrait.class), hasProperty("strategyId", is(3)))));
+        assertThat(instance.getTraits(),
+                containsInAnyOrder(
+                        Matchers.allOf(instanceOf(OriginPullRequestDiscoveryTrait.class),
+                                hasProperty("strategyId", is(2))),
+                        Matchers.allOf(instanceOf(ForkPullRequestDiscoveryTrait.class),
+                                hasProperty("strategyId", is(3)))));
     }
 
     @Test
     public void build_001000() throws Exception {
         GitHubSCMSource instance = load();
-        assertThat(instance.getTraits(), contains(
-                Matchers.allOf(instanceOf(OriginPullRequestDiscoveryTrait.class), hasProperty("strategyId", is(1)))));
+        assertThat(instance.getTraits(),
+                contains(Matchers.allOf(instanceOf(OriginPullRequestDiscoveryTrait.class),
+                        hasProperty("strategyId", is(1)))));
     }
 
     @Test
     public void build_001001() throws Exception {
         GitHubSCMSource instance = load();
-        assertThat(instance.getTraits(), containsInAnyOrder(
-                Matchers.allOf(instanceOf(OriginPullRequestDiscoveryTrait.class), hasProperty("strategyId", is(1))),
-                Matchers.allOf(instanceOf(ForkPullRequestDiscoveryTrait.class), hasProperty("strategyId", is(2)))));
+        assertThat(instance.getTraits(),
+                containsInAnyOrder(
+                        Matchers.allOf(instanceOf(OriginPullRequestDiscoveryTrait.class),
+                                hasProperty("strategyId", is(1))),
+                        Matchers.allOf(instanceOf(ForkPullRequestDiscoveryTrait.class),
+                                hasProperty("strategyId", is(2)))));
     }
 
     @Test
     public void build_001010() throws Exception {
         GitHubSCMSource instance = load();
-        assertThat(instance.getTraits(), containsInAnyOrder(
-                Matchers.allOf(instanceOf(OriginPullRequestDiscoveryTrait.class), hasProperty("strategyId", is(1))),
-                Matchers.allOf(instanceOf(ForkPullRequestDiscoveryTrait.class), hasProperty("strategyId", is(1)))));
+        assertThat(instance.getTraits(),
+                containsInAnyOrder(
+                        Matchers.allOf(instanceOf(OriginPullRequestDiscoveryTrait.class),
+                                hasProperty("strategyId", is(1))),
+                        Matchers.allOf(instanceOf(ForkPullRequestDiscoveryTrait.class),
+                                hasProperty("strategyId", is(1)))));
     }
 
     @Test
     public void build_001011() throws Exception {
         GitHubSCMSource instance = load();
-        assertThat(instance.getTraits(), containsInAnyOrder(
-                Matchers.allOf(instanceOf(OriginPullRequestDiscoveryTrait.class), hasProperty("strategyId", is(1))),
-                Matchers.allOf(instanceOf(ForkPullRequestDiscoveryTrait.class), hasProperty("strategyId", is(3)))));
+        assertThat(instance.getTraits(),
+                containsInAnyOrder(
+                        Matchers.allOf(instanceOf(OriginPullRequestDiscoveryTrait.class),
+                                hasProperty("strategyId", is(1))),
+                        Matchers.allOf(instanceOf(ForkPullRequestDiscoveryTrait.class),
+                                hasProperty("strategyId", is(3)))));
     }
 
     @Test
     public void build_001100() throws Exception {
         GitHubSCMSource instance = load();
-        assertThat(instance.getTraits(), contains(
-                Matchers.allOf(instanceOf(OriginPullRequestDiscoveryTrait.class), hasProperty("strategyId", is(3)))));
+        assertThat(instance.getTraits(),
+                contains(Matchers.allOf(instanceOf(OriginPullRequestDiscoveryTrait.class),
+                        hasProperty("strategyId", is(3)))));
     }
 
     @Test
     public void build_001101() throws Exception {
         GitHubSCMSource instance = load();
-        assertThat(instance.getTraits(), containsInAnyOrder(
-                Matchers.allOf(instanceOf(OriginPullRequestDiscoveryTrait.class), hasProperty("strategyId", is(3))),
-                Matchers.allOf(instanceOf(ForkPullRequestDiscoveryTrait.class), hasProperty("strategyId", is(2)))));
+        assertThat(instance.getTraits(),
+                containsInAnyOrder(
+                        Matchers.allOf(instanceOf(OriginPullRequestDiscoveryTrait.class),
+                                hasProperty("strategyId", is(3))),
+                        Matchers.allOf(instanceOf(ForkPullRequestDiscoveryTrait.class),
+                                hasProperty("strategyId", is(2)))));
     }
 
     @Test
     public void build_001110() throws Exception {
         GitHubSCMSource instance = load();
-        assertThat(instance.getTraits(), containsInAnyOrder(
-                Matchers.allOf(instanceOf(OriginPullRequestDiscoveryTrait.class), hasProperty("strategyId", is(3))),
-                Matchers.allOf(instanceOf(ForkPullRequestDiscoveryTrait.class), hasProperty("strategyId", is(1)))));
+        assertThat(instance.getTraits(),
+                containsInAnyOrder(
+                        Matchers.allOf(instanceOf(OriginPullRequestDiscoveryTrait.class),
+                                hasProperty("strategyId", is(3))),
+                        Matchers.allOf(instanceOf(ForkPullRequestDiscoveryTrait.class),
+                                hasProperty("strategyId", is(1)))));
     }
 
     @Test
     public void build_001111() throws Exception {
         GitHubSCMSource instance = load();
-        assertThat(instance.getTraits(), containsInAnyOrder(
-                Matchers.allOf(instanceOf(OriginPullRequestDiscoveryTrait.class), hasProperty("strategyId", is(3))),
-                Matchers.allOf(instanceOf(ForkPullRequestDiscoveryTrait.class), hasProperty("strategyId", is(3)))));
+        assertThat(instance.getTraits(),
+                containsInAnyOrder(
+                        Matchers.allOf(instanceOf(OriginPullRequestDiscoveryTrait.class),
+                                hasProperty("strategyId", is(3))),
+                        Matchers.allOf(instanceOf(ForkPullRequestDiscoveryTrait.class),
+                                hasProperty("strategyId", is(3)))));
     }
 
     @Test
     public void build_010000() throws Exception {
         GitHubSCMSource instance = load();
-        assertThat(instance.getTraits(), contains(Matchers.allOf(instanceOf(BranchDiscoveryTrait.class),
-                hasProperty("buildBranch", is(false)), hasProperty("buildBranchesWithPR", is(true)))));
+        assertThat(instance.getTraits(),
+                contains(Matchers.allOf(instanceOf(BranchDiscoveryTrait.class),
+                        hasProperty("buildBranch", is(false)),
+                        hasProperty("buildBranchesWithPR", is(true)))));
     }
 
     @Test
     public void build_010001() throws Exception {
         GitHubSCMSource instance = load();
-        assertThat(instance.getTraits(), containsInAnyOrder(
-                Matchers.allOf(instanceOf(BranchDiscoveryTrait.class), hasProperty("buildBranch", is(false)),
-                        hasProperty("buildBranchesWithPR", is(true))),
-                Matchers.allOf(instanceOf(ForkPullRequestDiscoveryTrait.class), hasProperty("strategyId", is(2)))));
+        assertThat(instance.getTraits(),
+                containsInAnyOrder(
+                        Matchers.allOf(instanceOf(BranchDiscoveryTrait.class),
+                                hasProperty("buildBranch", is(false)),
+                                hasProperty("buildBranchesWithPR", is(true))),
+                        Matchers.allOf(instanceOf(ForkPullRequestDiscoveryTrait.class),
+                                hasProperty("strategyId", is(2)))));
     }
 
     @Test
     public void build_010010() throws Exception {
         GitHubSCMSource instance = load();
-        assertThat(instance.getTraits(), containsInAnyOrder(
-                Matchers.allOf(instanceOf(BranchDiscoveryTrait.class), hasProperty("buildBranch", is(false)),
-                        hasProperty("buildBranchesWithPR", is(true))),
-                Matchers.allOf(instanceOf(ForkPullRequestDiscoveryTrait.class), hasProperty("strategyId", is(1)))));
+        assertThat(instance.getTraits(),
+                containsInAnyOrder(
+                        Matchers.allOf(instanceOf(BranchDiscoveryTrait.class),
+                                hasProperty("buildBranch", is(false)),
+                                hasProperty("buildBranchesWithPR", is(true))),
+                        Matchers.allOf(instanceOf(ForkPullRequestDiscoveryTrait.class),
+                                hasProperty("strategyId", is(1)))));
     }
 
     @Test
     public void build_010011() throws Exception {
         GitHubSCMSource instance = load();
-        assertThat(instance.getTraits(), containsInAnyOrder(
-                Matchers.allOf(instanceOf(BranchDiscoveryTrait.class), hasProperty("buildBranch", is(false)),
-                        hasProperty("buildBranchesWithPR", is(true))),
-                Matchers.allOf(instanceOf(ForkPullRequestDiscoveryTrait.class), hasProperty("strategyId", is(3)))));
+        assertThat(instance.getTraits(),
+                containsInAnyOrder(
+                        Matchers.allOf(instanceOf(BranchDiscoveryTrait.class),
+                                hasProperty("buildBranch", is(false)),
+                                hasProperty("buildBranchesWithPR", is(true))),
+                        Matchers.allOf(instanceOf(ForkPullRequestDiscoveryTrait.class),
+                                hasProperty("strategyId", is(3)))));
     }
 
     @Test
     public void build_010100() throws Exception {
         GitHubSCMSource instance = load();
-        assertThat(instance.getTraits(), containsInAnyOrder(
-                Matchers.allOf(instanceOf(BranchDiscoveryTrait.class), hasProperty("buildBranch", is(false)),
-                        hasProperty("buildBranchesWithPR", is(true))),
-                Matchers.allOf(instanceOf(OriginPullRequestDiscoveryTrait.class), hasProperty("strategyId", is(2)))));
+        assertThat(instance.getTraits(),
+                containsInAnyOrder(
+                        Matchers.allOf(instanceOf(BranchDiscoveryTrait.class),
+                                hasProperty("buildBranch", is(false)),
+                                hasProperty("buildBranchesWithPR", is(true))),
+                        Matchers.allOf(instanceOf(OriginPullRequestDiscoveryTrait.class),
+                                hasProperty("strategyId", is(2)))));
     }
 
     @Test
     public void build_010101() throws Exception {
         GitHubSCMSource instance = load();
-        assertThat(instance.getTraits(), containsInAnyOrder(
-                Matchers.allOf(instanceOf(BranchDiscoveryTrait.class), hasProperty("buildBranch", is(false)),
-                        hasProperty("buildBranchesWithPR", is(true))),
-                Matchers.allOf(instanceOf(OriginPullRequestDiscoveryTrait.class), hasProperty("strategyId", is(2))),
-                Matchers.allOf(instanceOf(ForkPullRequestDiscoveryTrait.class), hasProperty("strategyId", is(2)))));
+        assertThat(instance.getTraits(),
+                containsInAnyOrder(
+                        Matchers.allOf(instanceOf(BranchDiscoveryTrait.class),
+                                hasProperty("buildBranch", is(false)),
+                                hasProperty("buildBranchesWithPR", is(true))),
+                        Matchers.allOf(instanceOf(OriginPullRequestDiscoveryTrait.class),
+                                hasProperty("strategyId", is(2))),
+                        Matchers.allOf(instanceOf(ForkPullRequestDiscoveryTrait.class),
+                                hasProperty("strategyId", is(2)))));
     }
 
     @Test
     public void build_010110() throws Exception {
         GitHubSCMSource instance = load();
-        assertThat(instance.getTraits(), containsInAnyOrder(
-                Matchers.allOf(instanceOf(BranchDiscoveryTrait.class), hasProperty("buildBranch", is(false)),
-                        hasProperty("buildBranchesWithPR", is(true))),
-                Matchers.allOf(instanceOf(OriginPullRequestDiscoveryTrait.class), hasProperty("strategyId", is(2))),
-                Matchers.allOf(instanceOf(ForkPullRequestDiscoveryTrait.class), hasProperty("strategyId", is(1)))));
+        assertThat(instance.getTraits(),
+                containsInAnyOrder(
+                        Matchers.allOf(instanceOf(BranchDiscoveryTrait.class),
+                                hasProperty("buildBranch", is(false)),
+                                hasProperty("buildBranchesWithPR", is(true))),
+                        Matchers.allOf(instanceOf(OriginPullRequestDiscoveryTrait.class),
+                                hasProperty("strategyId", is(2))),
+                        Matchers.allOf(instanceOf(ForkPullRequestDiscoveryTrait.class),
+                                hasProperty("strategyId", is(1)))));
     }
 
     @Test
     public void build_010111() throws Exception {
         GitHubSCMSource instance = load();
-        assertThat(instance.getTraits(), containsInAnyOrder(
-                Matchers.allOf(instanceOf(BranchDiscoveryTrait.class), hasProperty("buildBranch", is(false)),
-                        hasProperty("buildBranchesWithPR", is(true))),
-                Matchers.allOf(instanceOf(OriginPullRequestDiscoveryTrait.class), hasProperty("strategyId", is(2))),
-                Matchers.allOf(instanceOf(ForkPullRequestDiscoveryTrait.class), hasProperty("strategyId", is(3)))));
+        assertThat(instance.getTraits(),
+                containsInAnyOrder(
+                        Matchers.allOf(instanceOf(BranchDiscoveryTrait.class),
+                                hasProperty("buildBranch", is(false)),
+                                hasProperty("buildBranchesWithPR", is(true))),
+                        Matchers.allOf(instanceOf(OriginPullRequestDiscoveryTrait.class),
+                                hasProperty("strategyId", is(2))),
+                        Matchers.allOf(instanceOf(ForkPullRequestDiscoveryTrait.class),
+                                hasProperty("strategyId", is(3)))));
     }
 
     @Test
     public void build_011000() throws Exception {
         GitHubSCMSource instance = load();
-        assertThat(instance.getTraits(), containsInAnyOrder(
-                Matchers.allOf(instanceOf(BranchDiscoveryTrait.class), hasProperty("buildBranch", is(false)),
-                        hasProperty("buildBranchesWithPR", is(true))),
-                Matchers.allOf(instanceOf(OriginPullRequestDiscoveryTrait.class), hasProperty("strategyId", is(1)))));
+        assertThat(instance.getTraits(),
+                containsInAnyOrder(
+                        Matchers.allOf(instanceOf(BranchDiscoveryTrait.class),
+                                hasProperty("buildBranch", is(false)),
+                                hasProperty("buildBranchesWithPR", is(true))),
+                        Matchers.allOf(instanceOf(OriginPullRequestDiscoveryTrait.class),
+                                hasProperty("strategyId", is(1)))));
     }
 
     @Test
     public void build_011001() throws Exception {
         GitHubSCMSource instance = load();
-        assertThat(instance.getTraits(), containsInAnyOrder(
-                Matchers.allOf(instanceOf(BranchDiscoveryTrait.class), hasProperty("buildBranch", is(false)),
-                        hasProperty("buildBranchesWithPR", is(true))),
-                Matchers.allOf(instanceOf(OriginPullRequestDiscoveryTrait.class), hasProperty("strategyId", is(1))),
-                Matchers.allOf(instanceOf(ForkPullRequestDiscoveryTrait.class), hasProperty("strategyId", is(2)))));
+        assertThat(instance.getTraits(),
+                containsInAnyOrder(
+                        Matchers.allOf(instanceOf(BranchDiscoveryTrait.class),
+                                hasProperty("buildBranch", is(false)),
+                                hasProperty("buildBranchesWithPR", is(true))),
+                        Matchers.allOf(instanceOf(OriginPullRequestDiscoveryTrait.class),
+                                hasProperty("strategyId", is(1))),
+                        Matchers.allOf(instanceOf(ForkPullRequestDiscoveryTrait.class),
+                                hasProperty("strategyId", is(2)))));
     }
 
     @Test
     public void build_011010() throws Exception {
         GitHubSCMSource instance = load();
-        assertThat(instance.getTraits(), containsInAnyOrder(
-                Matchers.allOf(instanceOf(BranchDiscoveryTrait.class), hasProperty("buildBranch", is(false)),
-                        hasProperty("buildBranchesWithPR", is(true))),
-                Matchers.allOf(instanceOf(OriginPullRequestDiscoveryTrait.class), hasProperty("strategyId", is(1))),
-                Matchers.allOf(instanceOf(ForkPullRequestDiscoveryTrait.class), hasProperty("strategyId", is(1)))));
+        assertThat(instance.getTraits(),
+                containsInAnyOrder(
+                        Matchers.allOf(instanceOf(BranchDiscoveryTrait.class),
+                                hasProperty("buildBranch", is(false)),
+                                hasProperty("buildBranchesWithPR", is(true))),
+                        Matchers.allOf(instanceOf(OriginPullRequestDiscoveryTrait.class),
+                                hasProperty("strategyId", is(1))),
+                        Matchers.allOf(instanceOf(ForkPullRequestDiscoveryTrait.class),
+                                hasProperty("strategyId", is(1)))));
     }
 
     @Test
     public void build_011011() throws Exception {
         GitHubSCMSource instance = load();
-        assertThat(instance.getTraits(), containsInAnyOrder(
-                Matchers.allOf(instanceOf(BranchDiscoveryTrait.class), hasProperty("buildBranch", is(false)),
-                        hasProperty("buildBranchesWithPR", is(true))),
-                Matchers.allOf(instanceOf(OriginPullRequestDiscoveryTrait.class), hasProperty("strategyId", is(1))),
-                Matchers.allOf(instanceOf(ForkPullRequestDiscoveryTrait.class), hasProperty("strategyId", is(3)))));
+        assertThat(instance.getTraits(),
+                containsInAnyOrder(
+                        Matchers.allOf(instanceOf(BranchDiscoveryTrait.class),
+                                hasProperty("buildBranch", is(false)),
+                                hasProperty("buildBranchesWithPR", is(true))),
+                        Matchers.allOf(instanceOf(OriginPullRequestDiscoveryTrait.class),
+                                hasProperty("strategyId", is(1))),
+                        Matchers.allOf(instanceOf(ForkPullRequestDiscoveryTrait.class),
+                                hasProperty("strategyId", is(3)))));
     }
 
     @Test
     public void build_011100() throws Exception {
         GitHubSCMSource instance = load();
-        assertThat(instance.getTraits(), containsInAnyOrder(
-                Matchers.allOf(instanceOf(BranchDiscoveryTrait.class), hasProperty("buildBranch", is(false)),
-                        hasProperty("buildBranchesWithPR", is(true))),
-                Matchers.allOf(instanceOf(OriginPullRequestDiscoveryTrait.class), hasProperty("strategyId", is(3)))));
+        assertThat(instance.getTraits(),
+                containsInAnyOrder(
+                        Matchers.allOf(instanceOf(BranchDiscoveryTrait.class),
+                                hasProperty("buildBranch", is(false)),
+                                hasProperty("buildBranchesWithPR", is(true))),
+                        Matchers.allOf(instanceOf(OriginPullRequestDiscoveryTrait.class),
+                                hasProperty("strategyId", is(3)))));
     }
 
     @Test
     public void build_011101() throws Exception {
         GitHubSCMSource instance = load();
-        assertThat(instance.getTraits(), containsInAnyOrder(
-                Matchers.allOf(instanceOf(BranchDiscoveryTrait.class), hasProperty("buildBranch", is(false)),
-                        hasProperty("buildBranchesWithPR", is(true))),
-                Matchers.allOf(instanceOf(OriginPullRequestDiscoveryTrait.class), hasProperty("strategyId", is(3))),
-                Matchers.allOf(instanceOf(ForkPullRequestDiscoveryTrait.class), hasProperty("strategyId", is(2)))));
+        assertThat(instance.getTraits(),
+                containsInAnyOrder(
+                        Matchers.allOf(instanceOf(BranchDiscoveryTrait.class),
+                                hasProperty("buildBranch", is(false)),
+                                hasProperty("buildBranchesWithPR", is(true))),
+                        Matchers.allOf(instanceOf(OriginPullRequestDiscoveryTrait.class),
+                                hasProperty("strategyId", is(3))),
+                        Matchers.allOf(instanceOf(ForkPullRequestDiscoveryTrait.class),
+                                hasProperty("strategyId", is(2)))));
     }
 
     @Test
     public void build_011110() throws Exception {
         GitHubSCMSource instance = load();
-        assertThat(instance.getTraits(), containsInAnyOrder(
-                Matchers.allOf(instanceOf(BranchDiscoveryTrait.class), hasProperty("buildBranch", is(false)),
-                        hasProperty("buildBranchesWithPR", is(true))),
-                Matchers.allOf(instanceOf(OriginPullRequestDiscoveryTrait.class), hasProperty("strategyId", is(3))),
-                Matchers.allOf(instanceOf(ForkPullRequestDiscoveryTrait.class), hasProperty("strategyId", is(1)))));
+        assertThat(instance.getTraits(),
+                containsInAnyOrder(
+                        Matchers.allOf(instanceOf(BranchDiscoveryTrait.class),
+                                hasProperty("buildBranch", is(false)),
+                                hasProperty("buildBranchesWithPR", is(true))),
+                        Matchers.allOf(instanceOf(OriginPullRequestDiscoveryTrait.class),
+                                hasProperty("strategyId", is(3))),
+                        Matchers.allOf(instanceOf(ForkPullRequestDiscoveryTrait.class),
+                                hasProperty("strategyId", is(1)))));
     }
 
     @Test
     public void build_011111() throws Exception {
         GitHubSCMSource instance = load();
-        assertThat(instance.getTraits(), containsInAnyOrder(
-                Matchers.allOf(instanceOf(BranchDiscoveryTrait.class), hasProperty("buildBranch", is(false)),
-                        hasProperty("buildBranchesWithPR", is(true))),
-                Matchers.allOf(instanceOf(OriginPullRequestDiscoveryTrait.class), hasProperty("strategyId", is(3))),
-                Matchers.allOf(instanceOf(ForkPullRequestDiscoveryTrait.class), hasProperty("strategyId", is(3)))));
+        assertThat(instance.getTraits(),
+                containsInAnyOrder(
+                        Matchers.allOf(instanceOf(BranchDiscoveryTrait.class),
+                                hasProperty("buildBranch", is(false)),
+                                hasProperty("buildBranchesWithPR", is(true))),
+                        Matchers.allOf(instanceOf(OriginPullRequestDiscoveryTrait.class),
+                                hasProperty("strategyId", is(3))),
+                        Matchers.allOf(instanceOf(ForkPullRequestDiscoveryTrait.class),
+                                hasProperty("strategyId", is(3)))));
     }
 
     @Test
     public void build_100000() throws Exception {
         GitHubSCMSource instance = load();
-        assertThat(instance.getTraits(), contains(Matchers.allOf(instanceOf(BranchDiscoveryTrait.class),
-                hasProperty("buildBranch", is(true)), hasProperty("buildBranchesWithPR", is(false)))));
+        assertThat(instance.getTraits(),
+                contains(Matchers.allOf(instanceOf(BranchDiscoveryTrait.class),
+                        hasProperty("buildBranch", is(true)),
+                        hasProperty("buildBranchesWithPR", is(false)))));
     }
 
     @Test
     public void build_100001() throws Exception {
         GitHubSCMSource instance = load();
-        assertThat(instance.getTraits(), containsInAnyOrder(
-                Matchers.allOf(instanceOf(BranchDiscoveryTrait.class), hasProperty("buildBranch", is(true)),
-                        hasProperty("buildBranchesWithPR", is(false))),
-                Matchers.allOf(instanceOf(ForkPullRequestDiscoveryTrait.class), hasProperty("strategyId", is(2)))));
+        assertThat(instance.getTraits(),
+                containsInAnyOrder(
+                        Matchers.allOf(instanceOf(BranchDiscoveryTrait.class),
+                                hasProperty("buildBranch", is(true)),
+                                hasProperty("buildBranchesWithPR", is(false))),
+                        Matchers.allOf(instanceOf(ForkPullRequestDiscoveryTrait.class),
+                                hasProperty("strategyId", is(2)))));
     }
 
     @Test
     public void build_100010() throws Exception {
         GitHubSCMSource instance = load();
-        assertThat(instance.getTraits(), containsInAnyOrder(
-                Matchers.allOf(instanceOf(BranchDiscoveryTrait.class), hasProperty("buildBranch", is(true)),
-                        hasProperty("buildBranchesWithPR", is(false))),
-                Matchers.allOf(instanceOf(ForkPullRequestDiscoveryTrait.class), hasProperty("strategyId", is(1)))));
+        assertThat(instance.getTraits(),
+                containsInAnyOrder(
+                        Matchers.allOf(instanceOf(BranchDiscoveryTrait.class),
+                                hasProperty("buildBranch", is(true)),
+                                hasProperty("buildBranchesWithPR", is(false))),
+                        Matchers.allOf(instanceOf(ForkPullRequestDiscoveryTrait.class),
+                                hasProperty("strategyId", is(1)))));
     }
 
     @Test
     public void build_100011() throws Exception {
         GitHubSCMSource instance = load();
-        assertThat(instance.getTraits(), containsInAnyOrder(
-                Matchers.allOf(instanceOf(BranchDiscoveryTrait.class), hasProperty("buildBranch", is(true)),
-                        hasProperty("buildBranchesWithPR", is(false))),
-                Matchers.allOf(instanceOf(ForkPullRequestDiscoveryTrait.class), hasProperty("strategyId", is(3)))));
+        assertThat(instance.getTraits(),
+                containsInAnyOrder(
+                        Matchers.allOf(instanceOf(BranchDiscoveryTrait.class),
+                                hasProperty("buildBranch", is(true)),
+                                hasProperty("buildBranchesWithPR", is(false))),
+                        Matchers.allOf(instanceOf(ForkPullRequestDiscoveryTrait.class),
+                                hasProperty("strategyId", is(3)))));
     }
 
     @Test
     public void build_100100() throws Exception {
         GitHubSCMSource instance = load();
-        assertThat(instance.getTraits(), containsInAnyOrder(
-                Matchers.allOf(instanceOf(BranchDiscoveryTrait.class), hasProperty("buildBranch", is(true)),
-                        hasProperty("buildBranchesWithPR", is(false))),
-                Matchers.allOf(instanceOf(OriginPullRequestDiscoveryTrait.class), hasProperty("strategyId", is(2)))));
+        assertThat(instance.getTraits(),
+                containsInAnyOrder(
+                        Matchers.allOf(instanceOf(BranchDiscoveryTrait.class),
+                                hasProperty("buildBranch", is(true)),
+                                hasProperty("buildBranchesWithPR", is(false))),
+                        Matchers.allOf(instanceOf(OriginPullRequestDiscoveryTrait.class),
+                                hasProperty("strategyId", is(2)))));
     }
 
     @Test
     public void build_100101() throws Exception {
         GitHubSCMSource instance = load();
-        assertThat(instance.getTraits(), containsInAnyOrder(
-                Matchers.allOf(instanceOf(BranchDiscoveryTrait.class), hasProperty("buildBranch", is(true)),
-                        hasProperty("buildBranchesWithPR", is(false))),
-                Matchers.allOf(instanceOf(OriginPullRequestDiscoveryTrait.class), hasProperty("strategyId", is(2))),
-                Matchers.allOf(instanceOf(ForkPullRequestDiscoveryTrait.class), hasProperty("strategyId", is(2)))));
+        assertThat(instance.getTraits(),
+                containsInAnyOrder(
+                        Matchers.allOf(instanceOf(BranchDiscoveryTrait.class),
+                                hasProperty("buildBranch", is(true)),
+                                hasProperty("buildBranchesWithPR", is(false))),
+                        Matchers.allOf(instanceOf(OriginPullRequestDiscoveryTrait.class),
+                                hasProperty("strategyId", is(2))),
+                        Matchers.allOf(instanceOf(ForkPullRequestDiscoveryTrait.class),
+                                hasProperty("strategyId", is(2)))));
     }
 
     @Test
     public void build_100110() throws Exception {
         GitHubSCMSource instance = load();
-        assertThat(instance.getTraits(), containsInAnyOrder(
-                Matchers.allOf(instanceOf(BranchDiscoveryTrait.class), hasProperty("buildBranch", is(true)),
-                        hasProperty("buildBranchesWithPR", is(false))),
-                Matchers.allOf(instanceOf(OriginPullRequestDiscoveryTrait.class), hasProperty("strategyId", is(2))),
-                Matchers.allOf(instanceOf(ForkPullRequestDiscoveryTrait.class), hasProperty("strategyId", is(1)))));
+        assertThat(instance.getTraits(),
+                containsInAnyOrder(
+                        Matchers.allOf(instanceOf(BranchDiscoveryTrait.class),
+                                hasProperty("buildBranch", is(true)),
+                                hasProperty("buildBranchesWithPR", is(false))),
+                        Matchers.allOf(instanceOf(OriginPullRequestDiscoveryTrait.class),
+                                hasProperty("strategyId", is(2))),
+                        Matchers.allOf(instanceOf(ForkPullRequestDiscoveryTrait.class),
+                                hasProperty("strategyId", is(1)))));
     }
 
     @Test
     public void build_100111() throws Exception {
         GitHubSCMSource instance = load();
-        assertThat(instance.getTraits(), containsInAnyOrder(
-                Matchers.allOf(instanceOf(BranchDiscoveryTrait.class), hasProperty("buildBranch", is(true)),
-                        hasProperty("buildBranchesWithPR", is(false))),
-                Matchers.allOf(instanceOf(OriginPullRequestDiscoveryTrait.class), hasProperty("strategyId", is(2))),
-                Matchers.allOf(instanceOf(ForkPullRequestDiscoveryTrait.class), hasProperty("strategyId", is(3)))));
+        assertThat(instance.getTraits(),
+                containsInAnyOrder(
+                        Matchers.allOf(instanceOf(BranchDiscoveryTrait.class),
+                                hasProperty("buildBranch", is(true)),
+                                hasProperty("buildBranchesWithPR", is(false))),
+                        Matchers.allOf(instanceOf(OriginPullRequestDiscoveryTrait.class),
+                                hasProperty("strategyId", is(2))),
+                        Matchers.allOf(instanceOf(ForkPullRequestDiscoveryTrait.class),
+                                hasProperty("strategyId", is(3)))));
     }
 
     @Test
     public void build_101000() throws Exception {
         GitHubSCMSource instance = load();
-        assertThat(instance.getTraits(), containsInAnyOrder(
-                Matchers.allOf(instanceOf(BranchDiscoveryTrait.class), hasProperty("buildBranch", is(true)),
-                        hasProperty("buildBranchesWithPR", is(false))),
-                Matchers.allOf(instanceOf(OriginPullRequestDiscoveryTrait.class), hasProperty("strategyId", is(1)))));
+        assertThat(instance.getTraits(),
+                containsInAnyOrder(
+                        Matchers.allOf(instanceOf(BranchDiscoveryTrait.class),
+                                hasProperty("buildBranch", is(true)),
+                                hasProperty("buildBranchesWithPR", is(false))),
+                        Matchers.allOf(instanceOf(OriginPullRequestDiscoveryTrait.class),
+                                hasProperty("strategyId", is(1)))));
     }
 
     @Test
     public void build_101001() throws Exception {
         GitHubSCMSource instance = load();
-        assertThat(instance.getTraits(), containsInAnyOrder(
-                Matchers.allOf(instanceOf(BranchDiscoveryTrait.class), hasProperty("buildBranch", is(true)),
-                        hasProperty("buildBranchesWithPR", is(false))),
-                Matchers.allOf(instanceOf(OriginPullRequestDiscoveryTrait.class), hasProperty("strategyId", is(1))),
-                Matchers.allOf(instanceOf(ForkPullRequestDiscoveryTrait.class), hasProperty("strategyId", is(2)))));
+        assertThat(instance.getTraits(),
+                containsInAnyOrder(
+                        Matchers.allOf(instanceOf(BranchDiscoveryTrait.class),
+                                hasProperty("buildBranch", is(true)),
+                                hasProperty("buildBranchesWithPR", is(false))),
+                        Matchers.allOf(instanceOf(OriginPullRequestDiscoveryTrait.class),
+                                hasProperty("strategyId", is(1))),
+                        Matchers.allOf(instanceOf(ForkPullRequestDiscoveryTrait.class),
+                                hasProperty("strategyId", is(2)))));
     }
 
     @Test
     public void build_101010() throws Exception {
         GitHubSCMSource instance = load();
-        assertThat(instance.getTraits(), containsInAnyOrder(
-                Matchers.allOf(instanceOf(BranchDiscoveryTrait.class), hasProperty("buildBranch", is(true)),
-                        hasProperty("buildBranchesWithPR", is(false))),
-                Matchers.allOf(instanceOf(OriginPullRequestDiscoveryTrait.class), hasProperty("strategyId", is(1))),
-                Matchers.allOf(instanceOf(ForkPullRequestDiscoveryTrait.class), hasProperty("strategyId", is(1)))));
+        assertThat(instance.getTraits(),
+                containsInAnyOrder(
+                        Matchers.allOf(instanceOf(BranchDiscoveryTrait.class),
+                                hasProperty("buildBranch", is(true)),
+                                hasProperty("buildBranchesWithPR", is(false))),
+                        Matchers.allOf(instanceOf(OriginPullRequestDiscoveryTrait.class),
+                                hasProperty("strategyId", is(1))),
+                        Matchers.allOf(instanceOf(ForkPullRequestDiscoveryTrait.class),
+                                hasProperty("strategyId", is(1)))));
     }
 
     @Test
     public void build_101011() throws Exception {
         GitHubSCMSource instance = load();
-        assertThat(instance.getTraits(), containsInAnyOrder(
-                Matchers.allOf(instanceOf(BranchDiscoveryTrait.class), hasProperty("buildBranch", is(true)),
-                        hasProperty("buildBranchesWithPR", is(false))),
-                Matchers.allOf(instanceOf(OriginPullRequestDiscoveryTrait.class), hasProperty("strategyId", is(1))),
-                Matchers.allOf(instanceOf(ForkPullRequestDiscoveryTrait.class), hasProperty("strategyId", is(3)))));
+        assertThat(instance.getTraits(),
+                containsInAnyOrder(
+                        Matchers.allOf(instanceOf(BranchDiscoveryTrait.class),
+                                hasProperty("buildBranch", is(true)),
+                                hasProperty("buildBranchesWithPR", is(false))),
+                        Matchers.allOf(instanceOf(OriginPullRequestDiscoveryTrait.class),
+                                hasProperty("strategyId", is(1))),
+                        Matchers.allOf(instanceOf(ForkPullRequestDiscoveryTrait.class),
+                                hasProperty("strategyId", is(3)))));
     }
 
     @Test
     public void build_101100() throws Exception {
         GitHubSCMSource instance = load();
-        assertThat(instance.getTraits(), containsInAnyOrder(
-                Matchers.allOf(instanceOf(BranchDiscoveryTrait.class), hasProperty("buildBranch", is(true)),
-                        hasProperty("buildBranchesWithPR", is(false))),
-                Matchers.allOf(instanceOf(OriginPullRequestDiscoveryTrait.class), hasProperty("strategyId", is(3)))));
+        assertThat(instance.getTraits(),
+                containsInAnyOrder(
+                        Matchers.allOf(instanceOf(BranchDiscoveryTrait.class),
+                                hasProperty("buildBranch", is(true)),
+                                hasProperty("buildBranchesWithPR", is(false))),
+                        Matchers.allOf(instanceOf(OriginPullRequestDiscoveryTrait.class),
+                                hasProperty("strategyId", is(3)))));
     }
 
     @Test
     public void build_101101() throws Exception {
         GitHubSCMSource instance = load();
-        assertThat(instance.getTraits(), containsInAnyOrder(
-                Matchers.allOf(instanceOf(BranchDiscoveryTrait.class), hasProperty("buildBranch", is(true)),
-                        hasProperty("buildBranchesWithPR", is(false))),
-                Matchers.allOf(instanceOf(OriginPullRequestDiscoveryTrait.class), hasProperty("strategyId", is(3))),
-                Matchers.allOf(instanceOf(ForkPullRequestDiscoveryTrait.class), hasProperty("strategyId", is(2)))));
+        assertThat(instance.getTraits(),
+                containsInAnyOrder(
+                        Matchers.allOf(instanceOf(BranchDiscoveryTrait.class),
+                                hasProperty("buildBranch", is(true)),
+                                hasProperty("buildBranchesWithPR", is(false))),
+                        Matchers.allOf(instanceOf(OriginPullRequestDiscoveryTrait.class),
+                                hasProperty("strategyId", is(3))),
+                        Matchers.allOf(instanceOf(ForkPullRequestDiscoveryTrait.class),
+                                hasProperty("strategyId", is(2)))));
     }
 
     @Test
     public void build_101110() throws Exception {
         GitHubSCMSource instance = load();
-        assertThat(instance.getTraits(), containsInAnyOrder(
-                Matchers.allOf(instanceOf(BranchDiscoveryTrait.class), hasProperty("buildBranch", is(true)),
-                        hasProperty("buildBranchesWithPR", is(false))),
-                Matchers.allOf(instanceOf(OriginPullRequestDiscoveryTrait.class), hasProperty("strategyId", is(3))),
-                Matchers.allOf(instanceOf(ForkPullRequestDiscoveryTrait.class), hasProperty("strategyId", is(1)))));
+        assertThat(instance.getTraits(),
+                containsInAnyOrder(
+                        Matchers.allOf(instanceOf(BranchDiscoveryTrait.class),
+                                hasProperty("buildBranch", is(true)),
+                                hasProperty("buildBranchesWithPR", is(false))),
+                        Matchers.allOf(instanceOf(OriginPullRequestDiscoveryTrait.class),
+                                hasProperty("strategyId", is(3))),
+                        Matchers.allOf(instanceOf(ForkPullRequestDiscoveryTrait.class),
+                                hasProperty("strategyId", is(1)))));
     }
 
     @Test
     public void build_101111() throws Exception {
         GitHubSCMSource instance = load();
-        assertThat(instance.getTraits(), containsInAnyOrder(
-                Matchers.allOf(instanceOf(BranchDiscoveryTrait.class), hasProperty("buildBranch", is(true)),
-                        hasProperty("buildBranchesWithPR", is(false))),
-                Matchers.allOf(instanceOf(OriginPullRequestDiscoveryTrait.class), hasProperty("strategyId", is(3))),
-                Matchers.allOf(instanceOf(ForkPullRequestDiscoveryTrait.class), hasProperty("strategyId", is(3)))));
+        assertThat(instance.getTraits(),
+                containsInAnyOrder(
+                        Matchers.allOf(instanceOf(BranchDiscoveryTrait.class),
+                                hasProperty("buildBranch", is(true)),
+                                hasProperty("buildBranchesWithPR", is(false))),
+                        Matchers.allOf(instanceOf(OriginPullRequestDiscoveryTrait.class),
+                                hasProperty("strategyId", is(3))),
+                        Matchers.allOf(instanceOf(ForkPullRequestDiscoveryTrait.class),
+                                hasProperty("strategyId", is(3)))));
     }
 
     @Test
     public void build_110000() throws Exception {
         GitHubSCMSource instance = load();
-        assertThat(instance.getTraits(), contains(Matchers.allOf(instanceOf(BranchDiscoveryTrait.class),
-                hasProperty("buildBranch", is(true)), hasProperty("buildBranchesWithPR", is(true)))));
+        assertThat(instance.getTraits(),
+                contains(Matchers.allOf(instanceOf(BranchDiscoveryTrait.class),
+                        hasProperty("buildBranch", is(true)),
+                        hasProperty("buildBranchesWithPR", is(true)))));
     }
 
     @Test
     public void build_110001() throws Exception {
         GitHubSCMSource instance = load();
-        assertThat(instance.getTraits(), containsInAnyOrder(
-                Matchers.allOf(instanceOf(BranchDiscoveryTrait.class), hasProperty("buildBranch", is(true)),
-                        hasProperty("buildBranchesWithPR", is(true))),
-                Matchers.allOf(instanceOf(ForkPullRequestDiscoveryTrait.class), hasProperty("strategyId", is(2)))));
+        assertThat(instance.getTraits(),
+                containsInAnyOrder(
+                        Matchers.allOf(instanceOf(BranchDiscoveryTrait.class),
+                                hasProperty("buildBranch", is(true)),
+                                hasProperty("buildBranchesWithPR", is(true))),
+                        Matchers.allOf(instanceOf(ForkPullRequestDiscoveryTrait.class),
+                                hasProperty("strategyId", is(2)))));
     }
 
     @Test
     public void build_110010() throws Exception {
         GitHubSCMSource instance = load();
-        assertThat(instance.getTraits(), containsInAnyOrder(
-                Matchers.allOf(instanceOf(BranchDiscoveryTrait.class), hasProperty("buildBranch", is(true)),
-                        hasProperty("buildBranchesWithPR", is(true))),
-                Matchers.allOf(instanceOf(ForkPullRequestDiscoveryTrait.class), hasProperty("strategyId", is(1)))));
+        assertThat(instance.getTraits(),
+                containsInAnyOrder(
+                        Matchers.allOf(instanceOf(BranchDiscoveryTrait.class),
+                                hasProperty("buildBranch", is(true)),
+                                hasProperty("buildBranchesWithPR", is(true))),
+                        Matchers.allOf(instanceOf(ForkPullRequestDiscoveryTrait.class),
+                                hasProperty("strategyId", is(1)))));
     }
 
     @Test
     public void build_110011() throws Exception {
         GitHubSCMSource instance = load();
-        assertThat(instance.getTraits(), containsInAnyOrder(
-                Matchers.allOf(instanceOf(BranchDiscoveryTrait.class), hasProperty("buildBranch", is(true)),
-                        hasProperty("buildBranchesWithPR", is(true))),
-                Matchers.allOf(instanceOf(ForkPullRequestDiscoveryTrait.class), hasProperty("strategyId", is(3)))));
+        assertThat(instance.getTraits(),
+                containsInAnyOrder(
+                        Matchers.allOf(instanceOf(BranchDiscoveryTrait.class),
+                                hasProperty("buildBranch", is(true)),
+                                hasProperty("buildBranchesWithPR", is(true))),
+                        Matchers.allOf(instanceOf(ForkPullRequestDiscoveryTrait.class),
+                                hasProperty("strategyId", is(3)))));
     }
 
     @Test
     public void build_110100() throws Exception {
         GitHubSCMSource instance = load();
-        assertThat(instance.getTraits(), containsInAnyOrder(
-                Matchers.allOf(instanceOf(BranchDiscoveryTrait.class), hasProperty("buildBranch", is(true)),
-                        hasProperty("buildBranchesWithPR", is(true))),
-                Matchers.allOf(instanceOf(OriginPullRequestDiscoveryTrait.class), hasProperty("strategyId", is(2)))));
+        assertThat(instance.getTraits(),
+                containsInAnyOrder(
+                        Matchers.allOf(instanceOf(BranchDiscoveryTrait.class),
+                                hasProperty("buildBranch", is(true)),
+                                hasProperty("buildBranchesWithPR", is(true))),
+                        Matchers.allOf(instanceOf(OriginPullRequestDiscoveryTrait.class),
+                                hasProperty("strategyId", is(2)))));
     }
 
     @Test
     public void build_110101() throws Exception {
         GitHubSCMSource instance = load();
-        assertThat(instance.getTraits(), containsInAnyOrder(
-                Matchers.allOf(instanceOf(BranchDiscoveryTrait.class), hasProperty("buildBranch", is(true)),
-                        hasProperty("buildBranchesWithPR", is(true))),
-                Matchers.allOf(instanceOf(OriginPullRequestDiscoveryTrait.class), hasProperty("strategyId", is(2))),
-                Matchers.allOf(instanceOf(ForkPullRequestDiscoveryTrait.class), hasProperty("strategyId", is(2)))));
+        assertThat(instance.getTraits(),
+                containsInAnyOrder(
+                        Matchers.allOf(instanceOf(BranchDiscoveryTrait.class),
+                                hasProperty("buildBranch", is(true)),
+                                hasProperty("buildBranchesWithPR", is(true))),
+                        Matchers.allOf(instanceOf(OriginPullRequestDiscoveryTrait.class),
+                                hasProperty("strategyId", is(2))),
+                        Matchers.allOf(instanceOf(ForkPullRequestDiscoveryTrait.class),
+                                hasProperty("strategyId", is(2)))));
     }
 
     @Test
     public void build_110110() throws Exception {
         GitHubSCMSource instance = load();
-        assertThat(instance.getTraits(), containsInAnyOrder(
-                Matchers.allOf(instanceOf(BranchDiscoveryTrait.class), hasProperty("buildBranch", is(true)),
-                        hasProperty("buildBranchesWithPR", is(true))),
-                Matchers.allOf(instanceOf(OriginPullRequestDiscoveryTrait.class), hasProperty("strategyId", is(2))),
-                Matchers.allOf(instanceOf(ForkPullRequestDiscoveryTrait.class), hasProperty("strategyId", is(1)))));
+        assertThat(instance.getTraits(),
+                containsInAnyOrder(
+                        Matchers.allOf(instanceOf(BranchDiscoveryTrait.class),
+                                hasProperty("buildBranch", is(true)),
+                                hasProperty("buildBranchesWithPR", is(true))),
+                        Matchers.allOf(instanceOf(OriginPullRequestDiscoveryTrait.class),
+                                hasProperty("strategyId", is(2))),
+                        Matchers.allOf(instanceOf(ForkPullRequestDiscoveryTrait.class),
+                                hasProperty("strategyId", is(1)))));
     }
 
     @Test
     public void build_110111() throws Exception {
         GitHubSCMSource instance = load();
-        assertThat(instance.getTraits(), containsInAnyOrder(
-                Matchers.allOf(instanceOf(BranchDiscoveryTrait.class), hasProperty("buildBranch", is(true)),
-                        hasProperty("buildBranchesWithPR", is(true))),
-                Matchers.allOf(instanceOf(OriginPullRequestDiscoveryTrait.class), hasProperty("strategyId", is(2))),
-                Matchers.allOf(instanceOf(ForkPullRequestDiscoveryTrait.class), hasProperty("strategyId", is(3)))));
+        assertThat(instance.getTraits(),
+                containsInAnyOrder(
+                        Matchers.allOf(instanceOf(BranchDiscoveryTrait.class),
+                                hasProperty("buildBranch", is(true)),
+                                hasProperty("buildBranchesWithPR", is(true))),
+                        Matchers.allOf(instanceOf(OriginPullRequestDiscoveryTrait.class),
+                                hasProperty("strategyId", is(2))),
+                        Matchers.allOf(instanceOf(ForkPullRequestDiscoveryTrait.class),
+                                hasProperty("strategyId", is(3)))));
     }
 
     @Test
     public void build_111000() throws Exception {
         GitHubSCMSource instance = load();
-        assertThat(instance.getTraits(), containsInAnyOrder(
-                Matchers.allOf(instanceOf(BranchDiscoveryTrait.class), hasProperty("buildBranch", is(true)),
-                        hasProperty("buildBranchesWithPR", is(true))),
-                Matchers.allOf(instanceOf(OriginPullRequestDiscoveryTrait.class), hasProperty("strategyId", is(1)))));
+        assertThat(instance.getTraits(),
+                containsInAnyOrder(
+                        Matchers.allOf(instanceOf(BranchDiscoveryTrait.class),
+                                hasProperty("buildBranch", is(true)),
+                                hasProperty("buildBranchesWithPR", is(true))),
+                        Matchers.allOf(instanceOf(OriginPullRequestDiscoveryTrait.class),
+                                hasProperty("strategyId", is(1)))));
     }
 
     @Test
     public void build_111001() throws Exception {
         GitHubSCMSource instance = load();
-        assertThat(instance.getTraits(), containsInAnyOrder(
-                Matchers.allOf(instanceOf(BranchDiscoveryTrait.class), hasProperty("buildBranch", is(true)),
-                        hasProperty("buildBranchesWithPR", is(true))),
-                Matchers.allOf(instanceOf(OriginPullRequestDiscoveryTrait.class), hasProperty("strategyId", is(1))),
-                Matchers.allOf(instanceOf(ForkPullRequestDiscoveryTrait.class), hasProperty("strategyId", is(2)))));
+        assertThat(instance.getTraits(),
+                containsInAnyOrder(
+                        Matchers.allOf(instanceOf(BranchDiscoveryTrait.class),
+                                hasProperty("buildBranch", is(true)),
+                                hasProperty("buildBranchesWithPR", is(true))),
+                        Matchers.allOf(instanceOf(OriginPullRequestDiscoveryTrait.class),
+                                hasProperty("strategyId", is(1))),
+                        Matchers.allOf(instanceOf(ForkPullRequestDiscoveryTrait.class),
+                                hasProperty("strategyId", is(2)))));
     }
 
     @Test
     public void build_111010() throws Exception {
         GitHubSCMSource instance = load();
-        assertThat(instance.getTraits(), containsInAnyOrder(
-                Matchers.allOf(instanceOf(BranchDiscoveryTrait.class), hasProperty("buildBranch", is(true)),
-                        hasProperty("buildBranchesWithPR", is(true))),
-                Matchers.allOf(instanceOf(OriginPullRequestDiscoveryTrait.class), hasProperty("strategyId", is(1))),
-                Matchers.allOf(instanceOf(ForkPullRequestDiscoveryTrait.class), hasProperty("strategyId", is(1)))));
+        assertThat(instance.getTraits(),
+                containsInAnyOrder(
+                        Matchers.allOf(instanceOf(BranchDiscoveryTrait.class),
+                                hasProperty("buildBranch", is(true)),
+                                hasProperty("buildBranchesWithPR", is(true))),
+                        Matchers.allOf(instanceOf(OriginPullRequestDiscoveryTrait.class),
+                                hasProperty("strategyId", is(1))),
+                        Matchers.allOf(instanceOf(ForkPullRequestDiscoveryTrait.class),
+                                hasProperty("strategyId", is(1)))));
     }
 
     @Test
     public void build_111011() throws Exception {
         GitHubSCMSource instance = load();
-        assertThat(instance.getTraits(), containsInAnyOrder(
-                Matchers.allOf(instanceOf(BranchDiscoveryTrait.class), hasProperty("buildBranch", is(true)),
-                        hasProperty("buildBranchesWithPR", is(true))),
-                Matchers.allOf(instanceOf(OriginPullRequestDiscoveryTrait.class), hasProperty("strategyId", is(1))),
-                Matchers.allOf(instanceOf(ForkPullRequestDiscoveryTrait.class), hasProperty("strategyId", is(3)))));
+        assertThat(instance.getTraits(),
+                containsInAnyOrder(
+                        Matchers.allOf(instanceOf(BranchDiscoveryTrait.class),
+                                hasProperty("buildBranch", is(true)),
+                                hasProperty("buildBranchesWithPR", is(true))),
+                        Matchers.allOf(instanceOf(OriginPullRequestDiscoveryTrait.class),
+                                hasProperty("strategyId", is(1))),
+                        Matchers.allOf(instanceOf(ForkPullRequestDiscoveryTrait.class),
+                                hasProperty("strategyId", is(3)))));
     }
 
     @Test
     public void build_111100() throws Exception {
         GitHubSCMSource instance = load();
-        assertThat(instance.getTraits(), containsInAnyOrder(
-                Matchers.allOf(instanceOf(BranchDiscoveryTrait.class), hasProperty("buildBranch", is(true)),
-                        hasProperty("buildBranchesWithPR", is(true))),
-                Matchers.allOf(instanceOf(OriginPullRequestDiscoveryTrait.class), hasProperty("strategyId", is(3)))));
+        assertThat(instance.getTraits(),
+                containsInAnyOrder(
+                        Matchers.allOf(instanceOf(BranchDiscoveryTrait.class),
+                                hasProperty("buildBranch", is(true)),
+                                hasProperty("buildBranchesWithPR", is(true))),
+                        Matchers.allOf(instanceOf(OriginPullRequestDiscoveryTrait.class),
+                                hasProperty("strategyId", is(3)))));
     }
 
     @Test
     public void build_111101() throws Exception {
         GitHubSCMSource instance = load();
-        assertThat(instance.getTraits(), containsInAnyOrder(
-                Matchers.allOf(instanceOf(BranchDiscoveryTrait.class), hasProperty("buildBranch", is(true)),
-                        hasProperty("buildBranchesWithPR", is(true))),
-                Matchers.allOf(instanceOf(OriginPullRequestDiscoveryTrait.class), hasProperty("strategyId", is(3))),
-                Matchers.allOf(instanceOf(ForkPullRequestDiscoveryTrait.class), hasProperty("strategyId", is(2)))));
+        assertThat(instance.getTraits(),
+                containsInAnyOrder(
+                        Matchers.allOf(instanceOf(BranchDiscoveryTrait.class),
+                                hasProperty("buildBranch", is(true)),
+                                hasProperty("buildBranchesWithPR", is(true))),
+                        Matchers.allOf(instanceOf(OriginPullRequestDiscoveryTrait.class),
+                                hasProperty("strategyId", is(3))),
+                        Matchers.allOf(instanceOf(ForkPullRequestDiscoveryTrait.class),
+                                hasProperty("strategyId", is(2)))));
     }
 
     @Test
     public void build_111110() throws Exception {
         GitHubSCMSource instance = load();
-        assertThat(instance.getTraits(), containsInAnyOrder(
-                Matchers.allOf(instanceOf(BranchDiscoveryTrait.class), hasProperty("buildBranch", is(true)),
-                        hasProperty("buildBranchesWithPR", is(true))),
-                Matchers.allOf(instanceOf(OriginPullRequestDiscoveryTrait.class), hasProperty("strategyId", is(3))),
-                Matchers.allOf(instanceOf(ForkPullRequestDiscoveryTrait.class), hasProperty("strategyId", is(1)))));
+        assertThat(instance.getTraits(),
+                containsInAnyOrder(
+                        Matchers.allOf(instanceOf(BranchDiscoveryTrait.class),
+                                hasProperty("buildBranch", is(true)),
+                                hasProperty("buildBranchesWithPR", is(true))),
+                        Matchers.allOf(instanceOf(OriginPullRequestDiscoveryTrait.class),
+                                hasProperty("strategyId", is(3))),
+                        Matchers.allOf(instanceOf(ForkPullRequestDiscoveryTrait.class),
+                                hasProperty("strategyId", is(1)))));
     }
 
     @Test
     public void build_111111() throws Exception {
         GitHubSCMSource instance = load();
-        assertThat(instance.getTraits(), containsInAnyOrder(
-                Matchers.allOf(instanceOf(BranchDiscoveryTrait.class), hasProperty("buildBranch", is(true)),
-                        hasProperty("buildBranchesWithPR", is(true))),
-                Matchers.allOf(instanceOf(OriginPullRequestDiscoveryTrait.class), hasProperty("strategyId", is(3))),
-                Matchers.allOf(instanceOf(ForkPullRequestDiscoveryTrait.class), hasProperty("strategyId", is(3)))));
+        assertThat(instance.getTraits(),
+                containsInAnyOrder(
+                        Matchers.allOf(instanceOf(BranchDiscoveryTrait.class),
+                                hasProperty("buildBranch", is(true)),
+                                hasProperty("buildBranchesWithPR", is(true))),
+                        Matchers.allOf(instanceOf(OriginPullRequestDiscoveryTrait.class),
+                                hasProperty("strategyId", is(3))),
+                        Matchers.allOf(instanceOf(ForkPullRequestDiscoveryTrait.class),
+                                hasProperty("strategyId", is(3)))));
     }
 }

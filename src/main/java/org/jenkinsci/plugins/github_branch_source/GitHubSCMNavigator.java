@@ -361,7 +361,9 @@ public class GitHubSCMNavigator extends SCMNavigator {
      * Use defaults for old settings.
      */
     @SuppressWarnings("ConstantConditions")
-    @SuppressFBWarnings(value = "RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE", justification = "Only non-null after we set them here!")
+    @SuppressFBWarnings(
+            value = "RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE",
+            justification = "Only non-null after we set them here!")
     private Object readResolve() {
         if (scanCredentialsId != null) {
             credentialsId = scanCredentialsId;

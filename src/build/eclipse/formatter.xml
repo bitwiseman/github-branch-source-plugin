@@ -12,7 +12,7 @@
 <!--        <setting id="org.eclipse.jdt.core.formatter.alignment_for_arguments_in_method_invocation" value="80"/>-->
 <!--        <setting id="org.eclipse.jdt.core.formatter.alignment_for_arguments_in_allocation_expression" value="80"/>-->
 <!--        <setting id="org.eclipse.jdt.core.formatter.alignment_for_selector_in_method_invocation" value="80"/>-->
-<!--        <setting id="org.eclipse.jdt.core.formatter.alignment_for_arguments_in_annotation" value="80"/>-->
+        <setting id="org.eclipse.jdt.core.formatter.alignment_for_arguments_in_annotation" value="48"/>
 <!--        <setting id="org.eclipse.jdt.core.formatter.alignment_for_arguments_in_qualified_allocation_expression" value="80"/>-->
         <setting id="org.eclipse.jdt.core.formatter.alignment_for_parameters_in_method_declaration" value="48"/>
         <setting id="org.eclipse.jdt.core.formatter.comment.line_length" value="120"/>

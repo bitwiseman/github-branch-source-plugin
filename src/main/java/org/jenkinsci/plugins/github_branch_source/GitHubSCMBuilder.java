@@ -244,7 +244,8 @@ public class GitHubSCMBuilder extends GitSCMBuilder<GitHubSCMBuilder> {
             StandardCredentials credentials = CredentialsMatchers.firstOrNull(CredentialsProvider.lookupCredentials(
                     StandardCredentials.class, context,
                     context instanceof Queue.Task ? ((Queue.Task) context).getDefaultAuthentication() : ACL.SYSTEM,
-                    URIRequirementBuilder.create().withHostname(RepositoryUriResolver.hostnameFromApiUri(apiUri))
+                    URIRequirementBuilder.create()
+                            .withHostname(RepositoryUriResolver.hostnameFromApiUri(apiUri))
                             .build()),
                     CredentialsMatchers.allOf(CredentialsMatchers.withId(credentialsId),
                             CredentialsMatchers.instanceOf(StandardCredentials.class)));

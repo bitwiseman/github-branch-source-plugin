@@ -122,7 +122,8 @@ public class GithubAppCredentialsTest extends AbstractGitHubWireMockTest {
         final String scenarioName = "credentials-accesstoken";
 
         githubApi.stubFor(post(urlEqualTo("/app/installations/654321/access_tokens")).inScenario(scenarioName)
-                .whenScenarioStateIs("Started").willSetStateTo("1")
+                .whenScenarioStateIs("Started")
+                .willSetStateTo("1")
                 .withRequestBody(equalToJson(
                         "{\"permissions\":{\"pull_requests\":\"write\",\"metadata\":\"read\",\"checks\":\"write\",\"contents\":\"read\"}}",
                         true, false))
@@ -137,27 +138,32 @@ public class GithubAppCredentialsTest extends AbstractGitHubWireMockTest {
 
         // Force an error to test fallback refreshing from agent
         githubApi.stubFor(post(urlEqualTo("/app/installations/654321/access_tokens")).inScenario(scenarioName)
-                .whenScenarioStateIs("1").willSetStateTo("2")
+                .whenScenarioStateIs("1")
+                .willSetStateTo("2")
                 .withRequestBody(equalToJson(
                         "{\"permissions\":{\"pull_requests\":\"write\",\"metadata\":\"read\",\"checks\":\"write\",\"contents\":\"read\"}}",
                         true, false))
-                .willReturn(aResponse().withStatus(404).withStatusMessage("404 Not Found")
+                .willReturn(aResponse().withStatus(404)
+                        .withStatusMessage("404 Not Found")
                         .withHeader("Content-Type", "application/json; charset=utf-8")
                         .withBody("{\"message\": \"File not found\"}")));
 
         // Force an error to test fallback to returning unexpired token on agent
         githubApi.stubFor(post(urlEqualTo("/app/installations/654321/access_tokens")).inScenario(scenarioName)
-                .whenScenarioStateIs("2").willSetStateTo("3")
+                .whenScenarioStateIs("2")
+                .willSetStateTo("3")
                 .withRequestBody(equalToJson(
                         "{\"permissions\":{\"pull_requests\":\"write\",\"metadata\":\"read\",\"checks\":\"write\",\"contents\":\"read\"}}",
                         true, false))
-                .willReturn(aResponse().withStatus(404).withStatusMessage("404 Not Found")
+                .willReturn(aResponse().withStatus(404)
+                        .withStatusMessage("404 Not Found")
                         .withHeader("Content-Type", "application/json; charset=utf-8")
                         .withBody("{\"message\": \"File not found\"}")));
 
         // return an expired token on controller
         githubApi.stubFor(post(urlEqualTo("/app/installations/654321/access_tokens")).inScenario(scenarioName)
-                .whenScenarioStateIs("3").willSetStateTo("4")
+                .whenScenarioStateIs("3")
+                .willSetStateTo("4")
                 .withRequestBody(equalToJson(
                         "{\"permissions\":{\"pull_requests\":\"write\",\"metadata\":\"read\",\"checks\":\"write\",\"contents\":\"read\"}}",
                         true, false))
@@ -170,17 +176,20 @@ public class GithubAppCredentialsTest extends AbstractGitHubWireMockTest {
 
         // Force an error to test non-fallback scenario and refreshing on agent
         githubApi.stubFor(post(urlEqualTo("/app/installations/654321/access_tokens")).inScenario(scenarioName)
-                .whenScenarioStateIs("4").willSetStateTo("5")
+                .whenScenarioStateIs("4")
+                .willSetStateTo("5")
                 .withRequestBody(equalToJson(
                         "{\"permissions\":{\"pull_requests\":\"write\",\"metadata\":\"read\",\"checks\":\"write\",\"contents\":\"read\"}}",
                         true, false))
-                .willReturn(aResponse().withStatus(404).withStatusMessage("404 Not Found")
+                .willReturn(aResponse().withStatus(404)
+                        .withStatusMessage("404 Not Found")
                         .withHeader("Content-Type", "application/json; charset=utf-8")
                         .withBody("{\"message\": \"File not found\"}")));
 
         // Valid token retirieved on agent
         githubApi.stubFor(post(urlEqualTo("/app/installations/654321/access_tokens")).inScenario(scenarioName)
-                .whenScenarioStateIs("5").willSetStateTo("6")
+                .whenScenarioStateIs("5")
+                .willSetStateTo("6")
                 .withRequestBody(equalToJson(
                         "{\"permissions\":{\"pull_requests\":\"write\",\"metadata\":\"read\",\"checks\":\"write\",\"contents\":\"read\"}}",
                         true, false))
@@ -191,8 +200,9 @@ public class GithubAppCredentialsTest extends AbstractGitHubWireMockTest {
 
         // Valid token retirieved on controller
         githubApi.stubFor(post(urlEqualTo("/app/installations/654321/access_tokens")).inScenario(scenarioName)
-                .whenScenarioStateIs("6").willSetStateTo("7") // setting this to non-existant state means any extra
-                                                              // requests will fail
+                .whenScenarioStateIs("6")
+                .willSetStateTo("7") // setting this to non-existant state means any extra
+                                     // requests will fail
                 .withRequestBody(equalToJson(
                         "{\"permissions\":{\"pull_requests\":\"write\",\"metadata\":\"read\",\"checks\":\"write\",\"contents\":\"read\"}}",
                         true, false))

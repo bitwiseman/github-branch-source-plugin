@@ -96,8 +96,9 @@ public class GitHubSCMBuilderTest {
                 new BasicSSHUserPrivateKey.UsersPrivateKeySource(),
                 null,
                 null);
-        SystemCredentialsProvider.getInstance().setDomainCredentialsMap(Collections.singletonMap(Domain.global(),
-                Arrays.asList(userPasswordCredential, sshPrivateKeyCredential)));
+        SystemCredentialsProvider.getInstance()
+                .setDomainCredentialsMap(Collections.singletonMap(Domain.global(),
+                        Arrays.asList(userPasswordCredential, sshPrivateKeyCredential)));
     }
 
     @After

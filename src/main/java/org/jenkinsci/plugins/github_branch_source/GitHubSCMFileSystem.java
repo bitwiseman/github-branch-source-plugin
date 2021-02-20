@@ -169,10 +169,19 @@ public class GitHubSCMFileSystem extends SCMFileSystem implements GitHubClosable
             }
             log.append('\n');
             GHCommit.ShortInfo info = commit.getCommitShortInfo();
-            log.append("author ").append(info.getAuthor().getName()).append(" <").append(info.getAuthor().getEmail())
-                    .append("> ").append(iso.format(info.getAuthoredDate())).append('\n');
-            log.append("committer ").append(info.getCommitter().getName()).append(" <")
-                    .append(info.getCommitter().getEmail()).append("> ").append(iso.format(info.getCommitDate()))
+            log.append("author ")
+                    .append(info.getAuthor().getName())
+                    .append(" <")
+                    .append(info.getAuthor().getEmail())
+                    .append("> ")
+                    .append(iso.format(info.getAuthoredDate()))
+                    .append('\n');
+            log.append("committer ")
+                    .append(info.getCommitter().getName())
+                    .append(" <")
+                    .append(info.getCommitter().getEmail())
+                    .append("> ")
+                    .append(iso.format(info.getCommitDate()))
                     .append('\n');
             log.append('\n');
             String msg = info.getMessage();

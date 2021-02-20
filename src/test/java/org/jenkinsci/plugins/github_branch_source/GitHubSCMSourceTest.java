@@ -129,7 +129,8 @@ public class GitHubSCMSourceTest extends GitSCMSourceBase {
                 allOf(hasProperty("userName", equalTo("cloudbeers")), hasProperty("repositoryName", equalTo("yolo")))));
         // And specifically...
         names = new ArrayList<>();
-        ExtensionList.lookup(GitHubRepositoryNameContributor.class).get(GitHubSCMSourceRepositoryNameContributor.class)
+        ExtensionList.lookup(GitHubRepositoryNameContributor.class)
+                .get(GitHubSCMSourceRepositoryNameContributor.class)
                 .parseAssociatedNames(job, names);
         assertThat(names, contains(
                 allOf(hasProperty("userName", equalTo("cloudbeers")), hasProperty("repositoryName", equalTo("yolo")))));
@@ -144,7 +145,8 @@ public class GitHubSCMSourceTest extends GitSCMSourceBase {
         assertThat(names, Matchers.empty());
         // And specifically...
         names = new ArrayList<>();
-        ExtensionList.lookup(GitHubRepositoryNameContributor.class).get(GitHubSCMSourceRepositoryNameContributor.class)
+        ExtensionList.lookup(GitHubRepositoryNameContributor.class)
+                .get(GitHubSCMSourceRepositoryNameContributor.class)
                 .parseAssociatedNames(job, names);
         assertThat(names, Matchers.empty());
     }
@@ -157,7 +159,8 @@ public class GitHubSCMSourceTest extends GitSCMSourceBase {
         assertThat(names, Matchers.empty());
         // And specifically...
         names = new ArrayList<>();
-        ExtensionList.lookup(GitHubRepositoryNameContributor.class).get(GitHubSCMSourceRepositoryNameContributor.class)
+        ExtensionList.lookup(GitHubRepositoryNameContributor.class)
+                .get(GitHubSCMSourceRepositoryNameContributor.class)
                 .parseAssociatedNames((Item) job, names);
         assertThat(names, Matchers.empty());
     }
@@ -225,8 +228,10 @@ public class GitHubSCMSourceTest extends GitSCMSourceBase {
         // Causes PR 2 to fall back to null merge_commit_sha
 
         githubApi.stubFor(get(urlEqualTo("/repos/cloudbeers/yolo/commits/38814ca33833ff5583624c29f305be9133f27a40"))
-                .inScenario("PR 2 Merge 404").whenScenarioStateIs(Scenario.STARTED)
-                .willReturn(aResponse().withStatus(404).withHeader("Content-Type", "application/json; charset=utf-8")
+                .inScenario("PR 2 Merge 404")
+                .whenScenarioStateIs(Scenario.STARTED)
+                .willReturn(aResponse().withStatus(404)
+                        .withHeader("Content-Type", "application/json; charset=utf-8")
                         .withBodyFile("body-heads-master-notfound.json"))
                 .willSetStateTo(Scenario.STARTED));
 
@@ -289,12 +294,14 @@ public class GitHubSCMSourceTest extends GitSCMSourceBase {
     @Test
     public void fetchSmokes_badUser() throws Exception {
         // make it so PR-2 returns a file not found for user
-        githubApi.stubFor(get(urlMatching("(/api/v3)?/repos/cloudbeers/yolo/pulls/2"))
-                .inScenario("Pull Request Merge Hash").whenScenarioStateIs(Scenario.STARTED)
-                .willReturn(aResponse().withHeader("Content-Type", "application/json; charset=utf-8")
-                        .withBodyFile("body-yolo-pulls-2-bad-user.json")));
+        githubApi.stubFor(
+                get(urlMatching("(/api/v3)?/repos/cloudbeers/yolo/pulls/2")).inScenario("Pull Request Merge Hash")
+                        .whenScenarioStateIs(Scenario.STARTED)
+                        .willReturn(aResponse().withHeader("Content-Type", "application/json; charset=utf-8")
+                                .withBodyFile("body-yolo-pulls-2-bad-user.json")));
         githubApi.stubFor(get(urlMatching("(/api/v3)?/repos/cloudbeers/yolo/pulls\\?state=open"))
-                .inScenario("Pull Request Merge Hash").whenScenarioStateIs(Scenario.STARTED)
+                .inScenario("Pull Request Merge Hash")
+                .whenScenarioStateIs(Scenario.STARTED)
                 .willReturn(aResponse().withHeader("Content-Type", "application/json; charset=utf-8")
                         .withBodyFile("body-yolo-pulls-bad-user.json")));
 
@@ -354,23 +361,28 @@ public class GitHubSCMSourceTest extends GitSCMSourceBase {
         // Causes PR 2 to fail because it cannot determine base commit.
         githubApi.stubFor(
                 get(urlMatching("(/api/v3)?/repos/cloudbeers/yolo/commits/38814ca33833ff5583624c29f305be9133f27a40"))
-                        .inScenario("PR 2 Merge 404").whenScenarioStateIs(Scenario.STARTED)
+                        .inScenario("PR 2 Merge 404")
+                        .whenScenarioStateIs(Scenario.STARTED)
                         .willReturn(aResponse().withStatus(404)
                                 .withHeader("Content-Type", "application/json; charset=utf-8")
                                 .withBodyFile("body-heads-master-notfound.json"))
                         .willSetStateTo(Scenario.STARTED));
 
-        githubApi.stubFor(get(urlMatching("(/api/v3)?/repos/cloudbeers/yolo/git/refs/heads/master"))
-                .inScenario("PR 2 Master 404").whenScenarioStateIs(Scenario.STARTED)
-                .willReturn(aResponse().withStatus(404).withHeader("Content-Type", "application/json; charset=utf-8")
-                        .withBodyFile("body-heads-master-notfound.json"))
-                .willSetStateTo("Master 200"));
+        githubApi.stubFor(
+                get(urlMatching("(/api/v3)?/repos/cloudbeers/yolo/git/refs/heads/master")).inScenario("PR 2 Master 404")
+                        .whenScenarioStateIs(Scenario.STARTED)
+                        .willReturn(aResponse().withStatus(404)
+                                .withHeader("Content-Type", "application/json; charset=utf-8")
+                                .withBodyFile("body-heads-master-notfound.json"))
+                        .willSetStateTo("Master 200"));
 
-        githubApi.stubFor(get(urlMatching("(/api/v3)?/repos/cloudbeers/yolo/git/refs/heads/master"))
-                .inScenario("PR 2 Master 404").whenScenarioStateIs("Master 200")
-                .willReturn(aResponse().withStatus(200).withHeader("Content-Type", "application/json; charset=utf-8")
-                        .withBodyFile("body-heads-master.json"))
-                .willSetStateTo("Master 200"));
+        githubApi.stubFor(
+                get(urlMatching("(/api/v3)?/repos/cloudbeers/yolo/git/refs/heads/master")).inScenario("PR 2 Master 404")
+                        .whenScenarioStateIs("Master 200")
+                        .willReturn(aResponse().withStatus(200)
+                                .withHeader("Content-Type", "application/json; charset=utf-8")
+                                .withBodyFile("body-heads-master.json"))
+                        .willSetStateTo("Master 200"));
 
         SCMHeadObserver.Collector collector = SCMHeadObserver.collect();
         source.fetch(new SCMSourceCriteria() {
@@ -493,7 +505,8 @@ public class GitHubSCMSourceTest extends GitSCMSourceBase {
                 .willReturn(aResponse().withHeader("Content-Type", "application/json; charset=utf-8")
                         .withBodyFile("body-yolo-pulls-4-deleted-fork.json")));
         githubApi.stubFor(get(urlMatching("(/api/v3)?/repos/cloudbeers/yolo/pulls\\?state=open"))
-                .inScenario("Pull Request from Deleted Fork").whenScenarioStateIs(Scenario.STARTED)
+                .inScenario("Pull Request from Deleted Fork")
+                .whenScenarioStateIs(Scenario.STARTED)
                 .willReturn(aResponse().withHeader("Content-Type", "application/json; charset=utf-8")
                         .withBodyFile("body-yolo-pulls-deleted-fork.json")));
 

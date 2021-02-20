@@ -118,8 +118,8 @@ public class PushGHEventSubscriber extends GHEventsSubscriber {
     @Override
     protected void onEvent(GHSubscriberEvent event) {
         try {
-            final GHEventPayload.Push p = GitHub.offline().parseEventPayload(new StringReader(event.getPayload()),
-                    GHEventPayload.Push.class);
+            final GHEventPayload.Push p = GitHub.offline()
+                    .parseEventPayload(new StringReader(event.getPayload()), GHEventPayload.Push.class);
             String repoUrl = p.getRepository().getHtmlUrl().toExternalForm();
             LOGGER.log(Level.FINE, "Received {0} for {1} from {2}",
                     new Object[]{ event.getGHEvent(), repoUrl, event.getOrigin() });

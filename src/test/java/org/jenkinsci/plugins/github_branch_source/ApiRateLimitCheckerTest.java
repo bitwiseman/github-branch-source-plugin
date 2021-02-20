@@ -121,8 +121,10 @@ public class ApiRateLimitCheckerTest extends AbstractGitHubWireMockTest {
             ScenarioMappingBuilder scenario = get(urlEqualTo("/rate_limit")).inScenario(scenarioName)
                     .whenScenarioStateIs(state)
                     .willReturn(aResponse().withHeader("Content-Type", "application/json; charset=utf-8")
-                            .withHeader("X-RateLimit-Limit", limit).withHeader("X-RateLimit-Remaining", remaining)
-                            .withHeader("X-RateLimit-Reset", reset).withBody(body));
+                            .withHeader("X-RateLimit-Limit", limit)
+                            .withHeader("X-RateLimit-Remaining", remaining)
+                            .withHeader("X-RateLimit-Reset", reset)
+                            .withBody(body));
             if (i != scenarios.size() - 1) {
                 scenario = scenario.willSetStateTo(nextState);
             }

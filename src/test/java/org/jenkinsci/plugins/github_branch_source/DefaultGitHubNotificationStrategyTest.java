@@ -113,11 +113,13 @@ public class DefaultGitHubNotificationStrategyTest {
             String urlA = instance
                     .notifications(GitHubNotificationContext.build(null, run, src, new BranchSCMHead("master")),
                             new LogTaskListener(Logger.getLogger(getClass().getName()), Level.INFO))
-                    .get(0).getUrl();
+                    .get(0)
+                    .getUrl();
             String urlB = instance
                     .notifications(GitHubNotificationContext.build(job, null, src, new BranchSCMHead("master")),
                             new LogTaskListener(Logger.getLogger(getClass().getName()), Level.INFO))
-                    .get(0).getUrl();
+                    .get(0)
+                    .getUrl();
             assertNotEquals(urlA, urlB);
         }
     }

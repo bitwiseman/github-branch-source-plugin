@@ -84,8 +84,8 @@ public class GitHubRepositoryEventSubscriber extends GHEventsSubscriber {
     @Override
     protected void onEvent(GHSubscriberEvent event) {
         try {
-            final GHEventPayload.Repository p = GitHub.offline().parseEventPayload(new StringReader(event.getPayload()),
-                    GHEventPayload.Repository.class);
+            final GHEventPayload.Repository p = GitHub.offline()
+                    .parseEventPayload(new StringReader(event.getPayload()), GHEventPayload.Repository.class);
             String action = p.getAction();
             String repoUrl = p.getRepository().getHtmlUrl().toExternalForm();
             LOGGER.log(Level.FINE, "Received {0} for {1} from {2}",

@@ -27,9 +27,10 @@ public class GitHubSCMProbeTest {
     public JenkinsRule j = new JenkinsRule();
     public static WireMockRuleFactory factory = new WireMockRuleFactory();
     @Rule
-    public WireMockRule githubApi = factory
-            .getRule(WireMockConfiguration.options().dynamicPort().usingFilesUnderClasspath("cache_failure")
-                    .extensions(ResponseTemplateTransformer.builder().global(true).maxCacheEntries(0L).build()));
+    public WireMockRule githubApi = factory.getRule(WireMockConfiguration.options()
+            .dynamicPort()
+            .usingFilesUnderClasspath("cache_failure")
+            .extensions(ResponseTemplateTransformer.builder().global(true).maxCacheEntries(0L).build()));
     private GitHubSCMProbe probe;
 
     @Before
@@ -41,7 +42,8 @@ public class GitHubSCMProbeTest {
         }
 
         githubApi.stubFor(get(urlEqualTo("/repos/cloudbeers/yolo")).willReturn(aResponse().withStatus(200)
-                .withHeader("Content-Type", "application/json").withBodyFile("body-cloudbeers-yolo-PucD6.json")));
+                .withHeader("Content-Type", "application/json")
+                .withBodyFile("body-cloudbeers-yolo-PucD6.json")));
 
         // Return 404 for /rate_limit
         githubApi.stubFor(get(urlEqualTo("/rate_limit")).willReturn(aResponse().withStatus(404)));
@@ -72,7 +74,8 @@ public class GitHubSCMProbeTest {
     @Test
     public void statWhenRootIs404() throws Exception {
         githubApi.stubFor(get(urlEqualTo("/repos/cloudbeers/yolo/contents/?ref=refs%2Fpull%2F1%2Fmerge"))
-                .willReturn(aResponse().withStatus(404)).atPriority(0));
+                .willReturn(aResponse().withStatus(404))
+                .atPriority(0));
 
         createProbeForPR(1);
 
@@ -83,7 +86,8 @@ public class GitHubSCMProbeTest {
     @Test
     public void statWhenDirIs404() throws Exception {
         githubApi.stubFor(get(urlEqualTo("/repos/cloudbeers/yolo/contents/subdir?ref=refs%2Fpull%2F1%2Fmerge"))
-                .willReturn(aResponse().withStatus(404)).atPriority(0));
+                .willReturn(aResponse().withStatus(404))
+                .atPriority(0));
 
         createProbeForPR(1);
 
@@ -140,25 +144,29 @@ public class GitHubSCMProbeTest {
             githubApi.verify(3,
                     RequestPatternBuilder
                             .newRequestPattern(RequestMethod.GET, urlPathEqualTo("/repos/cloudbeers/yolo/contents/"))
-                            .withHeader("Cache-Control", equalTo("max-age=0")).withHeader("If-Modified-Since", absent())
+                            .withHeader("Cache-Control", equalTo("max-age=0"))
+                            .withHeader("If-Modified-Since", absent())
                             .withHeader("If-None-Match", absent()));
         } else {
             // 1.
             githubApi.verify(RequestPatternBuilder
                     .newRequestPattern(RequestMethod.GET, urlPathEqualTo("/repos/cloudbeers/yolo/contents/"))
-                    .withHeader("Cache-Control", equalTo("max-age=0")).withHeader("If-None-Match", absent())
+                    .withHeader("Cache-Control", equalTo("max-age=0"))
+                    .withHeader("If-None-Match", absent())
                     .withHeader("If-Modified-Since", absent()));
 
             // 3.
             githubApi.verify(RequestPatternBuilder
                     .newRequestPattern(RequestMethod.GET, urlPathEqualTo("/repos/cloudbeers/yolo/contents/"))
-                    .withHeader("Cache-Control", containing("max-age")).withHeader("If-None-Match", absent())
+                    .withHeader("Cache-Control", containing("max-age"))
+                    .withHeader("If-None-Match", absent())
                     .withHeader("If-Modified-Since", containing("GMT")));
 
             // 4.
             githubApi.verify(RequestPatternBuilder
                     .newRequestPattern(RequestMethod.GET, urlPathEqualTo("/repos/cloudbeers/yolo/contents/"))
-                    .withHeader("Cache-Control", equalTo("no-cache")).withHeader("If-Modified-Since", absent())
+                    .withHeader("Cache-Control", equalTo("no-cache"))
+                    .withHeader("If-Modified-Since", absent())
                     .withHeader("If-None-Match", absent()));
 
             // 5.

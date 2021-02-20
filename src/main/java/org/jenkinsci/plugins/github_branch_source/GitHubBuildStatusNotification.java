@@ -118,8 +118,8 @@ public class GitHubBuildStatusNotification {
                     Connector.release(gitHub);
                 }
             } catch (IOException ioe) {
-                listener.getLogger().format("%n" + "Could not update commit status. Message: %s%n" + "%n",
-                        ioe.getMessage());
+                listener.getLogger()
+                        .format("%n" + "Could not update commit status. Message: %s%n" + "%n", ioe.getMessage());
                 if (LOGGER.isLoggable(Level.FINE)) {
                     LOGGER.log(Level.FINE, "Could not update commit status of run " + build.getFullDisplayName(), ioe);
                 }

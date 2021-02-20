@@ -37,12 +37,15 @@ public abstract class AbstractGitHubWireMockTest extends Assert {
     public WireMockRule githubRaw = factory
             .getRule(WireMockConfiguration.options().dynamicPort().usingFilesUnderClasspath("raw"));
     @Rule
-    public WireMockRule githubApi = factory.getRule(WireMockConfiguration.options().dynamicPort()
-            .usingFilesUnderClasspath("api").extensions(new ResponseTransformer() {
+    public WireMockRule githubApi = factory.getRule(WireMockConfiguration.options()
+            .dynamicPort()
+            .usingFilesUnderClasspath("api")
+            .extensions(new ResponseTransformer() {
                 @Override
                 public Response transform(Request request, Response response, FileSource files, Parameters parameters) {
                     if ("application/json".equals(response.getHeaders().getContentTypeHeader().mimeTypePart())) {
-                        return Response.Builder.like(response).but()
+                        return Response.Builder.like(response)
+                                .but()
                                 .body(response.getBodyAsString()
                                         .replace("https://api.github.com/",
                                                 "http://localhost:" + githubApi.port() + "/")

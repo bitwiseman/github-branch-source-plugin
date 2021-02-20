@@ -165,7 +165,8 @@ public class GitHubAppCredentials extends BaseStandardCredentials implements Sta
         try (Timeout ignored = Timeout.limit(30, TimeUnit.SECONDS)) {
             if (gitHubApp == null) {
                 gitHubApp = Connector.createGitHubBuilder(apiUrl)
-                        .withAuthorizationProvider(createJwtProvider(appId, appPrivateKey)).build();
+                        .withAuthorizationProvider(createJwtProvider(appId, appPrivateKey))
+                        .build();
             }
 
             GHApp app;
@@ -184,7 +185,8 @@ public class GitHubAppCredentials extends BaseStandardCredentials implements Sta
                 appInstallation = appInstallations.get(0);
             } else {
                 appInstallation = appInstallations.stream()
-                        .filter(installation -> installation.getAccount().getLogin().equals(owner)).findAny()
+                        .filter(installation -> installation.getAccount().getLogin().equals(owner))
+                        .findAny()
                         .orElseThrow(() -> new IllegalArgumentException(String.format(ERROR_NOT_INSTALLED, appId)));
             }
 

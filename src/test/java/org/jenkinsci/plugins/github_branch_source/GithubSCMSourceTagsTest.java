@@ -36,8 +36,9 @@ public class GithubSCMSourceTagsTest extends GitSCMSourceBase {
         // Scenario: a single tag which does not exist
         SCMHeadObserver mockSCMHeadObserver = Mockito.mock(SCMHeadObserver.class);
 
-        Mockito.when(mockSCMHeadObserver.getIncludes()).thenReturn(
-                Collections.singleton(new GitHubTagSCMHead("non-existent-tag", System.currentTimeMillis())));
+        Mockito.when(mockSCMHeadObserver.getIncludes())
+                .thenReturn(
+                        Collections.singleton(new GitHubTagSCMHead("non-existent-tag", System.currentTimeMillis())));
         GitHubSCMSourceContext context = new GitHubSCMSourceContext(null, mockSCMHeadObserver);
         context.wantTags(true);
         GitHubSCMSourceRequest request = context.newRequest(new GitHubSCMSource("cloudbeers", "yolo", null, false),

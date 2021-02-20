@@ -140,9 +140,11 @@ public class Connector {
      */
     @NonNull
     public static ListBoxModel listScanCredentials(@CheckForNull Item context, String apiUri) {
-        return new StandardListBoxModel().includeEmptyValue().includeMatchingAs(
-                context instanceof Queue.Task ? ((Queue.Task) context).getDefaultAuthentication() : ACL.SYSTEM, context,
-                StandardUsernameCredentials.class, githubDomainRequirements(apiUri), githubScanCredentialsMatcher());
+        return new StandardListBoxModel().includeEmptyValue()
+                .includeMatchingAs(
+                        context instanceof Queue.Task ? ((Queue.Task) context).getDefaultAuthentication() : ACL.SYSTEM,
+                        context, StandardUsernameCredentials.class, githubDomainRequirements(apiUri),
+                        githubScanCredentialsMatcher());
     }
 
     /**

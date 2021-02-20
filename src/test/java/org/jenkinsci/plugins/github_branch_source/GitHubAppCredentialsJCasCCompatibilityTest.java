@@ -76,7 +76,11 @@ public class GitHubAppCredentialsJCasCCompatibilityTest {
         ConfigurationContext context = new ConfigurationContext(registry);
         Mapping configNode = Objects.requireNonNull(root.describe(root.getTargetComponent(context), context))
                 .asMapping();
-        Mapping domainCredentials = configNode.get("system").asMapping().get("domainCredentials").asSequence().get(0)
+        Mapping domainCredentials = configNode.get("system")
+                .asMapping()
+                .get("domainCredentials")
+                .asSequence()
+                .get(0)
                 .asMapping();
         return domainCredentials.get("credentials").asSequence();
     }

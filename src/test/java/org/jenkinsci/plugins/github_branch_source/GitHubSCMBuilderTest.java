@@ -145,16 +145,21 @@ public class GitHubSCMBuilderTest {
         assertThat(origin.getFetchRefSpecs().get(0).isForceUpdate(), is(true));
         assertThat(origin.getFetchRefSpecs().get(0).isWildcard(), is(false));
         assertThat(actual.getExtensions(),
-                containsInAnyOrder(instanceOf(BuildChooserSetting.class), instanceOf(GitSCMSourceDefaults.class)));
+                containsInAnyOrder(
+                        instanceOf(BuildChooserSetting.class),
+                        instanceOf(GitSCMSourceDefaults.class)));
         BuildChooserSetting chooser = getExtension(actual, BuildChooserSetting.class);
         assertThat(chooser.getBuildChooser(), instanceOf(SpecificRevisionBuildChooser.class));
         SpecificRevisionBuildChooser revChooser = (SpecificRevisionBuildChooser) chooser.getBuildChooser();
-        Collection<Revision> revisions = revChooser.getCandidateRevisions(false,
-                "test-branch",
-                mock(GitClient.class),
-                new LogTaskListener(getAnonymousLogger(), FINEST),
-                null,
-                null);
+        Collection<Revision> revisions = revChooser
+                .getCandidateRevisions(false,
+                        "test-branch",
+                        mock(GitClient.class),
+                        new LogTaskListener(
+                                getAnonymousLogger(),
+                                FINEST),
+                        null,
+                        null);
         assertThat(revisions, hasSize(1));
         assertThat(revisions.iterator().next().getSha1String(), is("cafebabedeadbeefcafebabedeadbeefcafebabe"));
     }
@@ -199,16 +204,21 @@ public class GitHubSCMBuilderTest {
         assertThat(origin.getFetchRefSpecs().get(0).isForceUpdate(), is(true));
         assertThat(origin.getFetchRefSpecs().get(0).isWildcard(), is(false));
         assertThat(actual.getExtensions(),
-                containsInAnyOrder(instanceOf(BuildChooserSetting.class), instanceOf(GitSCMSourceDefaults.class)));
+                containsInAnyOrder(
+                        instanceOf(BuildChooserSetting.class),
+                        instanceOf(GitSCMSourceDefaults.class)));
         BuildChooserSetting chooser = getExtension(actual, BuildChooserSetting.class);
         assertThat(chooser.getBuildChooser(), instanceOf(SpecificRevisionBuildChooser.class));
         SpecificRevisionBuildChooser revChooser = (SpecificRevisionBuildChooser) chooser.getBuildChooser();
-        Collection<Revision> revisions = revChooser.getCandidateRevisions(false,
-                "test-branch",
-                mock(GitClient.class),
-                new LogTaskListener(getAnonymousLogger(), FINEST),
-                null,
-                null);
+        Collection<Revision> revisions = revChooser
+                .getCandidateRevisions(false,
+                        "test-branch",
+                        mock(GitClient.class),
+                        new LogTaskListener(
+                                getAnonymousLogger(),
+                                FINEST),
+                        null,
+                        null);
         assertThat(revisions, hasSize(1));
         assertThat(revisions.iterator().next().getSha1String(), is("cafebabedeadbeefcafebabedeadbeefcafebabe"));
     }
@@ -253,16 +263,21 @@ public class GitHubSCMBuilderTest {
         assertThat(origin.getFetchRefSpecs().get(0).isForceUpdate(), is(true));
         assertThat(origin.getFetchRefSpecs().get(0).isWildcard(), is(false));
         assertThat(actual.getExtensions(),
-                containsInAnyOrder(instanceOf(BuildChooserSetting.class), instanceOf(GitSCMSourceDefaults.class)));
+                containsInAnyOrder(
+                        instanceOf(BuildChooserSetting.class),
+                        instanceOf(GitSCMSourceDefaults.class)));
         BuildChooserSetting chooser = getExtension(actual, BuildChooserSetting.class);
         assertThat(chooser.getBuildChooser(), instanceOf(SpecificRevisionBuildChooser.class));
         SpecificRevisionBuildChooser revChooser = (SpecificRevisionBuildChooser) chooser.getBuildChooser();
-        Collection<Revision> revisions = revChooser.getCandidateRevisions(false,
-                "test-branch",
-                mock(GitClient.class),
-                new LogTaskListener(getAnonymousLogger(), FINEST),
-                null,
-                null);
+        Collection<Revision> revisions = revChooser
+                .getCandidateRevisions(false,
+                        "test-branch",
+                        mock(GitClient.class),
+                        new LogTaskListener(
+                                getAnonymousLogger(),
+                                FINEST),
+                        null,
+                        null);
         assertThat(revisions, hasSize(1));
         assertThat(revisions.iterator().next().getSha1String(), is("cafebabedeadbeefcafebabedeadbeefcafebabe"));
     }
@@ -313,16 +328,21 @@ public class GitHubSCMBuilderTest {
         assertThat(origin.getFetchRefSpecs().get(0).isForceUpdate(), is(true));
         assertThat(origin.getFetchRefSpecs().get(0).isWildcard(), is(false));
         assertThat(actual.getExtensions(),
-                containsInAnyOrder(instanceOf(BuildChooserSetting.class), instanceOf(GitSCMSourceDefaults.class)));
+                containsInAnyOrder(
+                        instanceOf(BuildChooserSetting.class),
+                        instanceOf(GitSCMSourceDefaults.class)));
         BuildChooserSetting chooser = getExtension(actual, BuildChooserSetting.class);
         assertThat(chooser.getBuildChooser(), instanceOf(SpecificRevisionBuildChooser.class));
         SpecificRevisionBuildChooser revChooser = (SpecificRevisionBuildChooser) chooser.getBuildChooser();
-        Collection<Revision> revisions = revChooser.getCandidateRevisions(false,
-                "test-branch",
-                mock(GitClient.class),
-                new LogTaskListener(getAnonymousLogger(), FINEST),
-                null,
-                null);
+        Collection<Revision> revisions = revChooser
+                .getCandidateRevisions(false,
+                        "test-branch",
+                        mock(GitClient.class),
+                        new LogTaskListener(
+                                getAnonymousLogger(),
+                                FINEST),
+                        null,
+                        null);
         assertThat(revisions, hasSize(1));
         assertThat(revisions.iterator().next().getSha1String(), is("cafebabedeadbeefcafebabedeadbeefcafebabe"));
     }
@@ -373,16 +393,21 @@ public class GitHubSCMBuilderTest {
         assertThat(origin.getFetchRefSpecs().get(0).isForceUpdate(), is(true));
         assertThat(origin.getFetchRefSpecs().get(0).isWildcard(), is(false));
         assertThat(actual.getExtensions(),
-                containsInAnyOrder(instanceOf(BuildChooserSetting.class), instanceOf(GitSCMSourceDefaults.class)));
+                containsInAnyOrder(
+                        instanceOf(BuildChooserSetting.class),
+                        instanceOf(GitSCMSourceDefaults.class)));
         BuildChooserSetting chooser = getExtension(actual, BuildChooserSetting.class);
         assertThat(chooser.getBuildChooser(), instanceOf(SpecificRevisionBuildChooser.class));
         SpecificRevisionBuildChooser revChooser = (SpecificRevisionBuildChooser) chooser.getBuildChooser();
-        Collection<Revision> revisions = revChooser.getCandidateRevisions(false,
-                "test-branch",
-                mock(GitClient.class),
-                new LogTaskListener(getAnonymousLogger(), FINEST),
-                null,
-                null);
+        Collection<Revision> revisions = revChooser
+                .getCandidateRevisions(false,
+                        "test-branch",
+                        mock(GitClient.class),
+                        new LogTaskListener(
+                                getAnonymousLogger(),
+                                FINEST),
+                        null,
+                        null);
         assertThat(revisions, hasSize(1));
         assertThat(revisions.iterator().next().getSha1String(), is("cafebabedeadbeefcafebabedeadbeefcafebabe"));
     }
@@ -433,16 +458,21 @@ public class GitHubSCMBuilderTest {
         assertThat(origin.getFetchRefSpecs().get(0).isForceUpdate(), is(true));
         assertThat(origin.getFetchRefSpecs().get(0).isWildcard(), is(false));
         assertThat(actual.getExtensions(),
-                containsInAnyOrder(instanceOf(BuildChooserSetting.class), instanceOf(GitSCMSourceDefaults.class)));
+                containsInAnyOrder(
+                        instanceOf(BuildChooserSetting.class),
+                        instanceOf(GitSCMSourceDefaults.class)));
         BuildChooserSetting chooser = getExtension(actual, BuildChooserSetting.class);
         assertThat(chooser.getBuildChooser(), instanceOf(SpecificRevisionBuildChooser.class));
         SpecificRevisionBuildChooser revChooser = (SpecificRevisionBuildChooser) chooser.getBuildChooser();
-        Collection<Revision> revisions = revChooser.getCandidateRevisions(false,
-                "test-branch",
-                mock(GitClient.class),
-                new LogTaskListener(getAnonymousLogger(), FINEST),
-                null,
-                null);
+        Collection<Revision> revisions = revChooser
+                .getCandidateRevisions(false,
+                        "test-branch",
+                        mock(GitClient.class),
+                        new LogTaskListener(
+                                getAnonymousLogger(),
+                                FINEST),
+                        null,
+                        null);
         assertThat(revisions, hasSize(1));
         assertThat(revisions.iterator().next().getSha1String(), is("cafebabedeadbeefcafebabedeadbeefcafebabe"));
     }
@@ -493,16 +523,21 @@ public class GitHubSCMBuilderTest {
         assertThat(origin.getFetchRefSpecs().get(0).isForceUpdate(), is(true));
         assertThat(origin.getFetchRefSpecs().get(0).isWildcard(), is(false));
         assertThat(actual.getExtensions(),
-                containsInAnyOrder(instanceOf(BuildChooserSetting.class), instanceOf(GitSCMSourceDefaults.class)));
+                containsInAnyOrder(
+                        instanceOf(BuildChooserSetting.class),
+                        instanceOf(GitSCMSourceDefaults.class)));
         BuildChooserSetting chooser = getExtension(actual, BuildChooserSetting.class);
         assertThat(chooser.getBuildChooser(), instanceOf(SpecificRevisionBuildChooser.class));
         SpecificRevisionBuildChooser revChooser = (SpecificRevisionBuildChooser) chooser.getBuildChooser();
-        Collection<Revision> revisions = revChooser.getCandidateRevisions(false,
-                "test-branch",
-                mock(GitClient.class),
-                new LogTaskListener(getAnonymousLogger(), FINEST),
-                null,
-                null);
+        Collection<Revision> revisions = revChooser
+                .getCandidateRevisions(false,
+                        "test-branch",
+                        mock(GitClient.class),
+                        new LogTaskListener(
+                                getAnonymousLogger(),
+                                FINEST),
+                        null,
+                        null);
         assertThat(revisions, hasSize(1));
         assertThat(revisions.iterator().next().getSha1String(), is("cafebabedeadbeefcafebabedeadbeefcafebabe"));
     }
@@ -553,16 +588,21 @@ public class GitHubSCMBuilderTest {
         assertThat(origin.getFetchRefSpecs().get(0).isForceUpdate(), is(true));
         assertThat(origin.getFetchRefSpecs().get(0).isWildcard(), is(false));
         assertThat(actual.getExtensions(),
-                containsInAnyOrder(instanceOf(BuildChooserSetting.class), instanceOf(GitSCMSourceDefaults.class)));
+                containsInAnyOrder(
+                        instanceOf(BuildChooserSetting.class),
+                        instanceOf(GitSCMSourceDefaults.class)));
         BuildChooserSetting chooser = getExtension(actual, BuildChooserSetting.class);
         assertThat(chooser.getBuildChooser(), instanceOf(SpecificRevisionBuildChooser.class));
         SpecificRevisionBuildChooser revChooser = (SpecificRevisionBuildChooser) chooser.getBuildChooser();
-        Collection<Revision> revisions = revChooser.getCandidateRevisions(false,
-                "test-branch",
-                mock(GitClient.class),
-                new LogTaskListener(getAnonymousLogger(), FINEST),
-                null,
-                null);
+        Collection<Revision> revisions = revChooser
+                .getCandidateRevisions(false,
+                        "test-branch",
+                        mock(GitClient.class),
+                        new LogTaskListener(
+                                getAnonymousLogger(),
+                                FINEST),
+                        null,
+                        null);
         assertThat(revisions, hasSize(1));
         assertThat(revisions.iterator().next().getSha1String(), is("cafebabedeadbeefcafebabedeadbeefcafebabe"));
     }
@@ -613,16 +653,21 @@ public class GitHubSCMBuilderTest {
         assertThat(origin.getFetchRefSpecs().get(0).isForceUpdate(), is(true));
         assertThat(origin.getFetchRefSpecs().get(0).isWildcard(), is(false));
         assertThat(actual.getExtensions(),
-                containsInAnyOrder(instanceOf(BuildChooserSetting.class), instanceOf(GitSCMSourceDefaults.class)));
+                containsInAnyOrder(
+                        instanceOf(BuildChooserSetting.class),
+                        instanceOf(GitSCMSourceDefaults.class)));
         BuildChooserSetting chooser = getExtension(actual, BuildChooserSetting.class);
         assertThat(chooser.getBuildChooser(), instanceOf(SpecificRevisionBuildChooser.class));
         SpecificRevisionBuildChooser revChooser = (SpecificRevisionBuildChooser) chooser.getBuildChooser();
-        Collection<Revision> revisions = revChooser.getCandidateRevisions(false,
-                "test-branch",
-                mock(GitClient.class),
-                new LogTaskListener(getAnonymousLogger(), FINEST),
-                null,
-                null);
+        Collection<Revision> revisions = revChooser
+                .getCandidateRevisions(false,
+                        "test-branch",
+                        mock(GitClient.class),
+                        new LogTaskListener(
+                                getAnonymousLogger(),
+                                FINEST),
+                        null,
+                        null);
         assertThat(revisions, hasSize(1));
         assertThat(revisions.iterator().next().getSha1String(), is("cafebabedeadbeefcafebabedeadbeefcafebabe"));
     }
@@ -791,17 +836,22 @@ public class GitHubSCMBuilderTest {
         assertThat(origin.getFetchRefSpecs().get(0).isForceUpdate(), is(true));
         assertThat(origin.getFetchRefSpecs().get(0).isWildcard(), is(false));
         assertThat(actual.getExtensions(),
-                containsInAnyOrder(instanceOf(GitSCMSourceDefaults.class), instanceOf(BuildChooserSetting.class)));
+                containsInAnyOrder(
+                        instanceOf(GitSCMSourceDefaults.class),
+                        instanceOf(BuildChooserSetting.class)));
         BuildChooserSetting chooser = getExtension(actual, BuildChooserSetting.class);
         assertThat(chooser.getBuildChooser(), instanceOf(AbstractGitSCMSource.SpecificRevisionBuildChooser.class));
         AbstractGitSCMSource.SpecificRevisionBuildChooser revChooser = (AbstractGitSCMSource.SpecificRevisionBuildChooser) chooser
                 .getBuildChooser();
-        Collection<Revision> revisions = revChooser.getCandidateRevisions(false,
-                "test-branch",
-                Mockito.mock(GitClient.class),
-                new LogTaskListener(Logger.getAnonymousLogger(), Level.FINEST),
-                null,
-                null);
+        Collection<Revision> revisions = revChooser
+                .getCandidateRevisions(false,
+                        "test-branch",
+                        Mockito.mock(GitClient.class),
+                        new LogTaskListener(
+                                Logger.getAnonymousLogger(),
+                                Level.FINEST),
+                        null,
+                        null);
         assertThat(revisions, hasSize(1));
         assertThat(revisions.iterator().next().getSha1String(), is("cafebabedeadbeefcafebabedeadbeefcafebabe"));
     }
@@ -847,17 +897,22 @@ public class GitHubSCMBuilderTest {
         assertThat(origin.getFetchRefSpecs().get(0).isForceUpdate(), is(true));
         assertThat(origin.getFetchRefSpecs().get(0).isWildcard(), is(false));
         assertThat(actual.getExtensions(),
-                containsInAnyOrder(instanceOf(GitSCMSourceDefaults.class), instanceOf(BuildChooserSetting.class)));
+                containsInAnyOrder(
+                        instanceOf(GitSCMSourceDefaults.class),
+                        instanceOf(BuildChooserSetting.class)));
         BuildChooserSetting chooser = getExtension(actual, BuildChooserSetting.class);
         assertThat(chooser.getBuildChooser(), instanceOf(AbstractGitSCMSource.SpecificRevisionBuildChooser.class));
         AbstractGitSCMSource.SpecificRevisionBuildChooser revChooser = (AbstractGitSCMSource.SpecificRevisionBuildChooser) chooser
                 .getBuildChooser();
-        Collection<Revision> revisions = revChooser.getCandidateRevisions(false,
-                "test-branch",
-                Mockito.mock(GitClient.class),
-                new LogTaskListener(Logger.getAnonymousLogger(), Level.FINEST),
-                null,
-                null);
+        Collection<Revision> revisions = revChooser
+                .getCandidateRevisions(false,
+                        "test-branch",
+                        Mockito.mock(GitClient.class),
+                        new LogTaskListener(
+                                Logger.getAnonymousLogger(),
+                                Level.FINEST),
+                        null,
+                        null);
         assertThat(revisions, hasSize(1));
         assertThat(revisions.iterator().next().getSha1String(), is("cafebabedeadbeefcafebabedeadbeefcafebabe"));
     }
@@ -903,17 +958,22 @@ public class GitHubSCMBuilderTest {
         assertThat(origin.getFetchRefSpecs().get(0).isForceUpdate(), is(true));
         assertThat(origin.getFetchRefSpecs().get(0).isWildcard(), is(false));
         assertThat(actual.getExtensions(),
-                containsInAnyOrder(instanceOf(GitSCMSourceDefaults.class), instanceOf(BuildChooserSetting.class)));
+                containsInAnyOrder(
+                        instanceOf(GitSCMSourceDefaults.class),
+                        instanceOf(BuildChooserSetting.class)));
         BuildChooserSetting chooser = getExtension(actual, BuildChooserSetting.class);
         assertThat(chooser.getBuildChooser(), instanceOf(AbstractGitSCMSource.SpecificRevisionBuildChooser.class));
         AbstractGitSCMSource.SpecificRevisionBuildChooser revChooser = (AbstractGitSCMSource.SpecificRevisionBuildChooser) chooser
                 .getBuildChooser();
-        Collection<Revision> revisions = revChooser.getCandidateRevisions(false,
-                "test-branch",
-                Mockito.mock(GitClient.class),
-                new LogTaskListener(Logger.getAnonymousLogger(), Level.FINEST),
-                null,
-                null);
+        Collection<Revision> revisions = revChooser
+                .getCandidateRevisions(false,
+                        "test-branch",
+                        Mockito.mock(GitClient.class),
+                        new LogTaskListener(
+                                Logger.getAnonymousLogger(),
+                                Level.FINEST),
+                        null,
+                        null);
         assertThat(revisions, hasSize(1));
         assertThat(revisions.iterator().next().getSha1String(), is("cafebabedeadbeefcafebabedeadbeefcafebabe"));
     }
@@ -1052,7 +1112,8 @@ public class GitHubSCMBuilderTest {
                 new BranchSCMHead("test-branch"),
                 new SCMHeadOrigin.Fork("qa/qa-repo"),
                 ChangeRequestCheckoutStrategy.HEAD);
-        PullRequestSCMRevision revision = new PullRequestSCMRevision(head,
+        PullRequestSCMRevision revision = new PullRequestSCMRevision(
+                head,
                 "deadbeefcafebabedeadbeefcafebabedeadbeef",
                 "cafebabedeadbeefcafebabedeadbeefcafebabe");
         source.setCredentialsId(null);
@@ -1090,17 +1151,22 @@ public class GitHubSCMBuilderTest {
         assertThat(origin.getFetchRefSpecs().get(0).isForceUpdate(), is(true));
         assertThat(origin.getFetchRefSpecs().get(0).isWildcard(), is(false));
         assertThat(actual.getExtensions(),
-                containsInAnyOrder(instanceOf(BuildChooserSetting.class), instanceOf(GitSCMSourceDefaults.class)));
+                containsInAnyOrder(
+                        instanceOf(BuildChooserSetting.class),
+                        instanceOf(GitSCMSourceDefaults.class)));
         BuildChooserSetting chooser = getExtension(actual, BuildChooserSetting.class);
         assertThat(chooser.getBuildChooser(), instanceOf(AbstractGitSCMSource.SpecificRevisionBuildChooser.class));
         AbstractGitSCMSource.SpecificRevisionBuildChooser revChooser = (AbstractGitSCMSource.SpecificRevisionBuildChooser) chooser
                 .getBuildChooser();
-        Collection<Revision> revisions = revChooser.getCandidateRevisions(false,
-                "qa-branch",
-                Mockito.mock(GitClient.class),
-                new LogTaskListener(Logger.getAnonymousLogger(), Level.FINEST),
-                null,
-                null);
+        Collection<Revision> revisions = revChooser
+                .getCandidateRevisions(false,
+                        "qa-branch",
+                        Mockito.mock(GitClient.class),
+                        new LogTaskListener(
+                                Logger.getAnonymousLogger(),
+                                Level.FINEST),
+                        null,
+                        null);
         assertThat(revisions, hasSize(1));
         assertThat(revisions.iterator().next().getSha1String(), is("cafebabedeadbeefcafebabedeadbeefcafebabe"));
     }
@@ -1116,7 +1182,8 @@ public class GitHubSCMBuilderTest {
                 new BranchSCMHead("test-branch"),
                 new SCMHeadOrigin.Fork("qa/qa-repo"),
                 ChangeRequestCheckoutStrategy.HEAD);
-        PullRequestSCMRevision revision = new PullRequestSCMRevision(head,
+        PullRequestSCMRevision revision = new PullRequestSCMRevision(
+                head,
                 "deadbeefcafebabedeadbeefcafebabedeadbeef",
                 "cafebabedeadbeefcafebabedeadbeefcafebabe");
         source.setCredentialsId("user-pass");
@@ -1154,17 +1221,22 @@ public class GitHubSCMBuilderTest {
         assertThat(origin.getFetchRefSpecs().get(0).isForceUpdate(), is(true));
         assertThat(origin.getFetchRefSpecs().get(0).isWildcard(), is(false));
         assertThat(actual.getExtensions(),
-                containsInAnyOrder(instanceOf(BuildChooserSetting.class), instanceOf(GitSCMSourceDefaults.class)));
+                containsInAnyOrder(
+                        instanceOf(BuildChooserSetting.class),
+                        instanceOf(GitSCMSourceDefaults.class)));
         BuildChooserSetting chooser = getExtension(actual, BuildChooserSetting.class);
         assertThat(chooser.getBuildChooser(), instanceOf(AbstractGitSCMSource.SpecificRevisionBuildChooser.class));
         AbstractGitSCMSource.SpecificRevisionBuildChooser revChooser = (AbstractGitSCMSource.SpecificRevisionBuildChooser) chooser
                 .getBuildChooser();
-        Collection<Revision> revisions = revChooser.getCandidateRevisions(false,
-                "qa-branch",
-                Mockito.mock(GitClient.class),
-                new LogTaskListener(Logger.getAnonymousLogger(), Level.FINEST),
-                null,
-                null);
+        Collection<Revision> revisions = revChooser
+                .getCandidateRevisions(false,
+                        "qa-branch",
+                        Mockito.mock(GitClient.class),
+                        new LogTaskListener(
+                                Logger.getAnonymousLogger(),
+                                Level.FINEST),
+                        null,
+                        null);
         assertThat(revisions, hasSize(1));
         assertThat(revisions.iterator().next().getSha1String(), is("cafebabedeadbeefcafebabedeadbeefcafebabe"));
     }
@@ -1179,7 +1251,8 @@ public class GitHubSCMBuilderTest {
                 new BranchSCMHead("test-branch"),
                 new SCMHeadOrigin.Fork("qa/qa-repo"),
                 ChangeRequestCheckoutStrategy.HEAD);
-        PullRequestSCMRevision revision = new PullRequestSCMRevision(head,
+        PullRequestSCMRevision revision = new PullRequestSCMRevision(
+                head,
                 "deadbeefcafebabedeadbeefcafebabedeadbeef",
                 "cafebabedeadbeefcafebabedeadbeefcafebabe");
         createGitHubSCMSourceForTest(false, null);
@@ -1218,17 +1291,22 @@ public class GitHubSCMBuilderTest {
         assertThat(origin.getFetchRefSpecs().get(0).isForceUpdate(), is(true));
         assertThat(origin.getFetchRefSpecs().get(0).isWildcard(), is(false));
         assertThat(actual.getExtensions(),
-                containsInAnyOrder(instanceOf(BuildChooserSetting.class), instanceOf(GitSCMSourceDefaults.class)));
+                containsInAnyOrder(
+                        instanceOf(BuildChooserSetting.class),
+                        instanceOf(GitSCMSourceDefaults.class)));
         BuildChooserSetting chooser = getExtension(actual, BuildChooserSetting.class);
         assertThat(chooser.getBuildChooser(), instanceOf(AbstractGitSCMSource.SpecificRevisionBuildChooser.class));
         AbstractGitSCMSource.SpecificRevisionBuildChooser revChooser = (AbstractGitSCMSource.SpecificRevisionBuildChooser) chooser
                 .getBuildChooser();
-        Collection<Revision> revisions = revChooser.getCandidateRevisions(false,
-                "qa-branch",
-                Mockito.mock(GitClient.class),
-                new LogTaskListener(Logger.getAnonymousLogger(), Level.FINEST),
-                null,
-                null);
+        Collection<Revision> revisions = revChooser
+                .getCandidateRevisions(false,
+                        "qa-branch",
+                        Mockito.mock(GitClient.class),
+                        new LogTaskListener(
+                                Logger.getAnonymousLogger(),
+                                Level.FINEST),
+                        null,
+                        null);
         assertThat(revisions, hasSize(1));
         assertThat(revisions.iterator().next().getSha1String(), is("cafebabedeadbeefcafebabedeadbeefcafebabe"));
     }
@@ -1388,7 +1466,8 @@ public class GitHubSCMBuilderTest {
                 new BranchSCMHead("test-branch"),
                 new SCMHeadOrigin.Fork("qa/qa-repo"),
                 ChangeRequestCheckoutStrategy.HEAD);
-        PullRequestSCMRevision revision = new PullRequestSCMRevision(head,
+        PullRequestSCMRevision revision = new PullRequestSCMRevision(
+                head,
                 "deadbeefcafebabedeadbeefcafebabedeadbeef",
                 "cafebabedeadbeefcafebabedeadbeefcafebabe");
         source.setCredentialsId(null);
@@ -1426,17 +1505,22 @@ public class GitHubSCMBuilderTest {
         assertThat(origin.getFetchRefSpecs().get(0).isForceUpdate(), is(true));
         assertThat(origin.getFetchRefSpecs().get(0).isWildcard(), is(false));
         assertThat(actual.getExtensions(),
-                containsInAnyOrder(instanceOf(BuildChooserSetting.class), instanceOf(GitSCMSourceDefaults.class)));
+                containsInAnyOrder(
+                        instanceOf(BuildChooserSetting.class),
+                        instanceOf(GitSCMSourceDefaults.class)));
         BuildChooserSetting chooser = getExtension(actual, BuildChooserSetting.class);
         assertThat(chooser.getBuildChooser(), instanceOf(AbstractGitSCMSource.SpecificRevisionBuildChooser.class));
         AbstractGitSCMSource.SpecificRevisionBuildChooser revChooser = (AbstractGitSCMSource.SpecificRevisionBuildChooser) chooser
                 .getBuildChooser();
-        Collection<Revision> revisions = revChooser.getCandidateRevisions(false,
-                "qa-branch",
-                Mockito.mock(GitClient.class),
-                new LogTaskListener(Logger.getAnonymousLogger(), Level.FINEST),
-                null,
-                null);
+        Collection<Revision> revisions = revChooser
+                .getCandidateRevisions(false,
+                        "qa-branch",
+                        Mockito.mock(GitClient.class),
+                        new LogTaskListener(
+                                Logger.getAnonymousLogger(),
+                                Level.FINEST),
+                        null,
+                        null);
         assertThat(revisions, hasSize(1));
         assertThat(revisions.iterator().next().getSha1String(), is("cafebabedeadbeefcafebabedeadbeefcafebabe"));
     }
@@ -1452,7 +1536,8 @@ public class GitHubSCMBuilderTest {
                 new BranchSCMHead("test-branch"),
                 new SCMHeadOrigin.Fork("qa/qa-repo"),
                 ChangeRequestCheckoutStrategy.HEAD);
-        PullRequestSCMRevision revision = new PullRequestSCMRevision(head,
+        PullRequestSCMRevision revision = new PullRequestSCMRevision(
+                head,
                 "deadbeefcafebabedeadbeefcafebabedeadbeef",
                 "cafebabedeadbeefcafebabedeadbeefcafebabe");
         source.setCredentialsId("user-pass");
@@ -1490,17 +1575,22 @@ public class GitHubSCMBuilderTest {
         assertThat(origin.getFetchRefSpecs().get(0).isForceUpdate(), is(true));
         assertThat(origin.getFetchRefSpecs().get(0).isWildcard(), is(false));
         assertThat(actual.getExtensions(),
-                containsInAnyOrder(instanceOf(BuildChooserSetting.class), instanceOf(GitSCMSourceDefaults.class)));
+                containsInAnyOrder(
+                        instanceOf(BuildChooserSetting.class),
+                        instanceOf(GitSCMSourceDefaults.class)));
         BuildChooserSetting chooser = getExtension(actual, BuildChooserSetting.class);
         assertThat(chooser.getBuildChooser(), instanceOf(AbstractGitSCMSource.SpecificRevisionBuildChooser.class));
         AbstractGitSCMSource.SpecificRevisionBuildChooser revChooser = (AbstractGitSCMSource.SpecificRevisionBuildChooser) chooser
                 .getBuildChooser();
-        Collection<Revision> revisions = revChooser.getCandidateRevisions(false,
-                "qa-branch",
-                Mockito.mock(GitClient.class),
-                new LogTaskListener(Logger.getAnonymousLogger(), Level.FINEST),
-                null,
-                null);
+        Collection<Revision> revisions = revChooser
+                .getCandidateRevisions(false,
+                        "qa-branch",
+                        Mockito.mock(GitClient.class),
+                        new LogTaskListener(
+                                Logger.getAnonymousLogger(),
+                                Level.FINEST),
+                        null,
+                        null);
         assertThat(revisions, hasSize(1));
         assertThat(revisions.iterator().next().getSha1String(), is("cafebabedeadbeefcafebabedeadbeefcafebabe"));
     }
@@ -1516,7 +1606,8 @@ public class GitHubSCMBuilderTest {
                 new BranchSCMHead("test-branch"),
                 new SCMHeadOrigin.Fork("qa/qa-repo"),
                 ChangeRequestCheckoutStrategy.HEAD);
-        PullRequestSCMRevision revision = new PullRequestSCMRevision(head,
+        PullRequestSCMRevision revision = new PullRequestSCMRevision(
+                head,
                 "deadbeefcafebabedeadbeefcafebabedeadbeef",
                 "cafebabedeadbeefcafebabedeadbeefcafebabe");
         source.setCredentialsId("user-key");
@@ -1554,17 +1645,22 @@ public class GitHubSCMBuilderTest {
         assertThat(origin.getFetchRefSpecs().get(0).isForceUpdate(), is(true));
         assertThat(origin.getFetchRefSpecs().get(0).isWildcard(), is(false));
         assertThat(actual.getExtensions(),
-                containsInAnyOrder(instanceOf(BuildChooserSetting.class), instanceOf(GitSCMSourceDefaults.class)));
+                containsInAnyOrder(
+                        instanceOf(BuildChooserSetting.class),
+                        instanceOf(GitSCMSourceDefaults.class)));
         BuildChooserSetting chooser = getExtension(actual, BuildChooserSetting.class);
         assertThat(chooser.getBuildChooser(), instanceOf(AbstractGitSCMSource.SpecificRevisionBuildChooser.class));
         AbstractGitSCMSource.SpecificRevisionBuildChooser revChooser = (AbstractGitSCMSource.SpecificRevisionBuildChooser) chooser
                 .getBuildChooser();
-        Collection<Revision> revisions = revChooser.getCandidateRevisions(false,
-                "qa-branch",
-                Mockito.mock(GitClient.class),
-                new LogTaskListener(Logger.getAnonymousLogger(), Level.FINEST),
-                null,
-                null);
+        Collection<Revision> revisions = revChooser
+                .getCandidateRevisions(false,
+                        "qa-branch",
+                        Mockito.mock(GitClient.class),
+                        new LogTaskListener(
+                                Logger.getAnonymousLogger(),
+                                Level.FINEST),
+                        null,
+                        null);
         assertThat(revisions, hasSize(1));
         assertThat(revisions.iterator().next().getSha1String(), is("cafebabedeadbeefcafebabedeadbeefcafebabe"));
     }
@@ -1724,7 +1820,8 @@ public class GitHubSCMBuilderTest {
                 new BranchSCMHead("test-branch"),
                 new SCMHeadOrigin.Fork("qa/qa-repo"),
                 ChangeRequestCheckoutStrategy.MERGE);
-        PullRequestSCMRevision revision = new PullRequestSCMRevision(head,
+        PullRequestSCMRevision revision = new PullRequestSCMRevision(
+                head,
                 "deadbeefcafebabedeadbeefcafebabedeadbeef",
                 "cafebabedeadbeefcafebabedeadbeefcafebabe");
         source.setCredentialsId(null);
@@ -1768,7 +1865,8 @@ public class GitHubSCMBuilderTest {
         assertThat(origin.getFetchRefSpecs().get(1).isForceUpdate(), is(true));
         assertThat(origin.getFetchRefSpecs().get(1).isWildcard(), is(false));
         assertThat(actual.getExtensions(),
-                containsInAnyOrder(instanceOf(GitSCMSourceDefaults.class),
+                containsInAnyOrder(
+                        instanceOf(GitSCMSourceDefaults.class),
                         instanceOf(BuildChooserSetting.class),
                         instanceOf(MergeWithGitSCMExtension.class)));
         BuildChooserSetting chooser = getExtension(actual, BuildChooserSetting.class);
@@ -1776,12 +1874,15 @@ public class GitHubSCMBuilderTest {
         assertThat(chooser.getBuildChooser(), instanceOf(AbstractGitSCMSource.SpecificRevisionBuildChooser.class));
         AbstractGitSCMSource.SpecificRevisionBuildChooser revChooser = (AbstractGitSCMSource.SpecificRevisionBuildChooser) chooser
                 .getBuildChooser();
-        Collection<Revision> revisions = revChooser.getCandidateRevisions(false,
-                "test-branch",
-                Mockito.mock(GitClient.class),
-                new LogTaskListener(Logger.getAnonymousLogger(), Level.FINEST),
-                null,
-                null);
+        Collection<Revision> revisions = revChooser
+                .getCandidateRevisions(false,
+                        "test-branch",
+                        Mockito.mock(GitClient.class),
+                        new LogTaskListener(
+                                Logger.getAnonymousLogger(),
+                                Level.FINEST),
+                        null,
+                        null);
         assertThat(revisions, hasSize(1));
         assertThat(revisions.iterator().next().getSha1String(), is("cafebabedeadbeefcafebabedeadbeefcafebabe"));
         MergeWithGitSCMExtension merge = getExtension(actual, MergeWithGitSCMExtension.class);
@@ -1801,7 +1902,8 @@ public class GitHubSCMBuilderTest {
                 new BranchSCMHead("test-branch"),
                 new SCMHeadOrigin.Fork("qa/qa-repo"),
                 ChangeRequestCheckoutStrategy.MERGE);
-        PullRequestSCMRevision revision = new PullRequestSCMRevision(head,
+        PullRequestSCMRevision revision = new PullRequestSCMRevision(
+                head,
                 "deadbeefcafebabedeadbeefcafebabedeadbeef",
                 "cafebabedeadbeefcafebabedeadbeefcafebabe");
         source.setCredentialsId("user-pass");
@@ -1845,7 +1947,8 @@ public class GitHubSCMBuilderTest {
         assertThat(origin.getFetchRefSpecs().get(1).isForceUpdate(), is(true));
         assertThat(origin.getFetchRefSpecs().get(1).isWildcard(), is(false));
         assertThat(actual.getExtensions(),
-                containsInAnyOrder(instanceOf(GitSCMSourceDefaults.class),
+                containsInAnyOrder(
+                        instanceOf(GitSCMSourceDefaults.class),
                         instanceOf(BuildChooserSetting.class),
                         instanceOf(MergeWithGitSCMExtension.class)));
         BuildChooserSetting chooser = getExtension(actual, BuildChooserSetting.class);
@@ -1853,12 +1956,15 @@ public class GitHubSCMBuilderTest {
         assertThat(chooser.getBuildChooser(), instanceOf(AbstractGitSCMSource.SpecificRevisionBuildChooser.class));
         AbstractGitSCMSource.SpecificRevisionBuildChooser revChooser = (AbstractGitSCMSource.SpecificRevisionBuildChooser) chooser
                 .getBuildChooser();
-        Collection<Revision> revisions = revChooser.getCandidateRevisions(false,
-                "test-branch",
-                Mockito.mock(GitClient.class),
-                new LogTaskListener(Logger.getAnonymousLogger(), Level.FINEST),
-                null,
-                null);
+        Collection<Revision> revisions = revChooser
+                .getCandidateRevisions(false,
+                        "test-branch",
+                        Mockito.mock(GitClient.class),
+                        new LogTaskListener(
+                                Logger.getAnonymousLogger(),
+                                Level.FINEST),
+                        null,
+                        null);
         assertThat(revisions, hasSize(1));
         assertThat(revisions.iterator().next().getSha1String(), is("cafebabedeadbeefcafebabedeadbeefcafebabe"));
         MergeWithGitSCMExtension merge = getExtension(actual, MergeWithGitSCMExtension.class);
@@ -1878,7 +1984,8 @@ public class GitHubSCMBuilderTest {
                 new BranchSCMHead("test-branch"),
                 new SCMHeadOrigin.Fork("qa/qa-repo"),
                 ChangeRequestCheckoutStrategy.MERGE);
-        PullRequestSCMRevision revision = new PullRequestSCMRevision(head,
+        PullRequestSCMRevision revision = new PullRequestSCMRevision(
+                head,
                 "deadbeefcafebabedeadbeefcafebabedeadbeef",
                 "cafebabedeadbeefcafebabedeadbeefcafebabe");
         source.setCredentialsId("user-key");
@@ -1922,7 +2029,8 @@ public class GitHubSCMBuilderTest {
         assertThat(origin.getFetchRefSpecs().get(1).isForceUpdate(), is(true));
         assertThat(origin.getFetchRefSpecs().get(1).isWildcard(), is(false));
         assertThat(actual.getExtensions(),
-                containsInAnyOrder(instanceOf(GitSCMSourceDefaults.class),
+                containsInAnyOrder(
+                        instanceOf(GitSCMSourceDefaults.class),
                         instanceOf(BuildChooserSetting.class),
                         instanceOf(MergeWithGitSCMExtension.class)));
         BuildChooserSetting chooser = getExtension(actual, BuildChooserSetting.class);
@@ -1930,12 +2038,15 @@ public class GitHubSCMBuilderTest {
         assertThat(chooser.getBuildChooser(), instanceOf(AbstractGitSCMSource.SpecificRevisionBuildChooser.class));
         AbstractGitSCMSource.SpecificRevisionBuildChooser revChooser = (AbstractGitSCMSource.SpecificRevisionBuildChooser) chooser
                 .getBuildChooser();
-        Collection<Revision> revisions = revChooser.getCandidateRevisions(false,
-                "test-branch",
-                Mockito.mock(GitClient.class),
-                new LogTaskListener(Logger.getAnonymousLogger(), Level.FINEST),
-                null,
-                null);
+        Collection<Revision> revisions = revChooser
+                .getCandidateRevisions(false,
+                        "test-branch",
+                        Mockito.mock(GitClient.class),
+                        new LogTaskListener(
+                                Logger.getAnonymousLogger(),
+                                Level.FINEST),
+                        null,
+                        null);
         assertThat(revisions, hasSize(1));
         assertThat(revisions.iterator().next().getSha1String(), is("cafebabedeadbeefcafebabedeadbeefcafebabe"));
         MergeWithGitSCMExtension merge = getExtension(actual, MergeWithGitSCMExtension.class);
@@ -1996,7 +2107,9 @@ public class GitHubSCMBuilderTest {
         assertThat(origin.getFetchRefSpecs().get(1).isForceUpdate(), is(true));
         assertThat(origin.getFetchRefSpecs().get(1).isWildcard(), is(false));
         assertThat(actual.getExtensions(),
-                containsInAnyOrder(instanceOf(GitSCMSourceDefaults.class), instanceOf(MergeWithGitSCMExtension.class)));
+                containsInAnyOrder(
+                        instanceOf(GitSCMSourceDefaults.class),
+                        instanceOf(MergeWithGitSCMExtension.class)));
         MergeWithGitSCMExtension merge = getExtension(actual, MergeWithGitSCMExtension.class);
         assertThat(merge.getBaseName(), is("remotes/origin/test-branch"));
         assertThat(merge.getBaseHash(), is(nullValue()));
@@ -2054,7 +2167,9 @@ public class GitHubSCMBuilderTest {
         assertThat(origin.getFetchRefSpecs().get(1).isForceUpdate(), is(true));
         assertThat(origin.getFetchRefSpecs().get(1).isWildcard(), is(false));
         assertThat(actual.getExtensions(),
-                containsInAnyOrder(instanceOf(GitSCMSourceDefaults.class), instanceOf(MergeWithGitSCMExtension.class)));
+                containsInAnyOrder(
+                        instanceOf(GitSCMSourceDefaults.class),
+                        instanceOf(MergeWithGitSCMExtension.class)));
         MergeWithGitSCMExtension merge = getExtension(actual, MergeWithGitSCMExtension.class);
         assertThat(merge.getBaseName(), is("remotes/origin/test-branch"));
         assertThat(merge.getBaseHash(), is(nullValue()));
@@ -2112,7 +2227,9 @@ public class GitHubSCMBuilderTest {
         assertThat(origin.getFetchRefSpecs().get(1).isForceUpdate(), is(true));
         assertThat(origin.getFetchRefSpecs().get(1).isWildcard(), is(false));
         assertThat(actual.getExtensions(),
-                containsInAnyOrder(instanceOf(GitSCMSourceDefaults.class), instanceOf(MergeWithGitSCMExtension.class)));
+                containsInAnyOrder(
+                        instanceOf(GitSCMSourceDefaults.class),
+                        instanceOf(MergeWithGitSCMExtension.class)));
         MergeWithGitSCMExtension merge = getExtension(actual, MergeWithGitSCMExtension.class);
         assertThat(merge.getBaseName(), is("remotes/origin/test-branch"));
         assertThat(merge.getBaseHash(), is(nullValue()));
@@ -2129,7 +2246,8 @@ public class GitHubSCMBuilderTest {
                 new BranchSCMHead("test-branch"),
                 new SCMHeadOrigin.Fork("qa/qa-repo"),
                 ChangeRequestCheckoutStrategy.MERGE);
-        PullRequestSCMRevision revision = new PullRequestSCMRevision(head,
+        PullRequestSCMRevision revision = new PullRequestSCMRevision(
+                head,
                 "deadbeefcafebabedeadbeefcafebabedeadbeef",
                 "cafebabedeadbeefcafebabedeadbeefcafebabe");
         source.setCredentialsId(null);
@@ -2173,7 +2291,8 @@ public class GitHubSCMBuilderTest {
         assertThat(origin.getFetchRefSpecs().get(1).isForceUpdate(), is(true));
         assertThat(origin.getFetchRefSpecs().get(1).isWildcard(), is(false));
         assertThat(actual.getExtensions(),
-                containsInAnyOrder(instanceOf(MergeWithGitSCMExtension.class),
+                containsInAnyOrder(
+                        instanceOf(MergeWithGitSCMExtension.class),
                         instanceOf(BuildChooserSetting.class),
                         instanceOf(GitSCMSourceDefaults.class)));
         BuildChooserSetting chooser = getExtension(actual, BuildChooserSetting.class);
@@ -2181,12 +2300,15 @@ public class GitHubSCMBuilderTest {
         assertThat(chooser.getBuildChooser(), instanceOf(AbstractGitSCMSource.SpecificRevisionBuildChooser.class));
         AbstractGitSCMSource.SpecificRevisionBuildChooser revChooser = (AbstractGitSCMSource.SpecificRevisionBuildChooser) chooser
                 .getBuildChooser();
-        Collection<Revision> revisions = revChooser.getCandidateRevisions(false,
-                "test-branch",
-                Mockito.mock(GitClient.class),
-                new LogTaskListener(Logger.getAnonymousLogger(), Level.FINEST),
-                null,
-                null);
+        Collection<Revision> revisions = revChooser
+                .getCandidateRevisions(false,
+                        "test-branch",
+                        Mockito.mock(GitClient.class),
+                        new LogTaskListener(
+                                Logger.getAnonymousLogger(),
+                                Level.FINEST),
+                        null,
+                        null);
         assertThat(revisions, hasSize(1));
         assertThat(revisions.iterator().next().getSha1String(), is("cafebabedeadbeefcafebabedeadbeefcafebabe"));
         MergeWithGitSCMExtension merge = getExtension(actual, MergeWithGitSCMExtension.class);
@@ -2206,7 +2328,8 @@ public class GitHubSCMBuilderTest {
                 new BranchSCMHead("test-branch"),
                 new SCMHeadOrigin.Fork("qa/qa-repo"),
                 ChangeRequestCheckoutStrategy.MERGE);
-        PullRequestSCMRevision revision = new PullRequestSCMRevision(head,
+        PullRequestSCMRevision revision = new PullRequestSCMRevision(
+                head,
                 "deadbeefcafebabedeadbeefcafebabedeadbeef",
                 "cafebabedeadbeefcafebabedeadbeefcafebabe");
         source.setCredentialsId("user-pass");
@@ -2250,7 +2373,8 @@ public class GitHubSCMBuilderTest {
         assertThat(origin.getFetchRefSpecs().get(1).isForceUpdate(), is(true));
         assertThat(origin.getFetchRefSpecs().get(1).isWildcard(), is(false));
         assertThat(actual.getExtensions(),
-                containsInAnyOrder(instanceOf(MergeWithGitSCMExtension.class),
+                containsInAnyOrder(
+                        instanceOf(MergeWithGitSCMExtension.class),
                         instanceOf(BuildChooserSetting.class),
                         instanceOf(GitSCMSourceDefaults.class)));
         BuildChooserSetting chooser = getExtension(actual, BuildChooserSetting.class);
@@ -2258,12 +2382,15 @@ public class GitHubSCMBuilderTest {
         assertThat(chooser.getBuildChooser(), instanceOf(AbstractGitSCMSource.SpecificRevisionBuildChooser.class));
         AbstractGitSCMSource.SpecificRevisionBuildChooser revChooser = (AbstractGitSCMSource.SpecificRevisionBuildChooser) chooser
                 .getBuildChooser();
-        Collection<Revision> revisions = revChooser.getCandidateRevisions(false,
-                "test-branch",
-                Mockito.mock(GitClient.class),
-                new LogTaskListener(Logger.getAnonymousLogger(), Level.FINEST),
-                null,
-                null);
+        Collection<Revision> revisions = revChooser
+                .getCandidateRevisions(false,
+                        "test-branch",
+                        Mockito.mock(GitClient.class),
+                        new LogTaskListener(
+                                Logger.getAnonymousLogger(),
+                                Level.FINEST),
+                        null,
+                        null);
         assertThat(revisions, hasSize(1));
         assertThat(revisions.iterator().next().getSha1String(), is("cafebabedeadbeefcafebabedeadbeefcafebabe"));
         MergeWithGitSCMExtension merge = getExtension(actual, MergeWithGitSCMExtension.class);
@@ -2283,7 +2410,8 @@ public class GitHubSCMBuilderTest {
                 new BranchSCMHead("test-branch"),
                 new SCMHeadOrigin.Fork("qa/qa-repo"),
                 ChangeRequestCheckoutStrategy.MERGE);
-        PullRequestSCMRevision revision = new PullRequestSCMRevision(head,
+        PullRequestSCMRevision revision = new PullRequestSCMRevision(
+                head,
                 "deadbeefcafebabedeadbeefcafebabedeadbeef",
                 "cafebabedeadbeefcafebabedeadbeefcafebabe");
         source.setCredentialsId("user-key");
@@ -2327,7 +2455,8 @@ public class GitHubSCMBuilderTest {
         assertThat(origin.getFetchRefSpecs().get(1).isForceUpdate(), is(true));
         assertThat(origin.getFetchRefSpecs().get(1).isWildcard(), is(false));
         assertThat(actual.getExtensions(),
-                containsInAnyOrder(instanceOf(MergeWithGitSCMExtension.class),
+                containsInAnyOrder(
+                        instanceOf(MergeWithGitSCMExtension.class),
                         instanceOf(BuildChooserSetting.class),
                         instanceOf(GitSCMSourceDefaults.class)));
         BuildChooserSetting chooser = getExtension(actual, BuildChooserSetting.class);
@@ -2335,12 +2464,15 @@ public class GitHubSCMBuilderTest {
         assertThat(chooser.getBuildChooser(), instanceOf(AbstractGitSCMSource.SpecificRevisionBuildChooser.class));
         AbstractGitSCMSource.SpecificRevisionBuildChooser revChooser = (AbstractGitSCMSource.SpecificRevisionBuildChooser) chooser
                 .getBuildChooser();
-        Collection<Revision> revisions = revChooser.getCandidateRevisions(false,
-                "test-branch",
-                Mockito.mock(GitClient.class),
-                new LogTaskListener(Logger.getAnonymousLogger(), Level.FINEST),
-                null,
-                null);
+        Collection<Revision> revisions = revChooser
+                .getCandidateRevisions(false,
+                        "test-branch",
+                        Mockito.mock(GitClient.class),
+                        new LogTaskListener(
+                                Logger.getAnonymousLogger(),
+                                Level.FINEST),
+                        null,
+                        null);
         assertThat(revisions, hasSize(1));
         assertThat(revisions.iterator().next().getSha1String(), is("cafebabedeadbeefcafebabedeadbeefcafebabe"));
         MergeWithGitSCMExtension merge = getExtension(actual, MergeWithGitSCMExtension.class);
@@ -2401,7 +2533,9 @@ public class GitHubSCMBuilderTest {
         assertThat(origin.getFetchRefSpecs().get(1).isForceUpdate(), is(true));
         assertThat(origin.getFetchRefSpecs().get(1).isWildcard(), is(false));
         assertThat(actual.getExtensions(),
-                containsInAnyOrder(instanceOf(MergeWithGitSCMExtension.class), instanceOf(GitSCMSourceDefaults.class)));
+                containsInAnyOrder(
+                        instanceOf(MergeWithGitSCMExtension.class),
+                        instanceOf(GitSCMSourceDefaults.class)));
         MergeWithGitSCMExtension merge = getExtension(actual, MergeWithGitSCMExtension.class);
         assertThat(merge, notNullValue());
         assertThat(merge.getBaseName(), is("remotes/origin/test-branch"));
@@ -2460,7 +2594,9 @@ public class GitHubSCMBuilderTest {
         assertThat(origin.getFetchRefSpecs().get(1).isForceUpdate(), is(true));
         assertThat(origin.getFetchRefSpecs().get(1).isWildcard(), is(false));
         assertThat(actual.getExtensions(),
-                containsInAnyOrder(instanceOf(MergeWithGitSCMExtension.class), instanceOf(GitSCMSourceDefaults.class)));
+                containsInAnyOrder(
+                        instanceOf(MergeWithGitSCMExtension.class),
+                        instanceOf(GitSCMSourceDefaults.class)));
         MergeWithGitSCMExtension merge = getExtension(actual, MergeWithGitSCMExtension.class);
         assertThat(merge, notNullValue());
         assertThat(merge.getBaseName(), is("remotes/origin/test-branch"));
@@ -2519,7 +2655,9 @@ public class GitHubSCMBuilderTest {
         assertThat(origin.getFetchRefSpecs().get(1).isForceUpdate(), is(true));
         assertThat(origin.getFetchRefSpecs().get(1).isWildcard(), is(false));
         assertThat(actual.getExtensions(),
-                containsInAnyOrder(instanceOf(MergeWithGitSCMExtension.class), instanceOf(GitSCMSourceDefaults.class)));
+                containsInAnyOrder(
+                        instanceOf(MergeWithGitSCMExtension.class),
+                        instanceOf(GitSCMSourceDefaults.class)));
         MergeWithGitSCMExtension merge = getExtension(actual, MergeWithGitSCMExtension.class);
         assertThat(merge, notNullValue());
         assertThat(merge.getBaseName(), is("remotes/origin/test-branch"));

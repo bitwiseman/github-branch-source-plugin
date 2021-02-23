@@ -42,7 +42,8 @@ import jenkins.scm.api.trait.SCMSourceContext;
  *
  * @since 2.2.0
  */
-public class GitHubSCMSourceContext extends SCMSourceContext<GitHubSCMSourceContext, GitHubSCMSourceRequest> {
+public class GitHubSCMSourceContext
+        extends SCMSourceContext<GitHubSCMSourceContext, GitHubSCMSourceRequest> {
     /**
      * {@code true} if the {@link GitHubSCMSourceRequest} will need information about branches.
      */

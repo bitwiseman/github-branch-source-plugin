@@ -147,13 +147,15 @@ public class GitHubRepositoryEventSubscriber extends GHEventsSubscriber {
 
         @Override
         public boolean isMatch(@NonNull SCMNavigator navigator) {
-            return navigator instanceof GitHubSCMNavigator && isApiMatch(((GitHubSCMNavigator) navigator).getApiUri())
+            return navigator instanceof GitHubSCMNavigator
+                    && isApiMatch(((GitHubSCMNavigator) navigator).getApiUri())
                     && repoOwner.equalsIgnoreCase(((GitHubSCMNavigator) navigator).getRepoOwner());
         }
 
         @Override
         public boolean isMatch(@NonNull SCMSource source) {
-            return source instanceof GitHubSCMSource && isApiMatch(((GitHubSCMSource) source).getApiUri())
+            return source instanceof GitHubSCMSource
+                    && isApiMatch(((GitHubSCMSource) source).getApiUri())
                     && repoOwner.equalsIgnoreCase(((GitHubSCMSource) source).getRepoOwner())
                     && repository.equalsIgnoreCase(((GitHubSCMSource) source).getRepository());
         }

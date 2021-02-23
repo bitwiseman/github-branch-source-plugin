@@ -82,12 +82,15 @@ public class GitHubBuildStatusNotification {
                         String revisionToNotify = resolveHeadCommit(revision);
                         SCMHead head = revision.getHead();
                         List<AbstractGitHubNotificationStrategy> strategies = new GitHubSCMSourceContext(null,
-                                SCMHeadObserver.none()).withTraits(((GitHubSCMSource) src).getTraits())
+                                SCMHeadObserver.none())
+                                        .withTraits(((GitHubSCMSource) src).getTraits())
                                         .notificationStrategies();
                         for (AbstractGitHubNotificationStrategy strategy : strategies) {
                             // TODO allow strategies to combine/cooperate on a notification
-                            GitHubNotificationContext notificationContext = GitHubNotificationContext
-                                    .build(null, build, src, head);
+                            GitHubNotificationContext notificationContext = GitHubNotificationContext.build(null,
+                                    build,
+                                    src,
+                                    head);
                             List<GitHubNotificationRequest> details = strategy.notifications(notificationContext,
                                     listener);
                             for (GitHubNotificationRequest request : details) {
@@ -101,13 +104,15 @@ public class GitHubBuildStatusNotification {
                                 } catch (FileNotFoundException fnfe) {
                                     if (!ignoreError) {
                                         listener.getLogger()
-                                                .format("%nCould not update commit status, please check if your scan "
-                                                        + "credentials belong to a member of the organization or a collaborator of the "
-                                                        + "repository and repo:status scope is selected%n%n");
+                                                .format("%nCould not update commit status, please check if your scan " +
+                                                        "credentials belong to a member of the organization or a collaborator of the "
+                                                        +
+                                                        "repository and repo:status scope is selected%n%n");
                                         if (LOGGER.isLoggable(Level.FINE)) {
                                             LOGGER.log(Level.FINE,
                                                     "Could not update commit status, for run "
-                                                            + build.getFullDisplayName() + " please check if your scan "
+                                                            + build.getFullDisplayName()
+                                                            + " please check if your scan "
                                                             + "credentials belong to a member of the organization or a "
                                                             + "collaborator of the repository and repo:status scope is selected",
                                                     fnfe);
@@ -126,7 +131,9 @@ public class GitHubBuildStatusNotification {
                 }
             } catch (IOException ioe) {
                 listener.getLogger()
-                        .format("%n" + "Could not update commit status. Message: %s%n" + "%n", ioe.getMessage());
+                        .format("%n"
+                                + "Could not update commit status. Message: %s%n"
+                                + "%n", ioe.getMessage());
                 if (LOGGER.isLoggable(Level.FINE)) {
                     LOGGER.log(Level.FINE, "Could not update commit status of run " + build.getFullDisplayName(), ioe);
                 }
@@ -170,7 +177,8 @@ public class GitHubBuildStatusNotification {
         SCMSource src = SCMSource.SourceByItem.findSource(job);
         if (src instanceof GitHubSCMSource) {
             GitHubSCMSource source = (GitHubSCMSource) src;
-            if (new GitHubSCMSourceContext(null, SCMHeadObserver.none()).withTraits(source.getTraits())
+            if (new GitHubSCMSourceContext(null, SCMHeadObserver.none())
+                    .withTraits(source.getTraits())
                     .notificationsDisabled()) {
                 return null;
             }
@@ -245,8 +253,10 @@ public class GitHubBuildStatusNotification {
                                         .notificationStrategies();
                                 for (AbstractGitHubNotificationStrategy strategy : strategies) {
                                     // TODO allow strategies to combine/cooperate on a notification
-                                    GitHubNotificationContext notificationContext = GitHubNotificationContext
-                                            .build(job, null, source, head);
+                                    GitHubNotificationContext notificationContext = GitHubNotificationContext.build(job,
+                                            null,
+                                            source,
+                                            head);
                                     List<GitHubNotificationRequest> details = strategy
                                             .notifications(notificationContext, null);
                                     for (GitHubNotificationRequest request : details) {

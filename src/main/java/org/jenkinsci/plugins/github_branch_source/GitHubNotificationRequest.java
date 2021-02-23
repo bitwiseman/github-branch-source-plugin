@@ -126,8 +126,13 @@ public class GitHubNotificationRequest {
      */
     @Override
     public String toString() {
-        return "GitHubNotificationRequest{" + "context='" + context + '\'' + ", url='" + url + '\'' + ", message='"
-                + message + '\'' + ", state=" + state + ", ignoreError=" + ignoreError + '}';
+        return "GitHubNotificationRequest{" +
+                "context='" + context + '\'' +
+                ", url='" + url + '\'' +
+                ", message='" + message + '\'' +
+                ", state=" + state +
+                ", ignoreError=" + ignoreError +
+                '}';
     }
 
     /**

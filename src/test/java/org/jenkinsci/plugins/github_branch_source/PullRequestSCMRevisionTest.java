@@ -72,7 +72,8 @@ public class PullRequestSCMRevisionTest extends AbstractGitHubWireMockTest {
         PullRequestSCMHead currentHead = prHead;
         PullRequestSCMHead otherHead = prMerge;
 
-        PullRequestSCMRevision currentRevision = new PullRequestSCMRevision(currentHead,
+        PullRequestSCMRevision currentRevision = new PullRequestSCMRevision(
+                currentHead,
                 "master-revision",
                 "pr-branch-revision");
         assertThat(currentRevision.toString(), is("pr-branch-revision"));
@@ -115,7 +116,8 @@ public class PullRequestSCMRevisionTest extends AbstractGitHubWireMockTest {
         PullRequestSCMHead currentHead = prHead;
         PullRequestSCMHead otherHead = prMerge;
 
-        PullRequestSCMRevision currentRevision = new PullRequestSCMRevision(currentHead,
+        PullRequestSCMRevision currentRevision = new PullRequestSCMRevision(
+                currentHead,
                 "master-revision",
                 "pr-branch-revision",
                 "pr-merge-revision");
@@ -159,7 +161,8 @@ public class PullRequestSCMRevisionTest extends AbstractGitHubWireMockTest {
         PullRequestSCMHead currentHead = prMerge;
         PullRequestSCMHead otherHead = prHead;
 
-        PullRequestSCMRevision currentRevision = new PullRequestSCMRevision(currentHead,
+        PullRequestSCMRevision currentRevision = new PullRequestSCMRevision(
+                currentHead,
                 "master-revision",
                 "pr-branch-revision");
         assertThat(currentRevision.toString(), is("pr-branch-revision+master-revision (UNKNOWN_MERGE_STATE)"));
@@ -205,7 +208,8 @@ public class PullRequestSCMRevisionTest extends AbstractGitHubWireMockTest {
         PullRequestSCMHead currentHead = prMerge;
         PullRequestSCMHead otherHead = prHead;
 
-        PullRequestSCMRevision currentRevision = new PullRequestSCMRevision(currentHead,
+        PullRequestSCMRevision currentRevision = new PullRequestSCMRevision(
+                currentHead,
                 "master-revision",
                 "pr-branch-revision",
                 PullRequestSCMRevision.NOT_MERGEABLE_HASH);
@@ -256,7 +260,8 @@ public class PullRequestSCMRevisionTest extends AbstractGitHubWireMockTest {
         PullRequestSCMHead currentHead = prMerge;
         PullRequestSCMHead otherHead = prHead;
 
-        PullRequestSCMRevision currentRevision = new PullRequestSCMRevision(currentHead,
+        PullRequestSCMRevision currentRevision = new PullRequestSCMRevision(
+                currentHead,
                 "master-revision",
                 "pr-branch-revision",
                 "pr-merge-revision");

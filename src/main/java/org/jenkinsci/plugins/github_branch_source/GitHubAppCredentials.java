@@ -164,7 +164,8 @@ public class GitHubAppCredentials extends BaseStandardCredentials implements Sta
 
         try (Timeout ignored = Timeout.limit(30, TimeUnit.SECONDS)) {
             if (gitHubApp == null) {
-                gitHubApp = Connector.createGitHubBuilder(apiUrl)
+                gitHubApp = Connector
+                        .createGitHubBuilder(apiUrl)
                         .withAuthorizationProvider(createJwtProvider(appId, appPrivateKey))
                         .build();
             }
@@ -187,16 +188,21 @@ public class GitHubAppCredentials extends BaseStandardCredentials implements Sta
                 appInstallation = appInstallations.stream()
                         .filter(installation -> installation.getAccount().getLogin().equals(owner))
                         .findAny()
-                        .orElseThrow(() -> new IllegalArgumentException(String.format(ERROR_NOT_INSTALLED, appId)));
+                        .orElseThrow(() -> new IllegalArgumentException(String.format(ERROR_NOT_INSTALLED,
+                                appId)));
             }
 
-            GHAppInstallationToken appInstallationToken = appInstallation.createToken(appInstallation.getPermissions())
+            GHAppInstallationToken appInstallationToken = appInstallation
+                    .createToken(appInstallation.getPermissions())
                     .create();
 
             long expiration = getExpirationSeconds(appInstallationToken);
-            AppInstallationToken token = new AppInstallationToken(Secret.fromString(appInstallationToken.getToken()),
+            AppInstallationToken token = new AppInstallationToken(
+                    Secret.fromString(appInstallationToken.getToken()),
                     expiration);
-            LOGGER.log(Level.FINER, "Generated App Installation Token for app ID {0}", appId);
+            LOGGER.log(Level.FINER,
+                    "Generated App Installation Token for app ID {0}",
+                    appId);
             LOGGER.log(Level.FINEST, () -> "Generated App Installation Token at " + Instant.now().toEpochMilli());
 
             if (AFTER_TOKEN_GENERATION_DELAY_SECONDS > 0) {
@@ -215,10 +221,14 @@ public class GitHubAppCredentials extends BaseStandardCredentials implements Sta
 
     private static long getExpirationSeconds(GHAppInstallationToken appInstallationToken) {
         try {
-            return appInstallationToken.getExpiresAt().toInstant().getEpochSecond();
+            return appInstallationToken.getExpiresAt()
+                    .toInstant()
+                    .getEpochSecond();
         } catch (Exception e) {
             // if we fail to calculate the expiration, guess at a reasonable value.
-            LOGGER.log(Level.WARNING, "Unable to get GitHub App installation token expiration", e);
+            LOGGER.log(Level.WARNING,
+                    "Unable to get GitHub App installation token expiration",
+                    e);
             return Instant.now().getEpochSecond() + AppInstallationToken.NOT_STALE_MINIMUM_SECONDS;
         }
     }
@@ -233,7 +243,8 @@ public class GitHubAppCredentials extends BaseStandardCredentials implements Sta
             try {
                 if (cachedToken == null || cachedToken.isStale()) {
                     LOGGER.log(Level.FINE, "Generating App Installation Token for app ID {0}", appID);
-                    cachedToken = generateAppInstallationToken(gitHub,
+                    cachedToken = generateAppInstallationToken(
+                            gitHub,
                             appID,
                             privateKey.getPlainText(),
                             actualApiUri(),
@@ -519,7 +530,8 @@ public class GitHubAppCredentials extends BaseStandardCredentials implements Sta
                 LOGGER.log(Level.FINE,
                         "Generating App Installation Token for app ID {0} for agent",
                         fields.get("appID"));
-                AppInstallationToken token = generateAppInstallationToken(null,
+                AppInstallationToken token = generateAppInstallationToken(
+                        null,
                         (String) fields.get("appID"),
                         (String) fields.get("privateKey"),
                         (String) fields.get("apiUri"),
@@ -591,7 +603,8 @@ public class GitHubAppCredentials extends BaseStandardCredentials implements Sta
                 @QueryParameter("owner") final String owner
 
         ) {
-            GitHubAppCredentials gitHubAppCredential = new GitHubAppCredentials(CredentialsScope.GLOBAL,
+            GitHubAppCredentials gitHubAppCredential = new GitHubAppCredentials(
+                    CredentialsScope.GLOBAL,
                     "test-id-not-being-saved",
                     null,
                     appID,

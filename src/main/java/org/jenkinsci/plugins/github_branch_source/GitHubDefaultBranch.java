@@ -91,8 +91,11 @@ public class GitHubDefaultBranch extends InvisibleAction implements Serializable
 
     @Override
     public String toString() {
-        return "GitHubDefaultBranch{" + "repoOwner='" + repoOwner + '\'' + ", repository='" + repository + '\''
-                + ", defaultBranch='" + defaultBranch + '\'' + '}';
+        return "GitHubDefaultBranch{" +
+                "repoOwner='" + repoOwner + '\'' +
+                ", repository='" + repository + '\'' +
+                ", defaultBranch='" + defaultBranch + '\'' +
+                '}';
     }
 
 }

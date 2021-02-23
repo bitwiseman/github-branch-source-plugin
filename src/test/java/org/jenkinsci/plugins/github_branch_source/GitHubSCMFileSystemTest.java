@@ -64,7 +64,8 @@ public class GitHubSCMFileSystemTest extends AbstractGitHubWireMockTest {
             (BranchSCMHead) master,
             SCMHeadOrigin.Fork.DEFAULT,
             ChangeRequestCheckoutStrategy.HEAD);
-    public static PullRequestSCMRevision prHeadRevision = new PullRequestSCMRevision(prHead,
+    public static PullRequestSCMRevision prHeadRevision = new PullRequestSCMRevision(
+            prHead,
             "8f1314fc3c8284d8c6d5886d473db98f2126071c",
             "c0e024f89969b976da165eecaa71e09dc60c3da1");
 
@@ -76,17 +77,20 @@ public class GitHubSCMFileSystemTest extends AbstractGitHubWireMockTest {
             (BranchSCMHead) master,
             SCMHeadOrigin.Fork.DEFAULT,
             ChangeRequestCheckoutStrategy.MERGE);
-    public static PullRequestSCMRevision prMergeRevision = new PullRequestSCMRevision(prMerge,
+    public static PullRequestSCMRevision prMergeRevision = new PullRequestSCMRevision(
+            prMerge,
             "8f1314fc3c8284d8c6d5886d473db98f2126071c",
             "c0e024f89969b976da165eecaa71e09dc60c3da1",
             "38814ca33833ff5583624c29f305be9133f27a40");
 
-    public static PullRequestSCMRevision prMergeInvalidRevision = new PullRequestSCMRevision(prMerge,
+    public static PullRequestSCMRevision prMergeInvalidRevision = new PullRequestSCMRevision(
+            prMerge,
             "8f1314fc3c8284d8c6d5886d473db98f2126071c",
             "c0e024f89969b976da165eecaa71e09dc60c3da1",
             null);
 
-    public static PullRequestSCMRevision prMergeNotMergeableRevision = new PullRequestSCMRevision(prMerge,
+    public static PullRequestSCMRevision prMergeNotMergeableRevision = new PullRequestSCMRevision(
+            prMerge,
             "8f1314fc3c8284d8c6d5886d473db98f2126071c",
             "c0e024f89969b976da165eecaa71e09dc60c3da1",
             PullRequestSCMRevision.NOT_MERGEABLE_HASH);
@@ -99,10 +103,11 @@ public class GitHubSCMFileSystemTest extends AbstractGitHubWireMockTest {
 
     @Parameterized.Parameters(name = "{index}: revision={0}")
     public static String[] revisions() {
-        return new String[]{ "c0e024f89969b976da165eecaa71e09dc60c3da1", // Pull Request #2, unmerged but exposed on
-                                                                         // target repo
+        return new String[]{
+                "c0e024f89969b976da165eecaa71e09dc60c3da1", // Pull Request #2, unmerged but exposed on target repo
                 "e301dc6d5bb7e6e18d80e85f19caa92c74e15e96",
-                null };
+                null
+        };
     }
 
     @Before
@@ -120,9 +125,12 @@ public class GitHubSCMFileSystemTest extends AbstractGitHubWireMockTest {
     @Override
     void prepareMockGitHubFileMappings() {
         super.prepareMockGitHubFileMappings();
-        githubApi.stubFor(get(urlEqualTo("/repos/cloudbeers/yolo/pulls/2"))
-                .willReturn(aResponse().withHeader("Content-Type", "application/json; charset=utf-8")
-                        .withBodyFile("body-yolo-pulls-2-mergeable-true.json")));
+        githubApi.stubFor(
+                get(urlEqualTo("/repos/cloudbeers/yolo/pulls/2"))
+                        .willReturn(
+                                aResponse()
+                                        .withHeader("Content-Type", "application/json; charset=utf-8")
+                                        .withBodyFile("body-yolo-pulls-2-mergeable-true.json")));
 
     }
 
@@ -211,7 +219,8 @@ public class GitHubSCMFileSystemTest extends AbstractGitHubWireMockTest {
 
         // We can't check the sha, but we can check last modified
         // which are different for head or merge
-        assertThat(((GitHubSCMFileSystem) fs).lastModified(), is(1480691047000L));
+        assertThat(((GitHubSCMFileSystem) fs).lastModified(),
+                is(1480691047000L));
 
         assertThat(fs.getRoot().child("fu").getType(), is(SCMFile.Type.DIRECTORY));
     }
@@ -227,7 +236,8 @@ public class GitHubSCMFileSystemTest extends AbstractGitHubWireMockTest {
 
         // We can't check the sha, but we can check last modified
         // which are different for head or merge
-        assertThat(((GitHubSCMFileSystem) fs).lastModified(), is(1480777447000L));
+        assertThat(((GitHubSCMFileSystem) fs).lastModified(),
+                is(1480777447000L));
 
         assertThat(fs.getRoot().child("fu").getType(), is(SCMFile.Type.DIRECTORY));
     }

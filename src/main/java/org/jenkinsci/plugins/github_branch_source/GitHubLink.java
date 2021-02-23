@@ -121,7 +121,10 @@ public class GitHubLink implements Action, IconSpec {
 
     @Override
     public String toString() {
-        return "GitHubLink{" + "iconClassName='" + iconClassName + '\'' + ", url='" + url + '\'' + '}';
+        return "GitHubLink{" +
+                "iconClassName='" + iconClassName + '\'' +
+                ", url='" + url + '\'' +
+                '}';
     }
 
 }

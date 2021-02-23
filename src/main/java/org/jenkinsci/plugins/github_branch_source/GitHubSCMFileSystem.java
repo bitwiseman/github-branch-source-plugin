@@ -262,7 +262,8 @@ public class GitHubSCMFileSystem extends SCMFileSystem implements GitHubClosable
                 try {
                     Connector.checkApiUrlValidity(github, credentials);
                 } catch (HttpException e) {
-                    String message = String.format("It seems %s is unreachable", apiUri);
+                    String message = String.format("It seems %s is unreachable",
+                            apiUri);
                     throw new IOException(message);
                 }
                 String refName;
@@ -307,7 +308,8 @@ public class GitHubSCMFileSystem extends SCMFileSystem implements GitHubClosable
                             // we should never get here, but just in case, we have the information to construct
                             // the correct head, so let's do that
                             rev = new GitTagSCMRevision(
-                                    new GitHubTagSCMHead(head.getName(), tag.getTagger().getDate().getTime()),
+                                    new GitHubTagSCMHead(head.getName(),
+                                            tag.getTagger().getDate().getTime()),
                                     tag.getObject().getSha());
                         }
                     } else {

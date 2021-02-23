@@ -136,9 +136,12 @@ public class Connector {
      */
     @NonNull
     public static ListBoxModel listScanCredentials(@CheckForNull Item context, String apiUri) {
-        return new StandardListBoxModel().includeEmptyValue()
+        return new StandardListBoxModel()
+                .includeEmptyValue()
                 .includeMatchingAs(
-                        context instanceof Queue.Task ? ((Queue.Task) context).getDefaultAuthentication() : ACL.SYSTEM,
+                        context instanceof Queue.Task
+                                ? ((Queue.Task) context).getDefaultAuthentication()
+                                : ACL.SYSTEM,
                         context,
                         StandardUsernameCredentials.class,
                         githubDomainRequirements(apiUri),
@@ -174,8 +177,8 @@ public class Connector {
             @CheckForNull Item context,
             String apiUri,
             String scanCredentialsId) {
-        if (context == null && !Jenkins.get().hasPermission(Jenkins.ADMINISTER)
-                || context != null && !context.hasPermission(Item.EXTENDED_READ)) {
+        if (context == null && !Jenkins.get().hasPermission(Jenkins.ADMINISTER) ||
+                context != null && !context.hasPermission(Item.EXTENDED_READ)) {
             return FormValidation.ok();
         }
         if (!scanCredentialsId.isEmpty()) {
@@ -224,7 +227,10 @@ public class Connector {
                     // ignore, never thrown
                     LOGGER.log(Level.WARNING,
                             "Exception validating credentials {0} on {1}",
-                            new Object[]{ CredentialsNameProvider.name(credentials), apiUri });
+                            new Object[]{
+                                    CredentialsNameProvider.name(credentials),
+                                    apiUri
+                            });
                     return FormValidation.error("Exception validating credentials");
                 }
             }
@@ -268,9 +274,11 @@ public class Connector {
             return null;
         } else {
             return CredentialsMatchers.firstOrNull(
-                    CredentialsProvider.lookupCredentials(StandardUsernameCredentials.class,
+                    CredentialsProvider.lookupCredentials(
+                            StandardUsernameCredentials.class,
                             context,
-                            context instanceof Queue.Task ? ((Queue.Task) context).getDefaultAuthentication()
+                            context instanceof Queue.Task
+                                    ? ((Queue.Task) context).getDefaultAuthentication()
                                     : ACL.SYSTEM,
                             githubDomainRequirements(apiUri)),
                     CredentialsMatchers.allOf(CredentialsMatchers.withId(scanCredentialsId),
@@ -306,7 +314,9 @@ public class Connector {
         result.add("- same as scan credentials -", GitHubSCMSource.DescriptorImpl.SAME);
         result.add("- anonymous -", GitHubSCMSource.DescriptorImpl.ANONYMOUS);
         return result.includeMatchingAs(
-                context instanceof Queue.Task ? ((Queue.Task) context).getDefaultAuthentication() : ACL.SYSTEM,
+                context instanceof Queue.Task
+                        ? ((Queue.Task) context).getDefaultAuthentication()
+                        : ACL.SYSTEM,
                 context,
                 StandardUsernameCredentials.class,
                 githubDomainRequirements(apiUri),
@@ -448,7 +458,8 @@ public class Connector {
         Cache cache = null;
         int cacheSize = GitHubSCMSource.getCacheSize();
         if (cacheSize > 0) {
-            File cacheBase = new File(jenkins.getRootDir(), GitHubSCMProbe.class.getName() + ".cache");
+            File cacheBase = new File(jenkins.getRootDir(),
+                    GitHubSCMProbe.class.getName() + ".cache");
             File cacheDir = null;
             try {
                 MessageDigest sha256 = MessageDigest.getInstance("SHA-256");
@@ -561,7 +572,8 @@ public class Connector {
             String apiUri,
             @NonNull TaskListener listener,
             StandardCredentials credentials,
-            GitHub github) throws IOException {
+            GitHub github)
+            throws IOException {
         synchronized (checked) {
             Map<GitHub, Void> hubs = checked.get(listener);
             if (hubs != null && hubs.containsKey(github)) {
@@ -583,14 +595,16 @@ public class Connector {
         if (!github.isAnonymous()) {
             assert credentials != null;
             listener.getLogger()
-                    .println(GitHubConsoleNote.create(System.currentTimeMillis(),
+                    .println(GitHubConsoleNote.create(
+                            System.currentTimeMillis(),
                             String.format("Connecting to %s using %s",
                                     apiUri == null ? GitHubSCMSource.GITHUB_URL : apiUri,
                                     CredentialsNameProvider.name(credentials))));
         } else {
             listener.getLogger()
                     .println(GitHubConsoleNote.create(System.currentTimeMillis(),
-                            String.format("Connecting to %s with no credentials, anonymous access",
+                            String.format(
+                                    "Connecting to %s with no credentials, anonymous access",
                                     apiUri == null ? GitHubSCMSource.GITHUB_URL : apiUri)));
         }
     }
@@ -736,7 +750,10 @@ public class Connector {
 
         @Override
         public String toString() {
-            return "ConnectionId{" + "apiUrl='" + apiUrl + '\'' + ", credentialsHash=" + credentialsHash + '}';
+            return "ConnectionId{" +
+                    "apiUrl='" + apiUrl + '\'' +
+                    ", credentialsHash=" + credentialsHash +
+                    '}';
         }
 
     }

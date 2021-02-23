@@ -72,7 +72,8 @@ public class GitHubSCMNavigatorTest extends AbstractGitHubWireMockTest {
     @Mock
     private SCMSourceOwner scmSourceOwner;
 
-    private BaseStandardCredentials credentials = new UsernamePasswordCredentialsImpl(CredentialsScope.GLOBAL,
+    private BaseStandardCredentials credentials = new UsernamePasswordCredentialsImpl(
+            CredentialsScope.GLOBAL,
             "authenticated-user",
             null,
             "git-user",
@@ -97,7 +98,8 @@ public class GitHubSCMNavigatorTest extends AbstractGitHubWireMockTest {
 
     private void setCredentials(List<Credentials> credentials) {
         SystemCredentialsProvider.getInstance()
-                .setDomainCredentialsMap(Collections.singletonMap(Domain.global(), credentials));
+                .setDomainCredentialsMap(
+                        Collections.singletonMap(Domain.global(), credentials));
     }
 
     @Test
@@ -323,7 +325,8 @@ public class GitHubSCMNavigatorTest extends AbstractGitHubWireMockTest {
         final Set<String> projectNames = new HashSet<>();
         final SCMSourceObserver observer = getObserver(projectNames);
 
-        navigator.visitSources(SCMSourceObserver.filter(observer, "unknown", "basic", "yolo", "yolo-archived"));
+        navigator.visitSources(
+                SCMSourceObserver.filter(observer, "unknown", "basic", "yolo", "yolo-archived"));
 
         assertThat(projectNames, containsInAnyOrder("basic", "yolo", "yolo-archived"));
     }
@@ -334,7 +337,8 @@ public class GitHubSCMNavigatorTest extends AbstractGitHubWireMockTest {
         final Set<String> projectNames = new HashSet<>();
         final SCMSourceObserver observer = getObserver(projectNames);
 
-        navigator.visitSources(SCMSourceObserver.filter(observer, "unknown", "basic", "yolo", "yolo-archived"));
+        navigator.visitSources(
+                SCMSourceObserver.filter(observer, "unknown", "basic", "yolo", "yolo-archived"));
 
         assertThat(projectNames, containsInAnyOrder("basic", "yolo"));
     }

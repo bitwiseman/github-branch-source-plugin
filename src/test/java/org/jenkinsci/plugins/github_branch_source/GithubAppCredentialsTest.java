@@ -53,31 +53,32 @@ public class GithubAppCredentialsTest extends AbstractGitHubWireMockTest {
     // Windows line ending
             "MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQD7vHsVwyDV8cj7\r\n" +
             // This should also work
-            "5yR4WWl6rlgf/e5zmeBgtm0PCgnitcSbD5FU33301DPY5a7AtqVBOwEnE14L9XS7\r"
-            + "ov61U+x1m4aQmqR/dPQaA2ayh2cYPszWNQMp42ArDIfg7DhSrvsRJKHsbPXlPjqe\n"
-            + "c0udLqhSLVIO9frNLf+dAsLsgYk8O39PKGb33akGG7tWTe0J+akNQjgbS7vOi8sS\n"
-            + "NLwHIdYfz/Am+6Xmm+J4yVs6+Xt3kOeLdFBkz8H/HGsJq854MbIAK/HuId1MOPS0\n"
-            + "cDWh37tzRsM+q/HZzYRkc5bhNKw/Mj9jN9jD5GH0Lfea0QFedjppf1KvWdcXn+/W\n"
-            + "M7OmyfhvAgMBAAECggEAN96H7reExRbJRWbySCeH6mthMZB46H0hODWklK7krMUs\n"
-            + "okFdPtnvKXQjIaMwGqMuoACJa/O3bq4GP1KYdwPuOdfPkK5RjdwWBOP2We8FKXNe\n"
-            + "oLfZQOWuxT8dtQSYJ3mgTRi1OzSfikY6Wko6YOMnBj36tUlQZVMtJNqlCjphi9Uz\n"
-            + "6EyvRURlDG8sBBbC7ods5B0789qk3iGH/97ia+1QIqXAUaVFg3/BA6wkxkbNG2sN\n"
-            + "tqULgVYTw32Oj/Y/H1Y250RoocTyfsUS3I3aPIlnvcgp2bugWqDyYJ58nDIt3Pku\n"
-            + "fjImWrNz/pNiEs+efnb0QEk7m5hYwxmyXN4KRSv0OQKBgQD+I3Y3iNKSVr6wXjur\n"
-            + "OPp45fxS2sEf5FyFYOn3u760sdJOH9fGlmf9sDozJ8Y8KCaQCN5tSe3OM+XDrmiw\n"
-            + "Cu/oaqJ1+G4RG+6w1RJF+5Nfg6PkUs7eJehUgZ2Tox8Tg1mfVIV8KbMwNi5tXpug\n"
-            + "MVmA2k9xjc4uMd2jSnSj9NAqrQKBgQD9lIO1tY6YKF0Eb0Qi/iLN4UqBdJfnALBR\n"
-            + "MjxYxqqI8G4wZEoZEJJvT1Lm6Q3o577N95SihZoj69tb10vvbEz1pb3df7c1HEku\n"
-            + "LXcyVMvjR/CZ7dOSNgLGAkFfOoPhcF/OjSm4DrGPe3GiBxhwXTBjwJ5TIgEDkVIx\n"
-            + "ZVo5r7gPCwKBgQCOvsZo/Q4hql2jXNqxGuj9PVkUBNFTI4agWEYyox7ECdlxjks5\n"
-            + "vUOd5/1YvG+JXJgEcSbWRh8volDdL7qXnx0P881a6/aO35ybcKK58kvd62gEGEsf\n"
-            + "1jUAOmmTAp2y7SVK7EOp8RY370b2oZxSR0XZrUXQJ3F22wV98ZVAfoLqZQKBgDIr\n"
-            + "PdunbezAn5aPBOX/bZdZ6UmvbZYwVrHZxIKz2214U/STAu3uj2oiQX6ZwTzBDMjn\n"
-            + "IKr+z74nnaCP+eAGhztabTPzXqXNUNUn/Zshl60BwKJToTYeJXJTY+eZRhpGB05w\n"
-            + "Mz7M+Wgvvg2WZcllRnuV0j0UTysLhz1qle0vzLR9AoGBAOukkFFm2RLm9N1P3gI8\n"
-            + "mUadeAlYRZ5o0MvumOHaB5pDOCKhrqAhop2gnM0f5uSlapCtlhj0Js7ZyS3Giezg\n"
-            + "38oqAhAYxy2LMoLD7UtsHXNp0OnZ22djcDwh+Wp2YORm7h71yOM0NsYubGbp+CmT\n" + "Nw9bewRvqjySBlDJ9/aNSeEY\n"
-            + "-----END PRIVATE KEY-----";
+            "5yR4WWl6rlgf/e5zmeBgtm0PCgnitcSbD5FU33301DPY5a7AtqVBOwEnE14L9XS7\r" +
+            "ov61U+x1m4aQmqR/dPQaA2ayh2cYPszWNQMp42ArDIfg7DhSrvsRJKHsbPXlPjqe\n" +
+            "c0udLqhSLVIO9frNLf+dAsLsgYk8O39PKGb33akGG7tWTe0J+akNQjgbS7vOi8sS\n" +
+            "NLwHIdYfz/Am+6Xmm+J4yVs6+Xt3kOeLdFBkz8H/HGsJq854MbIAK/HuId1MOPS0\n" +
+            "cDWh37tzRsM+q/HZzYRkc5bhNKw/Mj9jN9jD5GH0Lfea0QFedjppf1KvWdcXn+/W\n" +
+            "M7OmyfhvAgMBAAECggEAN96H7reExRbJRWbySCeH6mthMZB46H0hODWklK7krMUs\n" +
+            "okFdPtnvKXQjIaMwGqMuoACJa/O3bq4GP1KYdwPuOdfPkK5RjdwWBOP2We8FKXNe\n" +
+            "oLfZQOWuxT8dtQSYJ3mgTRi1OzSfikY6Wko6YOMnBj36tUlQZVMtJNqlCjphi9Uz\n" +
+            "6EyvRURlDG8sBBbC7ods5B0789qk3iGH/97ia+1QIqXAUaVFg3/BA6wkxkbNG2sN\n" +
+            "tqULgVYTw32Oj/Y/H1Y250RoocTyfsUS3I3aPIlnvcgp2bugWqDyYJ58nDIt3Pku\n" +
+            "fjImWrNz/pNiEs+efnb0QEk7m5hYwxmyXN4KRSv0OQKBgQD+I3Y3iNKSVr6wXjur\n" +
+            "OPp45fxS2sEf5FyFYOn3u760sdJOH9fGlmf9sDozJ8Y8KCaQCN5tSe3OM+XDrmiw\n" +
+            "Cu/oaqJ1+G4RG+6w1RJF+5Nfg6PkUs7eJehUgZ2Tox8Tg1mfVIV8KbMwNi5tXpug\n" +
+            "MVmA2k9xjc4uMd2jSnSj9NAqrQKBgQD9lIO1tY6YKF0Eb0Qi/iLN4UqBdJfnALBR\n" +
+            "MjxYxqqI8G4wZEoZEJJvT1Lm6Q3o577N95SihZoj69tb10vvbEz1pb3df7c1HEku\n" +
+            "LXcyVMvjR/CZ7dOSNgLGAkFfOoPhcF/OjSm4DrGPe3GiBxhwXTBjwJ5TIgEDkVIx\n" +
+            "ZVo5r7gPCwKBgQCOvsZo/Q4hql2jXNqxGuj9PVkUBNFTI4agWEYyox7ECdlxjks5\n" +
+            "vUOd5/1YvG+JXJgEcSbWRh8volDdL7qXnx0P881a6/aO35ybcKK58kvd62gEGEsf\n" +
+            "1jUAOmmTAp2y7SVK7EOp8RY370b2oZxSR0XZrUXQJ3F22wV98ZVAfoLqZQKBgDIr\n" +
+            "PdunbezAn5aPBOX/bZdZ6UmvbZYwVrHZxIKz2214U/STAu3uj2oiQX6ZwTzBDMjn\n" +
+            "IKr+z74nnaCP+eAGhztabTPzXqXNUNUn/Zshl60BwKJToTYeJXJTY+eZRhpGB05w\n" +
+            "Mz7M+Wgvvg2WZcllRnuV0j0UTysLhz1qle0vzLR9AoGBAOukkFFm2RLm9N1P3gI8\n" +
+            "mUadeAlYRZ5o0MvumOHaB5pDOCKhrqAhop2gnM0f5uSlapCtlhj0Js7ZyS3Giezg\n" +
+            "38oqAhAYxy2LMoLD7UtsHXNp0OnZ22djcDwh+Wp2YORm7h71yOM0NsYubGbp+CmT\n" +
+            "Nw9bewRvqjySBlDJ9/aNSeEY\n" +
+            "-----END PRIVATE KEY-----";
 
     @Rule
     public GitSampleRepoRule sampleRepo = new GitSampleRepoRule();
@@ -86,7 +87,8 @@ public class GithubAppCredentialsTest extends AbstractGitHubWireMockTest {
     public static void setUpJenkins() throws Exception {
         // Add credential (Must have valid private key for Jwt to work, but App doesn't have to actually exist)
         store = CredentialsProvider.lookupStores(r.jenkins).iterator().next();
-        appCredentials = new GitHubAppCredentials(CredentialsScope.GLOBAL,
+        appCredentials = new GitHubAppCredentials(
+                CredentialsScope.GLOBAL,
                 myAppCredentialsId,
                 "sample",
                 "54321",
@@ -111,110 +113,159 @@ public class GithubAppCredentialsTest extends AbstractGitHubWireMockTest {
     @Before
     public void setUpWireMock() throws Exception {
         // Add wiremock responses for App, App Installation, and App Installation Token
-        githubApi.stubFor(get(urlEqualTo("/app"))
-                .willReturn(aResponse().withHeader("Content-Type", "application/json; charset=utf-8")
-                        .withBodyFile("../AppCredentials/files/body-mapping-githubapp-app.json")));
-        githubApi.stubFor(get(urlEqualTo("/app/installations"))
-                .willReturn(aResponse().withHeader("Content-Type", "application/json; charset=utf-8")
-                        .withBodyFile("../AppCredentials/files/body-mapping-githubapp-installations.json")));
+        githubApi.stubFor(
+                get(urlEqualTo("/app"))
+                        .willReturn(
+                                aResponse()
+                                        .withHeader("Content-Type", "application/json; charset=utf-8")
+                                        .withBodyFile("../AppCredentials/files/body-mapping-githubapp-app.json")));
+        githubApi.stubFor(
+                get(urlEqualTo("/app/installations"))
+                        .willReturn(
+                                aResponse()
+                                        .withHeader("Content-Type", "application/json; charset=utf-8")
+                                        .withBodyFile(
+                                                "../AppCredentials/files/body-mapping-githubapp-installations.json")));
 
         final String scenarioName = "credentials-accesstoken";
 
-        githubApi.stubFor(post(urlEqualTo("/app/installations/654321/access_tokens")).inScenario(scenarioName)
-                .whenScenarioStateIs("Started")
-                .willSetStateTo("1")
-                .withRequestBody(equalToJson(
-                        "{\"permissions\":{\"pull_requests\":\"write\",\"metadata\":\"read\",\"checks\":\"write\",\"contents\":\"read\"}}",
-                        true,
-                        false))
-                .willReturn(aResponse().withHeader("Content-Type", "application/json; charset=utf-8")
-                        .withBody("{\n" + "  \"token\": \"super-secret-token\",\n" +
-                        // This token will go stale at the soonest allowed time but will not expire for the duration of
-                        // the test
-                                "  \"expires_at\": \""
-                                + printDate(new Date(System.currentTimeMillis() + Duration.ofMinutes(10).toMillis()))
-                                + "\"" + // 2019-08-10T05:54:58Z
-                                "}")));
+        githubApi.stubFor(
+                post(urlEqualTo("/app/installations/654321/access_tokens"))
+                        .inScenario(scenarioName)
+                        .whenScenarioStateIs("Started")
+                        .willSetStateTo("1")
+                        .withRequestBody(
+                                equalToJson(
+                                        "{\"permissions\":{\"pull_requests\":\"write\",\"metadata\":\"read\",\"checks\":\"write\",\"contents\":\"read\"}}",
+                                        true,
+                                        false))
+                        .willReturn(
+                                aResponse()
+                                        .withHeader("Content-Type", "application/json; charset=utf-8")
+                                        .withBody("{\n" +
+                                                "  \"token\": \"super-secret-token\",\n" +
+                                                // This token will go stale at the soonest allowed time but will not
+                                                // expire for the duration of the test
+                                                "  \"expires_at\": \""
+                                                + printDate(new Date(
+                                                        System.currentTimeMillis() + Duration.ofMinutes(10).toMillis()))
+                                                + "\"" + // 2019-08-10T05:54:58Z
+                                                "}")));
 
         // Force an error to test fallback refreshing from agent
-        githubApi.stubFor(post(urlEqualTo("/app/installations/654321/access_tokens")).inScenario(scenarioName)
-                .whenScenarioStateIs("1")
-                .willSetStateTo("2")
-                .withRequestBody(equalToJson(
-                        "{\"permissions\":{\"pull_requests\":\"write\",\"metadata\":\"read\",\"checks\":\"write\",\"contents\":\"read\"}}",
-                        true,
-                        false))
-                .willReturn(aResponse().withStatus(404)
-                        .withStatusMessage("404 Not Found")
-                        .withHeader("Content-Type", "application/json; charset=utf-8")
-                        .withBody("{\"message\": \"File not found\"}")));
+        githubApi.stubFor(
+                post(urlEqualTo("/app/installations/654321/access_tokens"))
+                        .inScenario(scenarioName)
+                        .whenScenarioStateIs("1")
+                        .willSetStateTo("2")
+                        .withRequestBody(
+                                equalToJson(
+                                        "{\"permissions\":{\"pull_requests\":\"write\",\"metadata\":\"read\",\"checks\":\"write\",\"contents\":\"read\"}}",
+                                        true,
+                                        false))
+                        .willReturn(
+                                aResponse()
+                                        .withStatus(404)
+                                        .withStatusMessage("404 Not Found")
+                                        .withHeader("Content-Type", "application/json; charset=utf-8")
+                                        .withBody("{\"message\": \"File not found\"}")));
 
         // Force an error to test fallback to returning unexpired token on agent
-        githubApi.stubFor(post(urlEqualTo("/app/installations/654321/access_tokens")).inScenario(scenarioName)
-                .whenScenarioStateIs("2")
-                .willSetStateTo("3")
-                .withRequestBody(equalToJson(
-                        "{\"permissions\":{\"pull_requests\":\"write\",\"metadata\":\"read\",\"checks\":\"write\",\"contents\":\"read\"}}",
-                        true,
-                        false))
-                .willReturn(aResponse().withStatus(404)
-                        .withStatusMessage("404 Not Found")
-                        .withHeader("Content-Type", "application/json; charset=utf-8")
-                        .withBody("{\"message\": \"File not found\"}")));
+        githubApi.stubFor(
+                post(urlEqualTo("/app/installations/654321/access_tokens"))
+                        .inScenario(scenarioName)
+                        .whenScenarioStateIs("2")
+                        .willSetStateTo("3")
+                        .withRequestBody(
+                                equalToJson(
+                                        "{\"permissions\":{\"pull_requests\":\"write\",\"metadata\":\"read\",\"checks\":\"write\",\"contents\":\"read\"}}",
+                                        true,
+                                        false))
+                        .willReturn(
+                                aResponse()
+                                        .withStatus(404)
+                                        .withStatusMessage("404 Not Found")
+                                        .withHeader("Content-Type", "application/json; charset=utf-8")
+                                        .withBody("{\"message\": \"File not found\"}")));
 
         // return an expired token on controller
-        githubApi.stubFor(post(urlEqualTo("/app/installations/654321/access_tokens")).inScenario(scenarioName)
-                .whenScenarioStateIs("3")
-                .willSetStateTo("4")
-                .withRequestBody(equalToJson(
-                        "{\"permissions\":{\"pull_requests\":\"write\",\"metadata\":\"read\",\"checks\":\"write\",\"contents\":\"read\"}}",
-                        true,
-                        false))
-                .willReturn(aResponse().withHeader("Content-Type", "application/json; charset=utf-8")
-                        .withBody("{\n" + "  \"token\": \"super-secret-token\",\n" +
-                        // token is already expired, but will not go stale for at least the minimum time
-                        // This is a valid scenario - clocks are not always properly synchronized.
-                                "  \"expires_at\": \"" + printDate(new Date()) + "\"" + // 2019-08-10T05:54:58Z
-                                "}")));
+        githubApi.stubFor(
+                post(urlEqualTo("/app/installations/654321/access_tokens"))
+                        .inScenario(scenarioName)
+                        .whenScenarioStateIs("3")
+                        .willSetStateTo("4")
+                        .withRequestBody(
+                                equalToJson(
+                                        "{\"permissions\":{\"pull_requests\":\"write\",\"metadata\":\"read\",\"checks\":\"write\",\"contents\":\"read\"}}",
+                                        true,
+                                        false))
+                        .willReturn(
+                                aResponse()
+                                        .withHeader("Content-Type", "application/json; charset=utf-8")
+                                        .withBody("{\n" +
+                                                "  \"token\": \"super-secret-token\",\n" +
+                                                // token is already expired, but will not go stale for at least the
+                                                // minimum time
+                                                // This is a valid scenario - clocks are not always properly
+                                                // synchronized.
+                                                "  \"expires_at\": \"" + printDate(new Date()) + "\"" + // 2019-08-10T05:54:58Z
+                                                "}")));
 
         // Force an error to test non-fallback scenario and refreshing on agent
-        githubApi.stubFor(post(urlEqualTo("/app/installations/654321/access_tokens")).inScenario(scenarioName)
-                .whenScenarioStateIs("4")
-                .willSetStateTo("5")
-                .withRequestBody(equalToJson(
-                        "{\"permissions\":{\"pull_requests\":\"write\",\"metadata\":\"read\",\"checks\":\"write\",\"contents\":\"read\"}}",
-                        true,
-                        false))
-                .willReturn(aResponse().withStatus(404)
-                        .withStatusMessage("404 Not Found")
-                        .withHeader("Content-Type", "application/json; charset=utf-8")
-                        .withBody("{\"message\": \"File not found\"}")));
+        githubApi.stubFor(
+                post(urlEqualTo("/app/installations/654321/access_tokens"))
+                        .inScenario(scenarioName)
+                        .whenScenarioStateIs("4")
+                        .willSetStateTo("5")
+                        .withRequestBody(
+                                equalToJson(
+                                        "{\"permissions\":{\"pull_requests\":\"write\",\"metadata\":\"read\",\"checks\":\"write\",\"contents\":\"read\"}}",
+                                        true,
+                                        false))
+                        .willReturn(
+                                aResponse()
+                                        .withStatus(404)
+                                        .withStatusMessage("404 Not Found")
+                                        .withHeader("Content-Type", "application/json; charset=utf-8")
+                                        .withBody("{\"message\": \"File not found\"}")));
 
         // Valid token retirieved on agent
-        githubApi.stubFor(post(urlEqualTo("/app/installations/654321/access_tokens")).inScenario(scenarioName)
-                .whenScenarioStateIs("5")
-                .willSetStateTo("6")
-                .withRequestBody(equalToJson(
-                        "{\"permissions\":{\"pull_requests\":\"write\",\"metadata\":\"read\",\"checks\":\"write\",\"contents\":\"read\"}}",
-                        true,
-                        false))
-                .willReturn(aResponse().withHeader("Content-Type", "application/json; charset=utf-8")
-                        .withBody("{\n" + "  \"token\": \"super-secret-token\",\n" + "  \"expires_at\": \""
-                                + printDate(new Date()) + "\"" + // 2019-08-10T05:54:58Z
-                                "}")));
+        githubApi.stubFor(
+                post(urlEqualTo("/app/installations/654321/access_tokens"))
+                        .inScenario(scenarioName)
+                        .whenScenarioStateIs("5")
+                        .willSetStateTo("6")
+                        .withRequestBody(
+                                equalToJson(
+                                        "{\"permissions\":{\"pull_requests\":\"write\",\"metadata\":\"read\",\"checks\":\"write\",\"contents\":\"read\"}}",
+                                        true,
+                                        false))
+                        .willReturn(
+                                aResponse()
+                                        .withHeader("Content-Type", "application/json; charset=utf-8")
+                                        .withBody("{\n" +
+                                                "  \"token\": \"super-secret-token\",\n" +
+                                                "  \"expires_at\": \"" + printDate(new Date()) + "\"" + // 2019-08-10T05:54:58Z
+                                                "}")));
 
         // Valid token retirieved on controller
-        githubApi.stubFor(post(urlEqualTo("/app/installations/654321/access_tokens")).inScenario(scenarioName)
-                .whenScenarioStateIs("6")
-                .willSetStateTo("7") // setting this to non-existant state means any extra requests will fail
-                .withRequestBody(equalToJson(
-                        "{\"permissions\":{\"pull_requests\":\"write\",\"metadata\":\"read\",\"checks\":\"write\",\"contents\":\"read\"}}",
-                        true,
-                        false))
-                .willReturn(aResponse().withHeader("Content-Type", "application/json; charset=utf-8")
-                        .withBody("{\n" + "  \"token\": \"super-secret-token\",\n" + "  \"expires_at\": \""
-                                + printDate(new Date()) + "\"" + // 2019-08-10T05:54:58Z
-                                "}")));
+        githubApi.stubFor(
+                post(urlEqualTo("/app/installations/654321/access_tokens"))
+                        .inScenario(scenarioName)
+                        .whenScenarioStateIs("6")
+                        .willSetStateTo("7") // setting this to non-existant state means any extra requests will fail
+                        .withRequestBody(
+                                equalToJson(
+                                        "{\"permissions\":{\"pull_requests\":\"write\",\"metadata\":\"read\",\"checks\":\"write\",\"contents\":\"read\"}}",
+                                        true,
+                                        false))
+                        .willReturn(
+                                aResponse()
+                                        .withHeader("Content-Type", "application/json; charset=utf-8")
+                                        .withBody("{\n" +
+                                                "  \"token\": \"super-secret-token\",\n" +
+                                                "  \"expires_at\": \"" + printDate(new Date()) + "\"" + // 2019-08-10T05:54:58Z
+                                                "}")));
     }
 
     @Test
@@ -232,7 +283,8 @@ public class GithubAppCredentialsTest extends AbstractGitHubWireMockTest {
                     .toMillis());
 
             AuthorizationProvider provider = appCredentials.getAuthorizationProvider();
-            GitHub githubInstance = createGitHubBuilder(githubApi.baseUrl()).withAuthorizationProvider(provider)
+            GitHub githubInstance = createGitHubBuilder(githubApi.baseUrl())
+                    .withAuthorizationProvider(provider)
                     .build();
 
             // First Checkout on controller should use cached
@@ -295,9 +347,12 @@ public class GithubAppCredentialsTest extends AbstractGitHubWireMockTest {
             Thread.sleep(Duration.ofSeconds(GitHubAppCredentials.AppInstallationToken.NOT_STALE_MINIMUM_SECONDS + 2)
                     .toMillis());
 
-            final String gitCheckoutStep = String.format("    git url: REPO, credentialsId: '%s'", myAppCredentialsId);
+            final String gitCheckoutStep = String.format(
+                    "    git url: REPO, credentialsId: '%s'",
+                    myAppCredentialsId);
 
-            final String jenkinsfile = String.join("\n",
+            final String jenkinsfile = String.join(
+                    "\n",
                     "// run checkout several times",
                     "node ('my-agent') {",
                     "    echo 'First Checkout on agent should use cached token passed via remoting'",
@@ -327,8 +382,8 @@ public class GithubAppCredentialsTest extends AbstractGitHubWireMockTest {
             // Create a pipeline job that points the above repo
             WorkflowJob job = r.createProject(WorkflowJob.class, "test-creds");
             job.setDefinition(new CpsFlowDefinition(jenkinsfile, false));
-            job.addProperty(
-                    new ParametersDefinitionProperty(new StringParameterDefinition("REPO", sampleRepo.toString())));
+            job.addProperty(new ParametersDefinitionProperty(
+                    new StringParameterDefinition("REPO", sampleRepo.toString())));
             WorkflowRun run = job.scheduleBuild2(0).waitForStart();
             r.waitUntilNoActivity();
 
@@ -391,11 +446,15 @@ public class GithubAppCredentialsTest extends AbstractGitHubWireMockTest {
             result.addAll(agentLogs);
         }
         Collections.reverse(result);
-        return result.stream().map(formatter::formatMessage).collect(Collectors.toList());
+        return result.stream()
+                .map(formatter::formatMessage)
+                .collect(Collectors.toList());
     }
 
     static String printDate(Date dt) {
-        return DateTimeFormatter.ISO_INSTANT.format(Instant.ofEpochMilli(dt.getTime()).truncatedTo(ChronoUnit.SECONDS));
+        return DateTimeFormatter.ISO_INSTANT.format(Instant.ofEpochMilli(dt.getTime())
+                .truncatedTo(
+                        ChronoUnit.SECONDS));
     }
 
 }

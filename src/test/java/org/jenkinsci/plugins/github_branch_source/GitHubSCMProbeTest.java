@@ -36,17 +36,23 @@ public class GitHubSCMProbeTest {
     @Before
     public void setUp() throws Exception {
         // Clear all caches before each test
-        File cacheBaseDir = new File(j.jenkins.getRootDir(), GitHubSCMProbe.class.getName() + ".cache");
+        File cacheBaseDir = new File(j.jenkins.getRootDir(),
+                GitHubSCMProbe.class.getName() + ".cache");
         if (cacheBaseDir.exists()) {
             FileUtils.cleanDirectory(cacheBaseDir);
         }
 
-        githubApi.stubFor(get(urlEqualTo("/repos/cloudbeers/yolo")).willReturn(aResponse().withStatus(200)
-                .withHeader("Content-Type", "application/json")
-                .withBodyFile("body-cloudbeers-yolo-PucD6.json")));
+        githubApi.stubFor(
+                get(urlEqualTo("/repos/cloudbeers/yolo"))
+                        .willReturn(aResponse()
+                                .withStatus(200)
+                                .withHeader("Content-Type", "application/json")
+                                .withBodyFile("body-cloudbeers-yolo-PucD6.json")));
 
         // Return 404 for /rate_limit
-        githubApi.stubFor(get(urlEqualTo("/rate_limit")).willReturn(aResponse().withStatus(404)));
+        githubApi.stubFor(get(urlEqualTo("/rate_limit"))
+                .willReturn(aResponse()
+                        .withStatus(404)));
     }
 
     void createProbeForPR(int number) throws IOException {
@@ -61,8 +67,11 @@ public class GitHubSCMProbeTest {
                 new BranchSCMHead("master"),
                 new SCMHeadOrigin.Fork("rsandell"),
                 ChangeRequestCheckoutStrategy.MERGE);
-        probe = new GitHubSCMProbe("http://localhost:"
-                + githubApi.port(), null, repo, head, new PullRequestSCMRevision(head, "a", "b"));
+        probe = new GitHubSCMProbe("http://localhost:" + githubApi.port(),
+                null,
+                repo,
+                head,
+                new PullRequestSCMRevision(head, "a", "b"));
     }
 
     @Issue("JENKINS-54126")

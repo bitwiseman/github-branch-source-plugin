@@ -26,7 +26,8 @@ public class SSHCheckoutTraitTest {
 
     @Test
     public void given__legacyConfig__when__creatingTrait__then__convertedToModern() throws Exception {
-        assertThat(new SSHCheckoutTrait(GitHubSCMSource.DescriptorImpl.ANONYMOUS).getCredentialsId(), is(nullValue()));
+        assertThat(new SSHCheckoutTrait(GitHubSCMSource.DescriptorImpl.ANONYMOUS).getCredentialsId(),
+                is(nullValue()));
     }
 
     @Test

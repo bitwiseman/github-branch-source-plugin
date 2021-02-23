@@ -94,7 +94,9 @@ public class ApiRateLimitCheckerTest extends AbstractGitHubWireMockTest {
 
     private void setupStubs(List<RateLimit> scenarios) {
         githubApi.stubFor(get(urlEqualTo("/meta"))
-                .willReturn(aResponse().withStatus(200).withBody("{\"verifiable_password_authentication\": false}")));
+                .willReturn(aResponse()
+                        .withStatus(200)
+                        .withBody("{\"verifiable_password_authentication\": false}")));
 
         String scenarioName = UUID.randomUUID().toString();
         for (int i = 0; i < scenarios.size(); i++) {
@@ -105,29 +107,39 @@ public class ApiRateLimitCheckerTest extends AbstractGitHubWireMockTest {
             String limit = Integer.toString(scenarioResponse.limit);
             String remaining = Integer.toString(scenarioResponse.remaining);
             String reset = Long.toString(scenarioResponse.reset.toInstant().getEpochSecond());
-            String body = "{" + String
-                    .format(" \"rate\": { \"limit\": %s, \"remaining\": %s, \"reset\": %s },", limit, remaining, reset)
-                    + " \"resources\": {"
-                    + String.format(" \"core\": { \"limit\": %s, \"remaining\": %s, \"reset\": %s },",
+            String body = "{" +
+                    String.format(" \"rate\": { \"limit\": %s, \"remaining\": %s, \"reset\": %s },",
                             limit,
                             remaining,
                             reset)
-                    + String.format(" \"search\": { \"limit\": %s, \"remaining\": %s, \"reset\": %s },",
+                    +
+                    " \"resources\": {" +
+                    String.format(" \"core\": { \"limit\": %s, \"remaining\": %s, \"reset\": %s },",
                             limit,
                             remaining,
                             reset)
-                    + String.format(" \"graphql\": { \"limit\": %s, \"remaining\": %s, \"reset\": %s },",
+                    +
+                    String.format(" \"search\": { \"limit\": %s, \"remaining\": %s, \"reset\": %s },",
                             limit,
                             remaining,
                             reset)
-                    + String.format(" \"integration_manifest\": { \"limit\": %s, \"remaining\": %s, \"reset\": %s }",
+                    +
+                    String.format(" \"graphql\": { \"limit\": %s, \"remaining\": %s, \"reset\": %s },",
                             limit,
                             remaining,
                             reset)
-                    + " } }";
-            ScenarioMappingBuilder scenario = get(urlEqualTo("/rate_limit")).inScenario(scenarioName)
+                    +
+                    String.format(" \"integration_manifest\": { \"limit\": %s, \"remaining\": %s, \"reset\": %s }",
+                            limit,
+                            remaining,
+                            reset)
+                    +
+                    " } }";
+            ScenarioMappingBuilder scenario = get(urlEqualTo("/rate_limit"))
+                    .inScenario(scenarioName)
                     .whenScenarioStateIs(state)
-                    .willReturn(aResponse().withHeader("Content-Type", "application/json; charset=utf-8")
+                    .willReturn(aResponse()
+                            .withHeader("Content-Type", "application/json; charset=utf-8")
                             .withHeader("X-RateLimit-Limit", limit)
                             .withHeader("X-RateLimit-Remaining", remaining)
                             .withHeader("X-RateLimit-Reset", reset)
@@ -277,7 +289,9 @@ public class ApiRateLimitCheckerTest extends AbstractGitHubWireMockTest {
         setupStubs(new ArrayList<>());
 
         // Return 404 for /rate_limit
-        githubApi.stubFor(get(urlEqualTo("/rate_limit")).willReturn(aResponse().withStatus(404)));
+        githubApi.stubFor(get(urlEqualTo("/rate_limit"))
+                .willReturn(aResponse()
+                        .withStatus(404)));
 
         ApiRateLimitChecker.configureThreadLocalChecker(listener, github);
 

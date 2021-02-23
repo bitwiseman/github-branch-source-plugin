@@ -125,7 +125,8 @@ public class GitHubSCMBuilder extends GitSCMBuilder<GitHubSCMBuilder> {
         String repoUrl;
         if (head instanceof PullRequestSCMHead) {
             PullRequestSCMHead h = (PullRequestSCMHead) head;
-            withRefSpec("+refs/pull/" + h.getId() + "/head:refs/remotes/@{remote}/" + head.getName());
+            withRefSpec("+refs/pull/" + h.getId() + "/head:refs/remotes/@{remote}/" + head
+                    .getName());
             repoUrl = repositoryUrl(h.getSourceOwner(), h.getSourceRepo());
         } else if (head instanceof TagSCMHead) {
             withRefSpec("+refs/tags/" + head.getName() + ":refs/tags/" + head.getName());
@@ -231,14 +232,17 @@ public class GitHubSCMBuilder extends GitSCMBuilder<GitHubSCMBuilder> {
             return HTTPS;
         } else {
             StandardCredentials credentials = CredentialsMatchers.firstOrNull(
-                    CredentialsProvider.lookupCredentials(StandardCredentials.class,
+                    CredentialsProvider.lookupCredentials(
+                            StandardCredentials.class,
                             context,
-                            context instanceof Queue.Task ? ((Queue.Task) context).getDefaultAuthentication()
+                            context instanceof Queue.Task
+                                    ? ((Queue.Task) context).getDefaultAuthentication()
                                     : ACL.SYSTEM,
                             URIRequirementBuilder.create()
                                     .withHostname(RepositoryUriResolver.hostnameFromApiUri(apiUri))
                                     .build()),
-                    CredentialsMatchers.allOf(CredentialsMatchers.withId(credentialsId),
+                    CredentialsMatchers.allOf(
+                            CredentialsMatchers.withId(credentialsId),
                             CredentialsMatchers.instanceOf(StandardCredentials.class)));
             if (credentials instanceof SSHUserPrivateKey) {
                 return SSH;
@@ -251,10 +255,8 @@ public class GitHubSCMBuilder extends GitSCMBuilder<GitHubSCMBuilder> {
 
     /**
      * Updates the {@link GitSCMBuilder#withRemote(String)} based on the current {@link #head()} and
-     * {@link #revision()}.
-     *
-     * Will be called automatically by {@link #build()} but exposed in case the correct remote is required after
-     * changing the {@link #withCredentials(String)}.
+     * {@link #revision()}. Will be called automatically by {@link #build()} but exposed in case the correct remote is
+     * required after changing the {@link #withCredentials(String)}.
      *
      * @return {@code this} for method chaining.
      */
@@ -298,7 +300,8 @@ public class GitHubSCMBuilder extends GitSCMBuilder<GitHubSCMBuilder> {
                     String targetDst = Constants.R_REMOTES + remoteName() + "/" + name;
                     for (RefSpec b : asRefSpecs()) {
                         String dst = b.getDestination();
-                        assert dst.startsWith(Constants.R_REFS) : "All git references must start with refs/";
+                        assert dst.startsWith(Constants.R_REFS)
+                                : "All git references must start with refs/";
                         if (targetSrc.equals(b.getSource())) {
                             if (targetDst.equals(dst)) {
                                 match = true;

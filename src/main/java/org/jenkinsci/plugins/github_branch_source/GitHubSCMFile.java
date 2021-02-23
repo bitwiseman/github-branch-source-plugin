@@ -114,8 +114,9 @@ class GitHubSCMFile extends SCMFile {
                         } catch (IOException e) {
                             // Upcoming version of github-api hoists JsonMappingException up one level
                             // Support both the old and the new structure
-                            if (e.getCause() instanceof JsonMappingException || e.getCause() != null
-                                    && e.getCause().getCause() instanceof JsonMappingException) {
+                            if (e.getCause() instanceof JsonMappingException
+                                    || e.getCause() != null
+                                            && e.getCause().getCause() instanceof JsonMappingException) {
                                 metadata = repo.getDirectoryContent(getPath(),
                                         ref.indexOf('/') == -1 ? ref : Constants.R_REFS + ref);
                                 info = TypeInfo.DIRECTORY_CONFIRMED;
@@ -193,7 +194,10 @@ class GitHubSCMFile extends SCMFile {
     }
 
     private enum TypeInfo {
-        UNRESOLVED, DIRECTORY_ASSUMED, DIRECTORY_CONFIRMED, NON_DIRECTORY_CONFIRMED;
+        UNRESOLVED,
+        DIRECTORY_ASSUMED,
+        DIRECTORY_CONFIRMED,
+        NON_DIRECTORY_CONFIRMED;
     }
 
 }

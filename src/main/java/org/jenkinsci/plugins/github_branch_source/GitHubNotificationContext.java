@@ -113,8 +113,12 @@ public final class GitHubNotificationContext {
      */
     @Override
     public String toString() {
-        return "GitHubNotificationContext{" + "job=" + job + ", build=" + build + ", source=" + source + ", head="
-                + head + '}';
+        return "GitHubNotificationContext{" +
+                "job=" + job +
+                ", build=" + build +
+                ", source=" + source +
+                ", head=" + head +
+                '}';
     }
 
     /**
@@ -186,8 +190,10 @@ public final class GitHubNotificationContext {
             }
         } catch (IllegalStateException e) {
             listener.getLogger()
-                    .println("Can not determine Jenkins root URL. Commit status notifications are sent without URL "
-                            + "until a root URL is" + " configured in Jenkins global configuration.");
+                    .println(
+                            "Can not determine Jenkins root URL. Commit status notifications are sent without URL "
+                                    + "until a root URL is"
+                                    + " configured in Jenkins global configuration.");
         }
         return url;
     }

@@ -125,19 +125,22 @@ public class PullRequestGHEventSubscriber extends GHEventsSubscriber {
                 }
 
                 if ("opened".equals(action)) {
-                    fireAfterDelay(new SCMHeadEventImpl(SCMEvent.Type.CREATED,
+                    fireAfterDelay(new SCMHeadEventImpl(
+                            SCMEvent.Type.CREATED,
                             event.getTimestamp(),
                             p,
                             changedRepository,
                             event.getOrigin()));
                 } else if ("reopened".equals(action) || "synchronize".equals(action) || "edited".equals(action)) {
-                    fireAfterDelay(new SCMHeadEventImpl(SCMEvent.Type.UPDATED,
+                    fireAfterDelay(new SCMHeadEventImpl(
+                            SCMEvent.Type.UPDATED,
                             event.getTimestamp(),
                             p,
                             changedRepository,
                             event.getOrigin()));
                 } else if ("closed".equals(action)) {
-                    fireAfterDelay(new SCMHeadEventImpl(SCMEvent.Type.REMOVED,
+                    fireAfterDelay(new SCMHeadEventImpl(
+                            SCMEvent.Type.REMOVED,
                             event.getTimestamp(),
                             p,
                             changedRepository,
@@ -251,7 +254,8 @@ public class PullRequestGHEventSubscriber extends GHEventsSubscriber {
         @NonNull
         @Override
         public Map<SCMHead, SCMRevision> heads(@NonNull SCMSource source) {
-            if (!(source instanceof GitHubSCMSource && isApiMatch(((GitHubSCMSource) source).getApiUri())
+            if (!(source instanceof GitHubSCMSource
+                    && isApiMatch(((GitHubSCMSource) source).getApiUri())
                     && repoOwner.equalsIgnoreCase(((GitHubSCMSource) source).getRepoOwner())
                     && repository.equalsIgnoreCase(((GitHubSCMSource) source).getRepository()))) {
                 return Collections.emptyMap();
@@ -328,7 +332,8 @@ public class PullRequestGHEventSubscriber extends GHEventsSubscriber {
                         default:
                             // Give the event receiver the data we have so they can revalidate
                             head = new PullRequestSCMHead(ghPullRequest, branchName, false);
-                            revision = new PullRequestSCMRevision(head,
+                            revision = new PullRequestSCMRevision(
+                                    head,
                                     ghPullRequest.getBase().getSha(),
                                     ghPullRequest.getHead().getSha());
                             break;

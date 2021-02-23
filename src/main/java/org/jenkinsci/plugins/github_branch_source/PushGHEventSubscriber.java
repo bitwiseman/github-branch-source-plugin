@@ -133,19 +133,22 @@ public class PushGHEventSubscriber extends GHEventsSubscriber {
                 }
 
                 if (p.isCreated()) {
-                    fireAfterDelay(new SCMHeadEventImpl(SCMEvent.Type.CREATED,
+                    fireAfterDelay(new SCMHeadEventImpl(
+                            SCMEvent.Type.CREATED,
                             event.getTimestamp(),
                             p,
                             changedRepository,
                             event.getOrigin()));
                 } else if (p.isDeleted()) {
-                    fireAfterDelay(new SCMHeadEventImpl(SCMEvent.Type.REMOVED,
+                    fireAfterDelay(new SCMHeadEventImpl(
+                            SCMEvent.Type.REMOVED,
                             event.getTimestamp(),
                             p,
                             changedRepository,
                             event.getOrigin()));
                 } else {
-                    fireAfterDelay(new SCMHeadEventImpl(SCMEvent.Type.UPDATED,
+                    fireAfterDelay(new SCMHeadEventImpl(
+                            SCMEvent.Type.UPDATED,
                             event.getTimestamp(),
                             p,
                             changedRepository,
@@ -263,7 +266,8 @@ public class PushGHEventSubscriber extends GHEventsSubscriber {
         @NonNull
         @Override
         public Map<SCMHead, SCMRevision> heads(@NonNull SCMSource source) {
-            if (!(source instanceof GitHubSCMSource && isApiMatch(((GitHubSCMSource) source).getApiUri())
+            if (!(source instanceof GitHubSCMSource
+                    && isApiMatch(((GitHubSCMSource) source).getApiUri())
                     && repoOwner.equalsIgnoreCase(((GitHubSCMSource) source).getRepoOwner())
                     && repository.equalsIgnoreCase(((GitHubSCMSource) source).getRepository()))) {
                 return Collections.emptyMap();

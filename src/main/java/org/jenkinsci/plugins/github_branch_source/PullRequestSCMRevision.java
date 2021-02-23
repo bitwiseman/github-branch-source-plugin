@@ -136,7 +136,8 @@ public class PullRequestSCMRevision extends ChangeRequestSCMRevision<PullRequest
     public String toString() {
         String result = pullHash;
         if (getHead() instanceof PullRequestSCMHead && ((PullRequestSCMHead) getHead()).isMerge()) {
-            result += "+" + baseHash + " (" + StringUtils.defaultIfBlank(mergeHash, "UNKNOWN_MERGE_STATE") + ")";
+            result += "+" + baseHash +
+                    " (" + StringUtils.defaultIfBlank(mergeHash, "UNKNOWN_MERGE_STATE") + ")";
         }
         return result;
     }

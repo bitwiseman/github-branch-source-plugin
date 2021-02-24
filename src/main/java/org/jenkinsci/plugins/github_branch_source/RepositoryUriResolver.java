@@ -34,35 +34,35 @@ import java.net.URL;
  */
 public abstract class RepositoryUriResolver {
 
-    /**
-     * Resolves the URI of a repository.
-     *
-     * @param apiUri     the API URL of the GitHub server.
-     * @param owner      the owner of the repository.
-     * @param repository the name of the repository.
-     * @return the GIT URL of the repository.
-     */
-    @NonNull
-    public abstract String getRepositoryUri(@NonNull String apiUri, @NonNull String owner, @NonNull String repository);
+	/**
+	 * Resolves the URI of a repository.
+	 *
+	 * @param apiUri     the API URL of the GitHub server.
+	 * @param owner      the owner of the repository.
+	 * @param repository the name of the repository.
+	 * @return the GIT URL of the repository.
+	 */
+	@NonNull
+	public abstract String getRepositoryUri(@NonNull String apiUri, @NonNull String owner, @NonNull String repository);
 
-    /**
-     * Helper method that returns the hostname of a GitHub server from its API URL.
-     *
-     * @param apiUri the API URL.
-     * @return the hostname of a GitHub server
-     */
-    @NonNull
-    public static String hostnameFromApiUri(@CheckForNull String apiUri) {
-        if (apiUri != null) {
-            try {
-                URL endpoint = new URL(apiUri);
-                if (!"api.github.com".equals(endpoint.getHost())) {
-                    return endpoint.getHost();
-                }
-            } catch (MalformedURLException e) {
-                // ignore
-            }
-        }
-        return "github.com";
-    }
+	/**
+	 * Helper method that returns the hostname of a GitHub server from its API URL.
+	 *
+	 * @param apiUri the API URL.
+	 * @return the hostname of a GitHub server
+	 */
+	@NonNull
+	public static String hostnameFromApiUri(@CheckForNull String apiUri) {
+		if (apiUri != null) {
+			try {
+				URL endpoint = new URL(apiUri);
+				if (!"api.github.com".equals(endpoint.getHost())) {
+					return endpoint.getHost();
+				}
+			} catch (MalformedURLException e) {
+				// ignore
+			}
+		}
+		return "github.com";
+	}
 }

@@ -31,5 +31,5 @@ import java.io.Closeable;
  * their connection.
  */
 interface GitHubClosable extends Closeable {
-    boolean isOpen();
+	boolean isOpen();
 }

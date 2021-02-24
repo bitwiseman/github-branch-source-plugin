@@ -17,68 +17,68 @@ import org.kohsuke.stapler.DataBoundConstructor;
  */
 public class TopicsTrait extends SCMNavigatorTrait {
 
-    /**
-     * The topics
-     */
-    @NonNull
-    private final ArrayList<String> topics;
-    private final String topicList;
+	/**
+	 * The topics
+	 */
+	@NonNull
+	private final ArrayList<String> topics;
+	private final String topicList;
 
-    /**
-     * Stapler constructor.
-     *
-     * @param topicList a comma-separated list of topics
-     */
-    @DataBoundConstructor
-    public TopicsTrait(@NonNull String topicList) {
-        this.topicList = topicList;
-        this.topics = new ArrayList<String>();
+	/**
+	 * Stapler constructor.
+	 *
+	 * @param topicList a comma-separated list of topics
+	 */
+	@DataBoundConstructor
+	public TopicsTrait(@NonNull String topicList) {
+		this.topicList = topicList;
+		this.topics = new ArrayList<String>();
 
-        for (String topic : topicList.split(",")) {
-            this.topics.add(topic.trim());
-        }
+		for (String topic : topicList.split(",")) {
+			this.topics.add(topic.trim());
+		}
 
-    }
+	}
 
-    /**
-     * Returns the topics
-     *
-     * @return the topics
-     */
-    @NonNull
-    public ArrayList<String> getTopics() {
-        return topics;
-    }
+	/**
+	 * Returns the topics
+	 *
+	 * @return the topics
+	 */
+	@NonNull
+	public ArrayList<String> getTopics() {
+		return topics;
+	}
 
-    @NonNull
-    public String getTopicList() {
-        return topicList;
-    }
+	@NonNull
+	public String getTopicList() {
+		return topicList;
+	}
 
-    @Override
-    protected void decorateContext(final SCMNavigatorContext<?, ?> context) {
-        super.decorateContext(context);
-        ((GitHubSCMNavigatorContext) context).setTopics(topics);
-    }
+	@Override
+	protected void decorateContext(final SCMNavigatorContext<?, ?> context) {
+		super.decorateContext(context);
+		((GitHubSCMNavigatorContext) context).setTopics(topics);
+	}
 
-    /**
-     * Topics descriptor.
-     */
-    @Symbol("gitHubTopicsFilter")
-    @Extension
-    @Selection
-    public static class DescriptorImpl extends SCMNavigatorTraitDescriptor {
+	/**
+	 * Topics descriptor.
+	 */
+	@Symbol("gitHubTopicsFilter")
+	@Extension
+	@Selection
+	public static class DescriptorImpl extends SCMNavigatorTraitDescriptor {
 
-        @Override
-        public Class<? extends SCMNavigatorContext> getContextClass() {
-            return GitHubSCMNavigatorContext.class;
-        }
+		@Override
+		public Class<? extends SCMNavigatorContext> getContextClass() {
+			return GitHubSCMNavigatorContext.class;
+		}
 
-        @Nonnull
-        @Override
-        public String getDisplayName() {
-            return Messages.TopicsTrait_displayName();
-        }
-    }
+		@Nonnull
+		@Override
+		public String getDisplayName() {
+			return Messages.TopicsTrait_displayName();
+		}
+	}
 
 }

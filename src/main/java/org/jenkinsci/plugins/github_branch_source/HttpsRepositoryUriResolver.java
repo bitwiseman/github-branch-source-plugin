@@ -29,15 +29,15 @@ package org.jenkinsci.plugins.github_branch_source;
  */
 public class HttpsRepositoryUriResolver extends RepositoryUriResolver {
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String getRepositoryUri(String apiUri, String owner, String repository) {
-        if (apiUri == null || apiUri.startsWith("https://")) {
-            return "https://" + hostnameFromApiUri(apiUri) + "/" + owner + "/" + repository + ".git";
-        } else {
-            return "http://" + hostnameFromApiUri(apiUri) + "/" + owner + "/" + repository + ".git";
-        }
-    }
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public String getRepositoryUri(String apiUri, String owner, String repository) {
+		if (apiUri == null || apiUri.startsWith("https://")) {
+			return "https://" + hostnameFromApiUri(apiUri) + "/" + owner + "/" + repository + ".git";
+		} else {
+			return "http://" + hostnameFromApiUri(apiUri) + "/" + owner + "/" + repository + ".git";
+		}
+	}
 }

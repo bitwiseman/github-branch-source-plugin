@@ -35,29 +35,29 @@ import static com.github.tomakehurst.wiremock.client.WireMock.urlMatching;
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
 
 public class WireMockRuleFactory {
-    private String urlToMock = System.getProperty("wiremock.record");
+	private String urlToMock = System.getProperty("wiremock.record");
 
-    public WireMockRule getRule(int port) {
-        return getRule(wireMockConfig().port(port));
-    }
+	public WireMockRule getRule(int port) {
+		return getRule(wireMockConfig().port(port));
+	}
 
-    public WireMockRule getRule(Options options) {
-        if (urlToMock != null && !urlToMock.isEmpty()) {
-            return new WireMockRecorderRule(options, urlToMock);
-        } else {
-            return new WireMockRule(options);
-        }
-    }
+	public WireMockRule getRule(Options options) {
+		if (urlToMock != null && !urlToMock.isEmpty()) {
+			return new WireMockRecorderRule(options, urlToMock);
+		} else {
+			return new WireMockRule(options);
+		}
+	}
 
-    private class WireMockRecorderRule extends WireMockRule {
-        // needed for WireMockRule file location
-        private String mappingLocation = "src/test/resources";
+	private class WireMockRecorderRule extends WireMockRule {
+		// needed for WireMockRule file location
+		private String mappingLocation = "src/test/resources";
 
-        public WireMockRecorderRule(Options options, String url) {
-            super(options);
-            this.stubFor(get(urlMatching(".*")).atPriority(10).willReturn(aResponse().proxiedFrom(url)));
-            this.enableRecordMappings(new SingleRootFileSource(mappingLocation + "/mappings"),
-                    new SingleRootFileSource(mappingLocation + "/__files"));
-        }
-    }
+		public WireMockRecorderRule(Options options, String url) {
+			super(options);
+			this.stubFor(get(urlMatching(".*")).atPriority(10).willReturn(aResponse().proxiedFrom(url)));
+			this.enableRecordMappings(new SingleRootFileSource(mappingLocation + "/mappings"),
+			        new SingleRootFileSource(mappingLocation + "/__files"));
+		}
+	}
 }

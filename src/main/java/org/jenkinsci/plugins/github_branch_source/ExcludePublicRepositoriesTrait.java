@@ -14,40 +14,40 @@ import org.kohsuke.stapler.DataBoundConstructor;
  */
 public class ExcludePublicRepositoriesTrait extends SCMNavigatorTrait {
 
-    /**
-     * Constructor for stapler.
-     */
-    @DataBoundConstructor
-    public ExcludePublicRepositoriesTrait() {
-    }
+	/**
+	 * Constructor for stapler.
+	 */
+	@DataBoundConstructor
+	public ExcludePublicRepositoriesTrait() {
+	}
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected void decorateContext(SCMNavigatorContext<?, ?> context) {
-        super.decorateContext(context);
-        GitHubSCMNavigatorContext ctx = (GitHubSCMNavigatorContext) context;
-        ctx.setExcludePublicRepositories(true);
-    }
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected void decorateContext(SCMNavigatorContext<?, ?> context) {
+		super.decorateContext(context);
+		GitHubSCMNavigatorContext ctx = (GitHubSCMNavigatorContext) context;
+		ctx.setExcludePublicRepositories(true);
+	}
 
-    /**
-     * Exclude archived repositories filter
-     */
-    @Symbol("gitHubExcludePublicRepositories")
-    @Extension
-    @Selection
-    public static class DescriptorImpl extends SCMNavigatorTraitDescriptor {
+	/**
+	 * Exclude archived repositories filter
+	 */
+	@Symbol("gitHubExcludePublicRepositories")
+	@Extension
+	@Selection
+	public static class DescriptorImpl extends SCMNavigatorTraitDescriptor {
 
-        @Override
-        public Class<? extends SCMNavigatorContext> getContextClass() {
-            return GitHubSCMNavigatorContext.class;
-        }
+		@Override
+		public Class<? extends SCMNavigatorContext> getContextClass() {
+			return GitHubSCMNavigatorContext.class;
+		}
 
-        @Nonnull
-        @Override
-        public String getDisplayName() {
-            return Messages.ExcludePublicRepositoriesTrait_displayName();
-        }
-    }
+		@Nonnull
+		@Override
+		public String getDisplayName() {
+			return Messages.ExcludePublicRepositoriesTrait_displayName();
+		}
+	}
 }

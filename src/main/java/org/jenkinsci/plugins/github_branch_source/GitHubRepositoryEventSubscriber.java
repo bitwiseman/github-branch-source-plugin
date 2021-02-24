@@ -85,12 +85,13 @@ public class GitHubRepositoryEventSubscriber extends GHEventsSubscriber {
 	protected void onEvent(GHSubscriberEvent event) {
 		try {
 			final GHEventPayload.Repository p = GitHub.offline()
-			        .parseEventPayload(new StringReader(event.getPayload()), GHEventPayload.Repository.class);
+			                                          .parseEventPayload(new StringReader(event.getPayload()),
+			                                                             GHEventPayload.Repository.class);
 			String action = p.getAction();
 			String repoUrl = p.getRepository().getHtmlUrl().toExternalForm();
 			LOGGER.log(Level.FINE,
-			        "Received {0} for {1} from {2}",
-			        new Object[]{ event.getGHEvent(), repoUrl, event.getOrigin() });
+			           "Received {0} for {1} from {2}",
+			           new Object[]{ event.getGHEvent(), repoUrl, event.getOrigin() });
 			boolean fork = p.getRepository().isFork();
 			Matcher matcher = REPOSITORY_NAME_PATTERN.matcher(repoUrl);
 			if (matcher.matches()) {
@@ -101,14 +102,14 @@ public class GitHubRepositoryEventSubscriber extends GHEventsSubscriber {
 				}
 				if (!"created".equals(action)) {
 					LOGGER.log(FINE,
-					        "Repository {0} was {1} not created, will be ignored",
-					        new Object[]{ repo.getRepositoryName(), action });
+					           "Repository {0} was {1} not created, will be ignored",
+					           new Object[]{ repo.getRepositoryName(), action });
 					return;
 				}
 				if (!fork) {
 					LOGGER.log(FINE,
-					        "Repository {0} was created but it is empty, will be ignored",
-					        repo.getRepositoryName());
+					           "Repository {0} was created but it is empty, will be ignored",
+					           repo.getRepositoryName());
 					return;
 				}
 				final NewSCMSourceEvent e = new NewSCMSourceEvent(event.getTimestamp(), event.getOrigin(), p, repo);
@@ -131,10 +132,10 @@ public class GitHubRepositoryEventSubscriber extends GHEventsSubscriber {
 		private final String repository;
 
 		public NewSCMSourceEvent(
-		        long timestamp,
-		        String origin,
-		        GHEventPayload.Repository event,
-		        GitHubRepositoryName repo) {
+		                         long timestamp,
+		                         String origin,
+		                         GHEventPayload.Repository event,
+		                         GitHubRepositoryName repo) {
 			super(Type.CREATED, timestamp, event, origin);
 			this.repoHost = repo.getHost();
 			this.repoOwner = event.getRepository().getOwnerName();

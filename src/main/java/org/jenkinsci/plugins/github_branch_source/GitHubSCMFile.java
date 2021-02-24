@@ -90,25 +90,25 @@ class GitHubSCMFile extends SCMFile {
 				switch (info) {
 					case DIRECTORY_ASSUMED:
 						metadata = repo.getDirectoryContent(getPath(),
-						        ref.indexOf('/') == -1 ? ref : Constants.R_REFS + ref);
+						                                    ref.indexOf('/') == -1 ? ref : Constants.R_REFS + ref);
 						info = TypeInfo.DIRECTORY_CONFIRMED;
 						resolved = true;
 						break;
 					case DIRECTORY_CONFIRMED:
 						metadata = repo.getDirectoryContent(getPath(),
-						        ref.indexOf('/') == -1 ? ref : Constants.R_REFS + ref);
+						                                    ref.indexOf('/') == -1 ? ref : Constants.R_REFS + ref);
 						resolved = true;
 						break;
 					case NON_DIRECTORY_CONFIRMED:
 						metadata = repo.getFileContent(getPath(),
-						        ref.indexOf('/') == -1 ? ref : Constants.R_REFS + ref);
+						                               ref.indexOf('/') == -1 ? ref : Constants.R_REFS + ref);
 						resolved = true;
 						break;
 					case UNRESOLVED:
 						checkOpen();
 						try {
 							metadata = repo.getFileContent(getPath(),
-							        ref.indexOf('/') == -1 ? ref : Constants.R_REFS + ref);
+							                               ref.indexOf('/') == -1 ? ref : Constants.R_REFS + ref);
 							info = TypeInfo.NON_DIRECTORY_CONFIRMED;
 							resolved = true;
 						} catch (IOException e) {
@@ -117,7 +117,8 @@ class GitHubSCMFile extends SCMFile {
 							if (e.getCause() instanceof JsonMappingException || e.getCause() != null
 							        && e.getCause().getCause() instanceof JsonMappingException) {
 								metadata = repo.getDirectoryContent(getPath(),
-								        ref.indexOf('/') == -1 ? ref : Constants.R_REFS + ref);
+								                                    ref.indexOf('/') == -1 ? ref
+								                                            : Constants.R_REFS + ref);
 								info = TypeInfo.DIRECTORY_CONFIRMED;
 								resolved = true;
 							} else {
@@ -145,7 +146,7 @@ class GitHubSCMFile extends SCMFile {
 	public Iterable<SCMFile> children() throws IOException {
 		checkOpen();
 		List<GHContent> content = repo.getDirectoryContent(getPath(),
-		        ref.indexOf('/') == -1 ? ref : Constants.R_REFS + ref);
+		                                                   ref.indexOf('/') == -1 ? ref : Constants.R_REFS + ref);
 		List<SCMFile> result = new ArrayList<>(content.size());
 		for (GHContent c : content) {
 			result.add(new GitHubSCMFile(this, c.getName(), c));

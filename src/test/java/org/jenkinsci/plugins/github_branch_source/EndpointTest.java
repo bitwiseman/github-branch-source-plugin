@@ -55,9 +55,8 @@ public class EndpointTest {
 	public void cantGet_doCheckApiUri() throws IOException, SAXException {
 		try {
 			j.createWebClient()
-			        .goTo(appendCrumb(
-			                "descriptorByName/org.jenkinsci.plugins.github_branch_source.Endpoint/checkApiUri?apiUri="
-			                        + testUrl));
+			 .goTo(appendCrumb("descriptorByName/org.jenkinsci.plugins.github_branch_source.Endpoint/checkApiUri?apiUri="
+			         + testUrl));
 			fail("Should not be able to do that");
 		} catch (FailingHttpStatusCodeException e) {
 			assertEquals(405, e.getStatusCode());
@@ -70,7 +69,7 @@ public class EndpointTest {
 	public void cantPostAsAnonymous_doCheckApiUri() throws Exception {
 		try {
 			post("descriptorByName/org.jenkinsci.plugins.github_branch_source.Endpoint/checkApiUri?apiUri=" + testUrl,
-			        null);
+			     null);
 			fail("Should not be able to do that");
 		} catch (FailingHttpStatusCodeException e) {
 			assertEquals(403, e.getStatusCode());
@@ -82,7 +81,7 @@ public class EndpointTest {
 	@Issue("SECURITY-806")
 	public void canPostAsAdmin_doCheckApiUri() throws Exception {
 		post("descriptorByName/org.jenkinsci.plugins.github_branch_source.Endpoint/checkApiUri?apiUri=" + testUrl,
-		        "alice");
+		     "alice");
 		assertTrue(TestRoot.get().visited);
 	}
 
@@ -104,8 +103,8 @@ public class EndpointTest {
 
 		final WebRequest request = new WebRequest(new URL(client.getContextPath() + relative), HttpMethod.POST);
 		request.setAdditionalHeader("Accept", client.getBrowserVersion().getHtmlAcceptHeader());
-		request.setRequestParameters(
-		        Arrays.asList(new NameValuePair(Functions.getCrumbRequestField(), Functions.getCrumb(null))));
+		request.setRequestParameters(Arrays.asList(new NameValuePair(Functions.getCrumbRequestField(),
+		                                                             Functions.getCrumb(null))));
 		return client.getPage(request);
 	}
 

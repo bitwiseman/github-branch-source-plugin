@@ -88,8 +88,8 @@ class GitHubRepositoryInfo {
 			throw new IllegalArgumentException(e);
 		}
 		if (!url.getProtocol().equals("http") && !url.getProtocol().equals("https")) {
-			throw new IllegalArgumentException(
-			        "Invalid repository URL scheme (must be HTTPS or HTTP): " + url.getProtocol());
+			throw new IllegalArgumentException("Invalid repository URL scheme (must be HTTPS or HTTP): "
+			        + url.getProtocol());
 		}
 		String apiUri = guessApiUri(url);
 		String[] pathParts = StringUtils.removeStart(url.getPath(), "/").split("/");

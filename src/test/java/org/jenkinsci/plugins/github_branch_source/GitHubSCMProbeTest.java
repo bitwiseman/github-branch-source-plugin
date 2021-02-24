@@ -28,9 +28,12 @@ public class GitHubSCMProbeTest {
 	public static WireMockRuleFactory factory = new WireMockRuleFactory();
 	@Rule
 	public WireMockRule githubApi = factory.getRule(WireMockConfiguration.options()
-	        .dynamicPort()
-	        .usingFilesUnderClasspath("cache_failure")
-	        .extensions(ResponseTemplateTransformer.builder().global(true).maxCacheEntries(0L).build()));
+	                                                                     .dynamicPort()
+	                                                                     .usingFilesUnderClasspath("cache_failure")
+	                                                                     .extensions(ResponseTemplateTransformer.builder()
+	                                                                                                            .global(true)
+	                                                                                                            .maxCacheEntries(0L)
+	                                                                                                            .build()));
 	private GitHubSCMProbe probe;
 
 	@Before
@@ -42,8 +45,9 @@ public class GitHubSCMProbeTest {
 		}
 
 		githubApi.stubFor(get(urlEqualTo("/repos/cloudbeers/yolo")).willReturn(aResponse().withStatus(200)
-		        .withHeader("Content-Type", "application/json")
-		        .withBodyFile("body-cloudbeers-yolo-PucD6.json")));
+		                                                                                  .withHeader("Content-Type",
+		                                                                                              "application/json")
+		                                                                                  .withBodyFile("body-cloudbeers-yolo-PucD6.json")));
 
 		// Return 404 for /rate_limit
 		githubApi.stubFor(get(urlEqualTo("/rate_limit")).willReturn(aResponse().withStatus(404)));
@@ -54,13 +58,13 @@ public class GitHubSCMProbeTest {
 
 		final GHRepository repo = github.getRepository("cloudbeers/yolo");
 		final PullRequestSCMHead head = new PullRequestSCMHead("PR-" + number,
-		        "cloudbeers",
-		        "yolo",
-		        "b",
-		        number,
-		        new BranchSCMHead("master"),
-		        new SCMHeadOrigin.Fork("rsandell"),
-		        ChangeRequestCheckoutStrategy.MERGE);
+		                                                       "cloudbeers",
+		                                                       "yolo",
+		                                                       "b",
+		                                                       number,
+		                                                       new BranchSCMHead("master"),
+		                                                       new SCMHeadOrigin.Fork("rsandell"),
+		                                                       ChangeRequestCheckoutStrategy.MERGE);
 		probe = new GitHubSCMProbe("http://localhost:"
 		        + githubApi.port(), null, repo, head, new PullRequestSCMRevision(head, "a", "b"));
 	}
@@ -68,9 +72,8 @@ public class GitHubSCMProbeTest {
 	@Issue("JENKINS-54126")
 	@Test
 	public void statWhenRootIs404() throws Exception {
-		githubApi.stubFor(get(urlEqualTo("/repos/cloudbeers/yolo/contents/?ref=refs%2Fpull%2F1%2Fmerge"))
-		        .willReturn(aResponse().withStatus(404))
-		        .atPriority(0));
+		githubApi.stubFor(get(urlEqualTo("/repos/cloudbeers/yolo/contents/?ref=refs%2Fpull%2F1%2Fmerge")).willReturn(aResponse().withStatus(404))
+		                                                                                                 .atPriority(0));
 
 		createProbeForPR(1);
 
@@ -80,9 +83,8 @@ public class GitHubSCMProbeTest {
 	@Issue("JENKINS-54126")
 	@Test
 	public void statWhenDirIs404() throws Exception {
-		githubApi.stubFor(get(urlEqualTo("/repos/cloudbeers/yolo/contents/subdir?ref=refs%2Fpull%2F1%2Fmerge"))
-		        .willReturn(aResponse().withStatus(404))
-		        .atPriority(0));
+		githubApi.stubFor(get(urlEqualTo("/repos/cloudbeers/yolo/contents/subdir?ref=refs%2Fpull%2F1%2Fmerge")).willReturn(aResponse().withStatus(404))
+		                                                                                                       .atPriority(0));
 
 		createProbeForPR(1);
 
@@ -137,38 +139,39 @@ public class GitHubSCMProbeTest {
 		if (hudson.Functions.isWindows()) {
 			// On windows caching is disabled by default, so the work around doesn't happen
 			githubApi.verify(3,
-			        RequestPatternBuilder
-			                .newRequestPattern(RequestMethod.GET, urlPathEqualTo("/repos/cloudbeers/yolo/contents/"))
-			                .withHeader("Cache-Control", equalTo("max-age=0"))
-			                .withHeader("If-Modified-Since", absent())
-			                .withHeader("If-None-Match", absent()));
+			                 RequestPatternBuilder.newRequestPattern(RequestMethod.GET,
+			                                                         urlPathEqualTo("/repos/cloudbeers/yolo/contents/"))
+			                                      .withHeader("Cache-Control", equalTo("max-age=0"))
+			                                      .withHeader("If-Modified-Since", absent())
+			                                      .withHeader("If-None-Match", absent()));
 		} else {
 			// 1.
-			githubApi.verify(RequestPatternBuilder
-			        .newRequestPattern(RequestMethod.GET, urlPathEqualTo("/repos/cloudbeers/yolo/contents/"))
-			        .withHeader("Cache-Control", equalTo("max-age=0"))
-			        .withHeader("If-None-Match", absent())
-			        .withHeader("If-Modified-Since", absent()));
+			githubApi.verify(RequestPatternBuilder.newRequestPattern(RequestMethod.GET,
+			                                                         urlPathEqualTo("/repos/cloudbeers/yolo/contents/"))
+			                                      .withHeader("Cache-Control", equalTo("max-age=0"))
+			                                      .withHeader("If-None-Match", absent())
+			                                      .withHeader("If-Modified-Since", absent()));
 
 			// 3.
-			githubApi.verify(RequestPatternBuilder
-			        .newRequestPattern(RequestMethod.GET, urlPathEqualTo("/repos/cloudbeers/yolo/contents/"))
-			        .withHeader("Cache-Control", containing("max-age"))
-			        .withHeader("If-None-Match", absent())
-			        .withHeader("If-Modified-Since", containing("GMT")));
+			githubApi.verify(RequestPatternBuilder.newRequestPattern(RequestMethod.GET,
+			                                                         urlPathEqualTo("/repos/cloudbeers/yolo/contents/"))
+			                                      .withHeader("Cache-Control", containing("max-age"))
+			                                      .withHeader("If-None-Match", absent())
+			                                      .withHeader("If-Modified-Since", containing("GMT")));
 
 			// 4.
-			githubApi.verify(RequestPatternBuilder
-			        .newRequestPattern(RequestMethod.GET, urlPathEqualTo("/repos/cloudbeers/yolo/contents/"))
-			        .withHeader("Cache-Control", equalTo("no-cache"))
-			        .withHeader("If-Modified-Since", absent())
-			        .withHeader("If-None-Match", absent()));
+			githubApi.verify(RequestPatternBuilder.newRequestPattern(RequestMethod.GET,
+			                                                         urlPathEqualTo("/repos/cloudbeers/yolo/contents/"))
+			                                      .withHeader("Cache-Control", equalTo("no-cache"))
+			                                      .withHeader("If-Modified-Since", absent())
+			                                      .withHeader("If-None-Match", absent()));
 
 			// 5.
-			githubApi.verify(RequestPatternBuilder
-			        .newRequestPattern(RequestMethod.GET, urlPathEqualTo("/repos/cloudbeers/yolo/contents/"))
-			        .withHeader("Cache-Control", equalTo("max-age=0"))
-			        .withHeader("If-None-Match", equalTo("\"d3be5b35b8d84ef7ac03c0cc9c94ed81\"")));
+			githubApi.verify(RequestPatternBuilder.newRequestPattern(RequestMethod.GET,
+			                                                         urlPathEqualTo("/repos/cloudbeers/yolo/contents/"))
+			                                      .withHeader("Cache-Control", equalTo("max-age=0"))
+			                                      .withHeader("If-None-Match",
+			                                                  equalTo("\"d3be5b35b8d84ef7ac03c0cc9c94ed81\"")));
 		}
 	}
 

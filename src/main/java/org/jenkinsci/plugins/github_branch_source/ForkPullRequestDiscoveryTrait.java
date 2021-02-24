@@ -90,8 +90,8 @@ public class ForkPullRequestDiscoveryTrait extends SCMSourceTrait {
 	 */
 	@DataBoundConstructor
 	public ForkPullRequestDiscoveryTrait(
-	        int strategyId,
-	        @NonNull SCMHeadAuthority<? super GitHubSCMSourceRequest, ? extends ChangeRequestSCMHead2, ? extends SCMRevision> trust) {
+	                                     int strategyId,
+	                                     @NonNull SCMHeadAuthority<? super GitHubSCMSourceRequest, ? extends ChangeRequestSCMHead2, ? extends SCMRevision> trust) {
 		this.strategyId = strategyId;
 		this.trust = trust;
 	}
@@ -103,10 +103,11 @@ public class ForkPullRequestDiscoveryTrait extends SCMSourceTrait {
 	 * @param trust      the authority.
 	 */
 	public ForkPullRequestDiscoveryTrait(
-	        @NonNull Set<ChangeRequestCheckoutStrategy> strategies,
-	        @NonNull SCMHeadAuthority<? super GitHubSCMSourceRequest, ? extends ChangeRequestSCMHead2, ? extends SCMRevision> trust) {
+	                                     @NonNull Set<ChangeRequestCheckoutStrategy> strategies,
+	                                     @NonNull SCMHeadAuthority<? super GitHubSCMSourceRequest, ? extends ChangeRequestSCMHead2, ? extends SCMRevision> trust) {
 		this((strategies.contains(ChangeRequestCheckoutStrategy.MERGE) ? MERGE : NONE)
-		        + (strategies.contains(ChangeRequestCheckoutStrategy.HEAD) ? HEAD : NONE), trust);
+		        + (strategies.contains(ChangeRequestCheckoutStrategy.HEAD) ? HEAD : NONE),
+		     trust);
 	}
 
 	/**
@@ -223,9 +224,9 @@ public class ForkPullRequestDiscoveryTrait extends SCMSourceTrait {
 		@SuppressWarnings("unused") // stapler
 		public List<SCMHeadAuthorityDescriptor> getTrustDescriptors() {
 			return SCMHeadAuthority._for(GitHubSCMSourceRequest.class,
-			        PullRequestSCMHead.class,
-			        PullRequestSCMRevision.class,
-			        SCMHeadOrigin.Fork.class);
+			                             PullRequestSCMHead.class,
+			                             PullRequestSCMRevision.class,
+			                             SCMHeadOrigin.Fork.class);
 		}
 
 		/**

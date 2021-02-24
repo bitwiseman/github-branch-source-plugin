@@ -37,12 +37,11 @@ public class GithubSCMSourceTagsTest extends GitSCMSourceBase {
 		SCMHeadObserver mockSCMHeadObserver = Mockito.mock(SCMHeadObserver.class);
 
 		Mockito.when(mockSCMHeadObserver.getIncludes())
-		        .thenReturn(
-		                Collections.singleton(new GitHubTagSCMHead("non-existent-tag", System.currentTimeMillis())));
+		       .thenReturn(Collections.singleton(new GitHubTagSCMHead("non-existent-tag", System.currentTimeMillis())));
 		GitHubSCMSourceContext context = new GitHubSCMSourceContext(null, mockSCMHeadObserver);
 		context.wantTags(true);
 		GitHubSCMSourceRequest request = context.newRequest(new GitHubSCMSource("cloudbeers", "yolo", null, false),
-		        null);
+		                                                    null);
 		Iterator<GHRef> tags = new GitHubSCMSource.LazyTags(request, repo).iterator();
 
 		// Expected: No tag is found so an empty list
@@ -56,11 +55,11 @@ public class GithubSCMSourceTagsTest extends GitSCMSourceBase {
 		SCMHeadObserver mockSCMHeadObserver = Mockito.mock(SCMHeadObserver.class);
 
 		Mockito.when(mockSCMHeadObserver.getIncludes())
-		        .thenReturn(Collections.singleton(new GitHubTagSCMHead("existent-tag", System.currentTimeMillis())));
+		       .thenReturn(Collections.singleton(new GitHubTagSCMHead("existent-tag", System.currentTimeMillis())));
 		GitHubSCMSourceContext context = new GitHubSCMSourceContext(null, mockSCMHeadObserver);
 		context.wantTags(true);
 		GitHubSCMSourceRequest request = context.newRequest(new GitHubSCMSource("cloudbeers", "yolo", null, false),
-		        null);
+		                                                    null);
 		Iterator<GHRef> tags = new GitHubSCMSource.LazyTags(request, repo).iterator();
 
 		// Expected: single tag is found and is named existent-tag
@@ -75,12 +74,12 @@ public class GithubSCMSourceTagsTest extends GitSCMSourceBase {
 		SCMHeadObserver mockSCMHeadObserver = Mockito.mock(SCMHeadObserver.class);
 		Error e = new Error("Bad Tag Request", new GHFileNotFoundException());
 		Mockito.when(mockSCMHeadObserver.getIncludes())
-		        .thenReturn(Collections.singleton(new GitHubTagSCMHead("existent-tag", System.currentTimeMillis())));
+		       .thenReturn(Collections.singleton(new GitHubTagSCMHead("existent-tag", System.currentTimeMillis())));
 		GHRepository repoSpy = Mockito.spy(repo);
 		GitHubSCMSourceContext context = new GitHubSCMSourceContext(null, mockSCMHeadObserver);
 		context.wantTags(true);
 		GitHubSCMSourceRequest request = context.newRequest(new GitHubSCMSource("cloudbeers", "yolo", null, false),
-		        null);
+		                                                    null);
 		Mockito.doThrow(e).when(repoSpy).getRef("tags/existent-tag");
 		Iterator<GHRef> tags = new GitHubSCMSource.LazyTags(request, repoSpy).iterator();
 
@@ -94,12 +93,12 @@ public class GithubSCMSourceTagsTest extends GitSCMSourceBase {
 		SCMHeadObserver mockSCMHeadObserver = Mockito.mock(SCMHeadObserver.class);
 		Error expectedError = new Error("Bad Tag Request", new RuntimeException());
 		Mockito.when(mockSCMHeadObserver.getIncludes())
-		        .thenReturn(Collections.singleton(new GitHubTagSCMHead("existent-tag", System.currentTimeMillis())));
+		       .thenReturn(Collections.singleton(new GitHubTagSCMHead("existent-tag", System.currentTimeMillis())));
 		GHRepository repoSpy = Mockito.spy(repo);
 		GitHubSCMSourceContext context = new GitHubSCMSourceContext(null, mockSCMHeadObserver);
 		context.wantTags(true);
 		GitHubSCMSourceRequest request = context.newRequest(new GitHubSCMSource("cloudbeers", "yolo", null, false),
-		        null);
+		                                                    null);
 		Mockito.doThrow(expectedError).when(repoSpy).getRef("tags/existent-tag");
 
 		// Expected: When getting the tag, an error is thrown so we have to catch it
@@ -119,13 +118,14 @@ public class GithubSCMSourceTagsTest extends GitSCMSourceBase {
 		SCMHeadObserver mockSCMHeadObserver = Mockito.mock(SCMHeadObserver.class);
 
 		Mockito.when(mockSCMHeadObserver.getIncludes())
-		        .thenReturn(new HashSet<>(
-		                Arrays.asList(new GitHubTagSCMHead("existent-multiple-tags1", System.currentTimeMillis()),
-		                        new GitHubTagSCMHead("existent-multiple-tags2", System.currentTimeMillis()))));
+		       .thenReturn(new HashSet<>(Arrays.asList(new GitHubTagSCMHead("existent-multiple-tags1",
+		                                                                    System.currentTimeMillis()),
+		                                               new GitHubTagSCMHead("existent-multiple-tags2",
+		                                                                    System.currentTimeMillis()))));
 		GitHubSCMSourceContext context = new GitHubSCMSourceContext(null, mockSCMHeadObserver);
 		context.wantTags(true);
 		GitHubSCMSourceRequest request = context.newRequest(new GitHubSCMSource("cloudbeers", "yolo", null, false),
-		        null);
+		                                                    null);
 		Iterator<GHRef> tags = new GitHubSCMSource.LazyTags(request, repo).iterator();
 
 		// Expected: When getting the tags, we should get both tags and then we are failing on trying to get a 3rd tag
@@ -159,13 +159,14 @@ public class GithubSCMSourceTagsTest extends GitSCMSourceBase {
 		Error expectedError = new Error("Bad Tag Request", new GHFileNotFoundException());
 		Error expectedError2 = new Error("Bad Tag Request IOError", new IOException());
 		Mockito.when(mockSCMHeadObserver.getIncludes())
-		        .thenReturn(new HashSet<>(
-		                Arrays.asList(new GitHubTagSCMHead("existent-multiple-tags1", System.currentTimeMillis()),
-		                        new GitHubTagSCMHead("existent-multiple-tags2", System.currentTimeMillis()))));
+		       .thenReturn(new HashSet<>(Arrays.asList(new GitHubTagSCMHead("existent-multiple-tags1",
+		                                                                    System.currentTimeMillis()),
+		                                               new GitHubTagSCMHead("existent-multiple-tags2",
+		                                                                    System.currentTimeMillis()))));
 		GitHubSCMSourceContext context = new GitHubSCMSourceContext(null, mockSCMHeadObserver);
 		context.wantTags(true);
 		GitHubSCMSourceRequest request = context.newRequest(new GitHubSCMSource("cloudbeers", "yolo", null, false),
-		        null);
+		                                                    null);
 		GHRepository repoSpy = Mockito.spy(repo);
 		PagedIterable<GHRef> iterableSpy = (PagedIterable<GHRef>) Mockito.mock(PagedIterable.class);
 		Mockito.when(repoSpy.listRefs("tags")).thenReturn(iterableSpy);
@@ -192,13 +193,14 @@ public class GithubSCMSourceTagsTest extends GitSCMSourceBase {
 		Error expectedError = new Error("Bad Tag Request", new GHFileNotFoundException());
 		Error expectedError2 = new Error("Bad Tag Request IOError", new IOException());
 		Mockito.when(mockSCMHeadObserver.getIncludes())
-		        .thenReturn(new HashSet<>(
-		                Arrays.asList(new GitHubTagSCMHead("existent-multiple-tags1", System.currentTimeMillis()),
-		                        new GitHubTagSCMHead("existent-multiple-tags2", System.currentTimeMillis()))));
+		       .thenReturn(new HashSet<>(Arrays.asList(new GitHubTagSCMHead("existent-multiple-tags1",
+		                                                                    System.currentTimeMillis()),
+		                                               new GitHubTagSCMHead("existent-multiple-tags2",
+		                                                                    System.currentTimeMillis()))));
 		GitHubSCMSourceContext context = new GitHubSCMSourceContext(null, mockSCMHeadObserver);
 		context.wantTags(true);
 		GitHubSCMSourceRequest request = context.newRequest(new GitHubSCMSource("cloudbeers", "yolo", null, false),
-		        null);
+		                                                    null);
 		GHRepository repoSpy = Mockito.spy(repo);
 		PagedIterable<GHRef> iterableSpy = (PagedIterable<GHRef>) Mockito.mock(PagedIterable.class);
 		Mockito.when(repoSpy.listRefs("tags")).thenReturn(iterableSpy);
@@ -227,13 +229,14 @@ public class GithubSCMSourceTagsTest extends GitSCMSourceBase {
 		SCMHeadObserver mockSCMHeadObserver = Mockito.mock(SCMHeadObserver.class);
 		Exception expectedError = new GHException("Bad Tag Request");
 		Mockito.when(mockSCMHeadObserver.getIncludes())
-		        .thenReturn(new HashSet<>(
-		                Arrays.asList(new GitHubTagSCMHead("existent-multiple-tags1", System.currentTimeMillis()),
-		                        new GitHubTagSCMHead("existent-multiple-tags2", System.currentTimeMillis()))));
+		       .thenReturn(new HashSet<>(Arrays.asList(new GitHubTagSCMHead("existent-multiple-tags1",
+		                                                                    System.currentTimeMillis()),
+		                                               new GitHubTagSCMHead("existent-multiple-tags2",
+		                                                                    System.currentTimeMillis()))));
 		GitHubSCMSourceContext context = new GitHubSCMSourceContext(null, mockSCMHeadObserver);
 		context.wantTags(true);
 		GitHubSCMSourceRequest request = context.newRequest(new GitHubSCMSource("cloudbeers", "yolo", null, false),
-		        null);
+		                                                    null);
 		GHRepository repoSpy = Mockito.spy(repo);
 		PagedIterable<GHRef> iterableSpy = (PagedIterable<GHRef>) Mockito.mock(PagedIterable.class);
 		Mockito.when(repoSpy.listRefs("tags")).thenReturn(iterableSpy);
@@ -261,13 +264,14 @@ public class GithubSCMSourceTagsTest extends GitSCMSourceBase {
 		SCMHeadObserver mockSCMHeadObserver = Mockito.mock(SCMHeadObserver.class);
 		Exception expectedError = new GHException("Bad Tag Request");
 		Mockito.when(mockSCMHeadObserver.getIncludes())
-		        .thenReturn(new HashSet<>(
-		                Arrays.asList(new GitHubTagSCMHead("existent-multiple-tags1", System.currentTimeMillis()),
-		                        new GitHubTagSCMHead("existent-multiple-tags2", System.currentTimeMillis()))));
+		       .thenReturn(new HashSet<>(Arrays.asList(new GitHubTagSCMHead("existent-multiple-tags1",
+		                                                                    System.currentTimeMillis()),
+		                                               new GitHubTagSCMHead("existent-multiple-tags2",
+		                                                                    System.currentTimeMillis()))));
 		GitHubSCMSourceContext context = new GitHubSCMSourceContext(null, mockSCMHeadObserver);
 		context.wantTags(true);
 		GitHubSCMSourceRequest request = context.newRequest(new GitHubSCMSource("cloudbeers", "yolo", null, false),
-		        null);
+		                                                    null);
 		GHRepository repoSpy = Mockito.spy(repo);
 		PagedIterable<GHRef> iterableSpy = (PagedIterable<GHRef>) Mockito.mock(PagedIterable.class);
 		Mockito.when(repoSpy.listRefs("tags")).thenReturn(iterableSpy).thenCallRealMethod();
@@ -295,13 +299,14 @@ public class GithubSCMSourceTagsTest extends GitSCMSourceBase {
 		Exception expectedError = new GHException("Bad Tag Request");
 		Exception expectedGetRefError = new FileNotFoundException("Bad Tag Ref Request");
 		Mockito.when(mockSCMHeadObserver.getIncludes())
-		        .thenReturn(new HashSet<>(
-		                Arrays.asList(new GitHubTagSCMHead("existent-multiple-tags1", System.currentTimeMillis()),
-		                        new GitHubTagSCMHead("existent-multiple-tags2", System.currentTimeMillis()))));
+		       .thenReturn(new HashSet<>(Arrays.asList(new GitHubTagSCMHead("existent-multiple-tags1",
+		                                                                    System.currentTimeMillis()),
+		                                               new GitHubTagSCMHead("existent-multiple-tags2",
+		                                                                    System.currentTimeMillis()))));
 		GitHubSCMSourceContext context = new GitHubSCMSourceContext(null, mockSCMHeadObserver);
 		context.wantTags(true);
 		GitHubSCMSourceRequest request = context.newRequest(new GitHubSCMSource("cloudbeers", "yolo", null, false),
-		        null);
+		                                                    null);
 		GHRepository repoSpy = Mockito.spy(repo);
 		PagedIterable<GHRef> iterableSpy = (PagedIterable<GHRef>) Mockito.mock(PagedIterable.class);
 		Mockito.when(repoSpy.listRefs("tags")).thenReturn(iterableSpy);
@@ -325,13 +330,14 @@ public class GithubSCMSourceTagsTest extends GitSCMSourceBase {
 		Exception expectedError = new GHException("Bad Tag Request");
 		Exception expectedGetRefError = new IOException("Bad Tag Ref Request");
 		Mockito.when(mockSCMHeadObserver.getIncludes())
-		        .thenReturn(new HashSet<>(
-		                Arrays.asList(new GitHubTagSCMHead("existent-multiple-tags1", System.currentTimeMillis()),
-		                        new GitHubTagSCMHead("existent-multiple-tags2", System.currentTimeMillis()))));
+		       .thenReturn(new HashSet<>(Arrays.asList(new GitHubTagSCMHead("existent-multiple-tags1",
+		                                                                    System.currentTimeMillis()),
+		                                               new GitHubTagSCMHead("existent-multiple-tags2",
+		                                                                    System.currentTimeMillis()))));
 		GitHubSCMSourceContext context = new GitHubSCMSourceContext(null, mockSCMHeadObserver);
 		context.wantTags(true);
 		GitHubSCMSourceRequest request = context.newRequest(new GitHubSCMSource("cloudbeers", "yolo", null, false),
-		        null);
+		                                                    null);
 		GHRepository repoSpy = Mockito.spy(repo);
 		PagedIterable<GHRef> iterableSpy = (PagedIterable<GHRef>) Mockito.mock(PagedIterable.class);
 		Mockito.when(repoSpy.listRefs("tags")).thenReturn(iterableSpy);

@@ -82,22 +82,24 @@ public class GitHubBuildStatusNotification {
 						String revisionToNotify = resolveHeadCommit(revision);
 						SCMHead head = revision.getHead();
 						List<AbstractGitHubNotificationStrategy> strategies = new GitHubSCMSourceContext(null,
-						        SCMHeadObserver.none()).withTraits(((GitHubSCMSource) src).getTraits())
-						                .notificationStrategies();
+						                                                                                 SCMHeadObserver.none()).withTraits(((GitHubSCMSource) src).getTraits())
+						                                                                                                        .notificationStrategies();
 						for (AbstractGitHubNotificationStrategy strategy : strategies) {
 							// TODO allow strategies to combine/cooperate on a notification
-							GitHubNotificationContext notificationContext = GitHubNotificationContext
-							        .build(null, build, src, head);
+							GitHubNotificationContext notificationContext = GitHubNotificationContext.build(null,
+							                                                                                build,
+							                                                                                src,
+							                                                                                head);
 							List<GitHubNotificationRequest> details = strategy.notifications(notificationContext,
-							        listener);
+							                                                                 listener);
 							for (GitHubNotificationRequest request : details) {
 								boolean ignoreError = request.isIgnoreError();
 								try {
 									repo.createCommitStatus(revisionToNotify,
-									        request.getState(),
-									        request.getUrl(),
-									        request.getMessage(),
-									        request.getContext());
+									                        request.getState(),
+									                        request.getUrl(),
+									                        request.getMessage(),
+									                        request.getContext());
 								} catch (FileNotFoundException fnfe) {
 									if (!ignoreError) {
 										listener.getLogger()
@@ -106,11 +108,12 @@ public class GitHubBuildStatusNotification {
 										                + "repository and repo:status scope is selected%n%n");
 										if (LOGGER.isLoggable(Level.FINE)) {
 											LOGGER.log(Level.FINE,
-											        "Could not update commit status, for run "
-											                + build.getFullDisplayName() + " please check if your scan "
-											                + "credentials belong to a member of the organization or a "
-											                + "collaborator of the repository and repo:status scope is selected",
-											        fnfe);
+											           "Could not update commit status, for run "
+											                   + build.getFullDisplayName()
+											                   + " please check if your scan "
+											                   + "credentials belong to a member of the organization or a "
+											                   + "collaborator of the repository and repo:status scope is selected",
+											           fnfe);
 										}
 									}
 								}
@@ -171,12 +174,14 @@ public class GitHubBuildStatusNotification {
 		if (src instanceof GitHubSCMSource) {
 			GitHubSCMSource source = (GitHubSCMSource) src;
 			if (new GitHubSCMSourceContext(null, SCMHeadObserver.none()).withTraits(source.getTraits())
-			        .notificationsDisabled()) {
+			                                                            .notificationsDisabled()) {
 				return null;
 			}
 			if (source.getScanCredentialsId() != null) {
 				return Connector.connect(source.getApiUri(),
-				        Connector.lookupScanCredentials(job, source.getApiUri(), source.getScanCredentialsId()));
+				                         Connector.lookupScanCredentials(job,
+				                                                         source.getApiUri(),
+				                                                         source.getScanCredentialsId()));
 			}
 		}
 		return null;
@@ -208,8 +213,8 @@ public class GitHubBuildStatusNotification {
 			if (!(head instanceof PullRequestSCMHead)) {
 				return;
 			}
-			final GitHubSCMSourceContext sourceContext = new GitHubSCMSourceContext(null, SCMHeadObserver.none())
-			        .withTraits(((GitHubSCMSource) source).getTraits());
+			final GitHubSCMSourceContext sourceContext = new GitHubSCMSourceContext(null,
+			                                                                        SCMHeadObserver.none()).withTraits(((GitHubSCMSource) source).getTraits());
 			if (sourceContext.notificationsDisabled()) {
 				return;
 			}
@@ -241,27 +246,28 @@ public class GitHubBuildStatusNotification {
 									// status. JobCheckOutListener is now responsible for setting the pending status.
 									return;
 								}
-								List<AbstractGitHubNotificationStrategy> strategies = sourceContext
-								        .notificationStrategies();
+								List<AbstractGitHubNotificationStrategy> strategies = sourceContext.notificationStrategies();
 								for (AbstractGitHubNotificationStrategy strategy : strategies) {
 									// TODO allow strategies to combine/cooperate on a notification
-									GitHubNotificationContext notificationContext = GitHubNotificationContext
-									        .build(job, null, source, head);
-									List<GitHubNotificationRequest> details = strategy
-									        .notifications(notificationContext, null);
+									GitHubNotificationContext notificationContext = GitHubNotificationContext.build(job,
+									                                                                                null,
+									                                                                                source,
+									                                                                                head);
+									List<GitHubNotificationRequest> details = strategy.notifications(notificationContext,
+									                                                                 null);
 									for (GitHubNotificationRequest request : details) {
 										boolean ignoreErrors = request.isIgnoreError();
 										try {
 											repo.createCommitStatus(hash,
-											        request.getState(),
-											        request.getUrl(),
-											        request.getMessage(),
-											        request.getContext());
+											                        request.getState(),
+											                        request.getUrl(),
+											                        request.getMessage(),
+											                        request.getContext());
 										} catch (FileNotFoundException e) {
 											if (!ignoreErrors) {
 												LOGGER.log(Level.WARNING,
-												        "Could not update commit status to PENDING. Valid scan credentials? Valid scopes?",
-												        LOGGER.isLoggable(Level.FINE) ? e : null);
+												           "Could not update commit status to PENDING. Valid scan credentials? Valid scopes?",
+												           LOGGER.isLoggable(Level.FINE) ? e : null);
 											}
 										}
 									}
@@ -272,16 +278,16 @@ public class GitHubBuildStatusNotification {
 						}
 					} catch (FileNotFoundException e) {
 						LOGGER.log(Level.WARNING,
-						        "Could not update commit status to PENDING. Valid scan credentials? Valid scopes?",
-						        LOGGER.isLoggable(Level.FINE) ? e : null);
+						           "Could not update commit status to PENDING. Valid scan credentials? Valid scopes?",
+						           LOGGER.isLoggable(Level.FINE) ? e : null);
 					} catch (IOException e) {
 						LOGGER.log(Level.WARNING,
-						        "Could not update commit status to PENDING. Message: " + e.getMessage(),
-						        LOGGER.isLoggable(Level.FINE) ? e : null);
+						           "Could not update commit status to PENDING. Message: " + e.getMessage(),
+						           LOGGER.isLoggable(Level.FINE) ? e : null);
 					} catch (InterruptedException e) {
 						LOGGER.log(Level.WARNING,
-						        "Could not update commit status to PENDING. Rate limit exhausted",
-						        LOGGER.isLoggable(Level.FINE) ? e : null);
+						           "Could not update commit status to PENDING. Rate limit exhausted",
+						           LOGGER.isLoggable(Level.FINE) ? e : null);
 						LOGGER.log(Level.FINE, null, e);
 					}
 				}
@@ -300,12 +306,13 @@ public class GitHubBuildStatusNotification {
 
 		@Override
 		public void onCheckout(
-		        Run<?, ?> build,
-		        SCM scm,
-		        FilePath workspace,
-		        TaskListener listener,
-		        File changelogFile,
-		        SCMRevisionState pollingBaseline) throws Exception {
+		                       Run<?, ?> build,
+		                       SCM scm,
+		                       FilePath workspace,
+		                       TaskListener listener,
+		                       File changelogFile,
+		                       SCMRevisionState pollingBaseline)
+		        throws Exception {
 			createBuildCommitStatus(build, listener);
 		}
 

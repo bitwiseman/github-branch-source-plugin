@@ -57,7 +57,7 @@ public class WireMockRuleFactory {
 			super(options);
 			this.stubFor(get(urlMatching(".*")).atPriority(10).willReturn(aResponse().proxiedFrom(url)));
 			this.enableRecordMappings(new SingleRootFileSource(mappingLocation + "/mappings"),
-			        new SingleRootFileSource(mappingLocation + "/__files"));
+			                          new SingleRootFileSource(mappingLocation + "/__files"));
 		}
 	}
 }

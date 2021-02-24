@@ -262,7 +262,7 @@ public class GitHubSCMSourceContext extends SCMSourceContext<GitHubSCMSourceCont
 	 */
 	@NonNull
 	public final GitHubSCMSourceContext withNotificationStrategies(
-	        List<AbstractGitHubNotificationStrategy> strategies) {
+	                                                               List<AbstractGitHubNotificationStrategy> strategies) {
 		notificationStrategies.clear();
 		for (AbstractGitHubNotificationStrategy strategy : strategies) {
 			if (!notificationStrategies.contains(strategy)) {

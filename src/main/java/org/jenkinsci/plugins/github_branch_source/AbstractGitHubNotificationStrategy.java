@@ -43,8 +43,8 @@ public abstract class AbstractGitHubNotificationStrategy {
 	 * @since 2.3.2
 	 */
 	public abstract List<GitHubNotificationRequest> notifications(
-	        GitHubNotificationContext notificationContext,
-	        TaskListener listener);
+	                                                              GitHubNotificationContext notificationContext,
+	                                                              TaskListener listener);
 
 	/**
 	 * {@inheritDoc}

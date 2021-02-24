@@ -52,7 +52,7 @@ public class BranchDiscoveryTraitTest {
 		assertThat(ctx.wantPRs(), is(true));
 		assertThat(ctx.prefilters(), is(Collections.<SCMHeadPrefilter>emptyList()));
 		assertThat(ctx.filters(),
-		        contains(instanceOf(BranchDiscoveryTrait.ExcludeOriginPRBranchesSCMHeadFilter.class)));
+		           contains(instanceOf(BranchDiscoveryTrait.ExcludeOriginPRBranchesSCMHeadFilter.class)));
 		assertThat(ctx.authorities(), hasItem(instanceOf(BranchDiscoveryTrait.BranchSCMHeadAuthority.class)));
 	}
 
@@ -76,7 +76,7 @@ public class BranchDiscoveryTraitTest {
 	@Test
 	public void given__descriptor__when__displayingOptions__then__allThreePresent() {
 		ListBoxModel options = j.jenkins.getDescriptorByType(BranchDiscoveryTrait.DescriptorImpl.class)
-		        .doFillStrategyIdItems();
+		                                .doFillStrategyIdItems();
 		assertThat(options.size(), is(3));
 		assertThat(options.get(0).value, is("1"));
 		assertThat(options.get(1).value, is("2"));

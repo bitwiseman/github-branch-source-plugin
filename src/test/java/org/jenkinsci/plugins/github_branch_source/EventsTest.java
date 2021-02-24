@@ -193,8 +193,8 @@ public class EventsTest {
 		SCMEvents.awaitOne(watermark, 1200, TimeUnit.MILLISECONDS);
 
 		assertEquals("Event should have " + ((!received) ? "not " : "") + "been received",
-		        received,
-		        TestSCMEventListener.didReceive());
+		             received,
+		             TestSCMEventListener.didReceive());
 	}
 
 	@TestExtension

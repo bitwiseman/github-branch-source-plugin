@@ -119,11 +119,12 @@ public class PushGHEventSubscriber extends GHEventsSubscriber {
 	protected void onEvent(GHSubscriberEvent event) {
 		try {
 			final GHEventPayload.Push p = GitHub.offline()
-			        .parseEventPayload(new StringReader(event.getPayload()), GHEventPayload.Push.class);
+			                                    .parseEventPayload(new StringReader(event.getPayload()),
+			                                                       GHEventPayload.Push.class);
 			String repoUrl = p.getRepository().getHtmlUrl().toExternalForm();
 			LOGGER.log(Level.FINE,
-			        "Received {0} for {1} from {2}",
-			        new Object[]{ event.getGHEvent(), repoUrl, event.getOrigin() });
+			           "Received {0} for {1} from {2}",
+			           new Object[]{ event.getGHEvent(), repoUrl, event.getOrigin() });
 			Matcher matcher = REPOSITORY_NAME_PATTERN.matcher(repoUrl);
 			if (matcher.matches()) {
 				final GitHubRepositoryName changedRepository = GitHubRepositoryName.create(repoUrl);
@@ -134,22 +135,22 @@ public class PushGHEventSubscriber extends GHEventsSubscriber {
 
 				if (p.isCreated()) {
 					fireAfterDelay(new SCMHeadEventImpl(SCMEvent.Type.CREATED,
-					        event.getTimestamp(),
-					        p,
-					        changedRepository,
-					        event.getOrigin()));
+					                                    event.getTimestamp(),
+					                                    p,
+					                                    changedRepository,
+					                                    event.getOrigin()));
 				} else if (p.isDeleted()) {
 					fireAfterDelay(new SCMHeadEventImpl(SCMEvent.Type.REMOVED,
-					        event.getTimestamp(),
-					        p,
-					        changedRepository,
-					        event.getOrigin()));
+					                                    event.getTimestamp(),
+					                                    p,
+					                                    changedRepository,
+					                                    event.getOrigin()));
 				} else {
 					fireAfterDelay(new SCMHeadEventImpl(SCMEvent.Type.UPDATED,
-					        event.getTimestamp(),
-					        p,
-					        changedRepository,
-					        event.getOrigin()));
+					                                    event.getTimestamp(),
+					                                    p,
+					                                    changedRepository,
+					                                    event.getOrigin()));
 				}
 			} else {
 				LOGGER.log(Level.WARNING, "{0} does not match expected repository name pattern", repoUrl);
@@ -176,11 +177,11 @@ public class PushGHEventSubscriber extends GHEventsSubscriber {
 		private final String repository;
 
 		public SCMHeadEventImpl(
-		        Type type,
-		        long timestamp,
-		        GHEventPayload.Push pullRequest,
-		        GitHubRepositoryName repo,
-		        String origin) {
+		                        Type type,
+		                        long timestamp,
+		                        GHEventPayload.Push pullRequest,
+		                        GitHubRepositoryName repo,
+		                        String origin) {
 			super(type, timestamp, pullRequest, origin);
 			this.repoHost = repo.getHost();
 			this.repoOwner = pullRequest.getRepository().getOwnerName();
@@ -296,8 +297,8 @@ public class PushGHEventSubscriber extends GHEventsSubscriber {
 			 * things for us, so we just claim a BranchSCMHead
 			 */
 
-			GitHubSCMSourceContext context = new GitHubSCMSourceContext(null, SCMHeadObserver.none())
-			        .withTraits(src.getTraits());
+			GitHubSCMSourceContext context = new GitHubSCMSourceContext(null,
+			                                                            SCMHeadObserver.none()).withTraits(src.getTraits());
 			String ref = push.getRef();
 			if (context.wantBranches() && !ref.startsWith(R_TAGS)) {
 				// we only want the branch details if the branch is actually built!
@@ -317,7 +318,7 @@ public class PushGHEventSubscriber extends GHEventsSubscriber {
 				}
 				if (!excluded) {
 					return Collections.singletonMap(head,
-					        new AbstractGitSCMSource.SCMRevisionImpl(head, push.getHead()));
+					                                new AbstractGitSCMSource.SCMRevisionImpl(head, push.getHead()));
 				}
 			}
 			if (context.wantTags() && ref.startsWith(R_TAGS)) {

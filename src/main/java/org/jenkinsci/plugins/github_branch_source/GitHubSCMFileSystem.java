@@ -165,19 +165,19 @@ public class GitHubSCMFileSystem extends SCMFileSystem implements GitHubClosable
 			log.append('\n');
 			GHCommit.ShortInfo info = commit.getCommitShortInfo();
 			log.append("author ")
-			        .append(info.getAuthor().getName())
-			        .append(" <")
-			        .append(info.getAuthor().getEmail())
-			        .append("> ")
-			        .append(iso.format(info.getAuthoredDate()))
-			        .append('\n');
+			   .append(info.getAuthor().getName())
+			   .append(" <")
+			   .append(info.getAuthor().getEmail())
+			   .append("> ")
+			   .append(iso.format(info.getAuthoredDate()))
+			   .append('\n');
 			log.append("committer ")
-			        .append(info.getCommitter().getName())
-			        .append(" <")
-			        .append(info.getCommitter().getEmail())
-			        .append("> ")
-			        .append(iso.format(info.getCommitDate()))
-			        .append('\n');
+			   .append(info.getCommitter().getName())
+			   .append(" <")
+			   .append(info.getCommitter().getEmail())
+			   .append("> ")
+			   .append(iso.format(info.getCommitDate()))
+			   .append('\n');
 			log.append('\n');
 			String msg = info.getMessage();
 			if (msg.endsWith("\r\n")) {
@@ -253,8 +253,9 @@ public class GitHubSCMFileSystem extends SCMFileSystem implements GitHubClosable
 		        throws IOException, InterruptedException {
 			GitHubSCMSource src = (GitHubSCMSource) source;
 			String apiUri = src.getApiUri();
-			StandardCredentials credentials = Connector
-			        .lookupScanCredentials((Item) src.getOwner(), apiUri, src.getScanCredentialsId());
+			StandardCredentials credentials = Connector.lookupScanCredentials((Item) src.getOwner(),
+			                                                                  apiUri,
+			                                                                  src.getScanCredentialsId());
 
 			// Github client and validation
 			GitHub github = Connector.connect(apiUri, credentials);
@@ -306,9 +307,9 @@ public class GitHubSCMFileSystem extends SCMFileSystem implements GitHubClosable
 						} else {
 							// we should never get here, but just in case, we have the information to construct
 							// the correct head, so let's do that
-							rev = new GitTagSCMRevision(
-							        new GitHubTagSCMHead(head.getName(), tag.getTagger().getDate().getTime()),
-							        tag.getObject().getSha());
+							rev = new GitTagSCMRevision(new GitHubTagSCMHead(head.getName(),
+							                                                 tag.getTagger().getDate().getTime()),
+							                            tag.getObject().getSha());
 						}
 					} else {
 						rev = new AbstractGitSCMSource.SCMRevisionImpl(head, ref.getObject().getSha());

@@ -111,9 +111,9 @@ public class GitHubSCMBuilder extends GitSCMBuilder<GitHubSCMBuilder> {
 	 * @param revision the (optional) {@link SCMRevision}
 	 */
 	public GitHubSCMBuilder(
-	        @NonNull GitHubSCMSource source,
-	        @NonNull SCMHead head,
-	        @CheckForNull SCMRevision revision) {
+	                        @NonNull GitHubSCMSource source,
+	                        @NonNull SCMHead head,
+	                        @CheckForNull SCMRevision revision) {
 		super(head, revision, /* dummy value */guessRemote(source), source.getCredentialsId());
 		this.context = source.getOwner();
 		apiUri = StringUtils.defaultIfBlank(source.getApiUri(), GitHubServerConfig.GITHUB_URL);
@@ -224,22 +224,22 @@ public class GitHubSCMBuilder extends GitSCMBuilder<GitHubSCMBuilder> {
 	 */
 	@NonNull
 	public static RepositoryUriResolver uriResolver(
-	        @CheckForNull Item context,
-	        @NonNull String apiUri,
-	        @CheckForNull String credentialsId) {
+	                                                @CheckForNull Item context,
+	                                                @NonNull String apiUri,
+	                                                @CheckForNull String credentialsId) {
 		if (credentialsId == null) {
 			return HTTPS;
 		} else {
-			StandardCredentials credentials = CredentialsMatchers.firstOrNull(
-			        CredentialsProvider.lookupCredentials(StandardCredentials.class,
-			                context,
-			                context instanceof Queue.Task ? ((Queue.Task) context).getDefaultAuthentication()
-			                        : ACL.SYSTEM,
-			                URIRequirementBuilder.create()
-			                        .withHostname(RepositoryUriResolver.hostnameFromApiUri(apiUri))
-			                        .build()),
-			        CredentialsMatchers.allOf(CredentialsMatchers.withId(credentialsId),
-			                CredentialsMatchers.instanceOf(StandardCredentials.class)));
+			StandardCredentials credentials = CredentialsMatchers.firstOrNull(CredentialsProvider.lookupCredentials(StandardCredentials.class,
+			                                                                                                        context,
+			                                                                                                        context instanceof Queue.Task
+			                                                                                                                ? ((Queue.Task) context).getDefaultAuthentication()
+			                                                                                                                : ACL.SYSTEM,
+			                                                                                                        URIRequirementBuilder.create()
+			                                                                                                                             .withHostname(RepositoryUriResolver.hostnameFromApiUri(apiUri))
+			                                                                                                                             .build()),
+			                                                                  CredentialsMatchers.allOf(CredentialsMatchers.withId(credentialsId),
+			                                                                                            CredentialsMatchers.instanceOf(StandardCredentials.class)));
 			if (credentials instanceof SSHUserPrivateKey) {
 				return SSH;
 			} else {
@@ -331,7 +331,9 @@ public class GitHubSCMBuilder extends GitSCMBuilder<GitHubSCMBuilder> {
 						withRefSpec("+refs/heads/" + name + ":refs/" + localName);
 					}
 					withExtension(new MergeWithGitSCMExtension(localName,
-					        r instanceof PullRequestSCMRevision ? ((PullRequestSCMRevision) r).getBaseHash() : null));
+					                                           r instanceof PullRequestSCMRevision
+					                                                   ? ((PullRequestSCMRevision) r).getBaseHash()
+					                                                   : null));
 				}
 				if (r instanceof PullRequestSCMRevision) {
 					PullRequestSCMRevision rev = (PullRequestSCMRevision) r;

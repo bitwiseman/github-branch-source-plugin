@@ -93,8 +93,8 @@ public class ApiRateLimitCheckerTest extends AbstractGitHubWireMockTest {
 	}
 
 	private void setupStubs(List<RateLimit> scenarios) {
-		githubApi.stubFor(get(urlEqualTo("/meta"))
-		        .willReturn(aResponse().withStatus(200).withBody("{\"verifiable_password_authentication\": false}")));
+		githubApi.stubFor(get(urlEqualTo("/meta")).willReturn(aResponse().withStatus(200)
+		                                                                 .withBody("{\"verifiable_password_authentication\": false}")));
 
 		String scenarioName = UUID.randomUUID().toString();
 		for (int i = 0; i < scenarios.size(); i++) {
@@ -105,33 +105,40 @@ public class ApiRateLimitCheckerTest extends AbstractGitHubWireMockTest {
 			String limit = Integer.toString(scenarioResponse.limit);
 			String remaining = Integer.toString(scenarioResponse.remaining);
 			String reset = Long.toString(scenarioResponse.reset.toInstant().getEpochSecond());
-			String body = "{" + String
-			        .format(" \"rate\": { \"limit\": %s, \"remaining\": %s, \"reset\": %s },", limit, remaining, reset)
+			String body = "{"
+			        + String.format(" \"rate\": { \"limit\": %s, \"remaining\": %s, \"reset\": %s },",
+			                        limit,
+			                        remaining,
+			                        reset)
 			        + " \"resources\": {"
 			        + String.format(" \"core\": { \"limit\": %s, \"remaining\": %s, \"reset\": %s },",
-			                limit,
-			                remaining,
-			                reset)
+			                        limit,
+			                        remaining,
+			                        reset)
 			        + String.format(" \"search\": { \"limit\": %s, \"remaining\": %s, \"reset\": %s },",
-			                limit,
-			                remaining,
-			                reset)
+			                        limit,
+			                        remaining,
+			                        reset)
 			        + String.format(" \"graphql\": { \"limit\": %s, \"remaining\": %s, \"reset\": %s },",
-			                limit,
-			                remaining,
-			                reset)
+			                        limit,
+			                        remaining,
+			                        reset)
 			        + String.format(" \"integration_manifest\": { \"limit\": %s, \"remaining\": %s, \"reset\": %s }",
-			                limit,
-			                remaining,
-			                reset)
+			                        limit,
+			                        remaining,
+			                        reset)
 			        + " } }";
 			ScenarioMappingBuilder scenario = get(urlEqualTo("/rate_limit")).inScenario(scenarioName)
-			        .whenScenarioStateIs(state)
-			        .willReturn(aResponse().withHeader("Content-Type", "application/json; charset=utf-8")
-			                .withHeader("X-RateLimit-Limit", limit)
-			                .withHeader("X-RateLimit-Remaining", remaining)
-			                .withHeader("X-RateLimit-Reset", reset)
-			                .withBody(body));
+			                                                                .whenScenarioStateIs(state)
+			                                                                .willReturn(aResponse().withHeader("Content-Type",
+			                                                                                                   "application/json; charset=utf-8")
+			                                                                                       .withHeader("X-RateLimit-Limit",
+			                                                                                                   limit)
+			                                                                                       .withHeader("X-RateLimit-Remaining",
+			                                                                                                   remaining)
+			                                                                                       .withHeader("X-RateLimit-Reset",
+			                                                                                                   reset)
+			                                                                                       .withBody(body));
 			if (i != scenarios.size() - 1) {
 				scenario = scenario.willSetStateTo(nextState);
 			}
@@ -510,11 +517,9 @@ public class ApiRateLimitCheckerTest extends AbstractGitHubWireMockTest {
 		// Expect a triggered throttle for normalize
 		// GitHubRateLimitChecker add 1 second to notification loop, this hides the entropy value
 		assertEquals(3,
-		        countOfOutputLinesContaining(
-		                "Current quota for Github API usage has 0 remaining (250 over budget). Next quota of 5000 due now. Sleeping for 1 sec."));
+		             countOfOutputLinesContaining("Current quota for Github API usage has 0 remaining (250 over budget). Next quota of 5000 due now. Sleeping for 1 sec."));
 		assertEquals(4,
-		        countOfOutputLinesContaining(
-		                "Jenkins is attempting to evenly distribute GitHub API requests. To configure a different rate limiting strategy, such as having Jenkins restrict GitHub API requests only when near or above the GitHub rate limit, go to \"GitHub API usage\" under \"Configure System\" in the Jenkins settings."));
+		             countOfOutputLinesContaining("Jenkins is attempting to evenly distribute GitHub API requests. To configure a different rate limiting strategy, such as having Jenkins restrict GitHub API requests only when near or above the GitHub rate limit, go to \"GitHub API usage\" under \"Configure System\" in the Jenkins settings."));
 		assertEquals(4, countOfOutputLinesContaining("Sleeping"));
 		assertEquals(2, countOfOutputLinesContaining("now only 59 min remaining"));
 		// Refresh functionality was removed
@@ -682,8 +687,9 @@ public class ApiRateLimitCheckerTest extends AbstractGitHubWireMockTest {
 
 		// deadline set for those times as well
 		for (int i = 0; i < 4; i++) {
-			scenarios.add(
-			        new RateLimit(limit, morePreciseIdeal[i], new Date(start + TimeUnit.MINUTES.toMillis(i * 15))));
+			scenarios.add(new RateLimit(limit,
+			                            morePreciseIdeal[i],
+			                            new Date(start + TimeUnit.MINUTES.toMillis(i * 15))));
 		}
 		/*
 		 * With the limit at 400: the burst will be limit/10 and buffer will be limit/20
@@ -693,8 +699,9 @@ public class ApiRateLimitCheckerTest extends AbstractGitHubWireMockTest {
 
 		// deadline set for those times as well
 		for (int i = 0; i < 4; i++) {
-			scenarios.add(
-			        new RateLimit(limit, morePreciseIdeal[i], new Date(start + TimeUnit.MINUTES.toMillis(i * 15))));
+			scenarios.add(new RateLimit(limit,
+			                            morePreciseIdeal[i],
+			                            new Date(start + TimeUnit.MINUTES.toMillis(i * 15))));
 		}
 		/*
 		 * With the limit at 1000: the burst will be limit/5 and buffer will be 15
@@ -704,8 +711,9 @@ public class ApiRateLimitCheckerTest extends AbstractGitHubWireMockTest {
 
 		// deadline set for those times as well
 		for (int i = 0; i < 4; i++) {
-			scenarios.add(
-			        new RateLimit(limit, morePreciseIdeal[i], new Date(start + TimeUnit.MINUTES.toMillis(i * 15))));
+			scenarios.add(new RateLimit(limit,
+			                            morePreciseIdeal[i],
+			                            new Date(start + TimeUnit.MINUTES.toMillis(i * 15))));
 		}
 
 		setupStubs(scenarios);
@@ -752,8 +760,9 @@ public class ApiRateLimitCheckerTest extends AbstractGitHubWireMockTest {
 		// Must be the same or greater
 		// deadline set for those times as well
 		for (int i = 0; i < 4; i++) {
-			scenarios.add(
-			        new RateLimit(limit, morePreciseIdeal[i], new Date(start + TimeUnit.MINUTES.toMillis((i) * 15))));
+			scenarios.add(new RateLimit(limit,
+			                            morePreciseIdeal[i],
+			                            new Date(start + TimeUnit.MINUTES.toMillis((i) * 15))));
 		}
 
 		// Refresh rate limit
@@ -778,8 +787,7 @@ public class ApiRateLimitCheckerTest extends AbstractGitHubWireMockTest {
 		// Making sure the budget messages are correct
 		assertEquals(1, countOfOutputLinesContaining("1 over budget"));
 		assertEquals(1,
-		        countOfOutputLinesContaining(
-		                "Jenkins is restricting GitHub API requests only when near or above the rate limit. To configure a different rate limiting strategy, such as having Jenkins attempt to evenly distribute GitHub API requests, go to \"GitHub API usage\" under \"Configure System\" in the Jenkins settings."));
+		             countOfOutputLinesContaining("Jenkins is restricting GitHub API requests only when near or above the rate limit. To configure a different rate limiting strategy, such as having Jenkins attempt to evenly distribute GitHub API requests, go to \"GitHub API usage\" under \"Configure System\" in the Jenkins settings."));
 	}
 
 	/**

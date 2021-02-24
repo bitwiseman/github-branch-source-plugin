@@ -42,9 +42,9 @@ public class GitHubSCMNavigatorRequest extends SCMNavigatorRequest {
 	 * @param observer the observer.
 	 */
 	protected GitHubSCMNavigatorRequest(
-	        @NonNull SCMNavigator source,
-	        @NonNull GitHubSCMNavigatorContext context,
-	        @NonNull SCMSourceObserver observer) {
+	                                    @NonNull SCMNavigator source,
+	                                    @NonNull GitHubSCMNavigatorContext context,
+	                                    @NonNull SCMSourceObserver observer) {
 		super(source, context, observer);
 	}
 }

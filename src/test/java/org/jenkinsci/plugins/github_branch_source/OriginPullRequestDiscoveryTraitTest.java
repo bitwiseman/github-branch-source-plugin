@@ -25,9 +25,8 @@ public class OriginPullRequestDiscoveryTraitTest {
 		assumeThat(ctx.prefilters(), is(Collections.<SCMHeadPrefilter>emptyList()));
 		assumeThat(ctx.filters(), is(Collections.<SCMHeadFilter>emptyList()));
 		assumeThat(ctx.authorities(),
-		        not(hasItem(instanceOf(OriginPullRequestDiscoveryTrait.OriginChangeRequestSCMHeadAuthority.class))));
-		OriginPullRequestDiscoveryTrait instance = new OriginPullRequestDiscoveryTrait(
-		        EnumSet.allOf(ChangeRequestCheckoutStrategy.class));
+		           not(hasItem(instanceOf(OriginPullRequestDiscoveryTrait.OriginChangeRequestSCMHeadAuthority.class))));
+		OriginPullRequestDiscoveryTrait instance = new OriginPullRequestDiscoveryTrait(EnumSet.allOf(ChangeRequestCheckoutStrategy.class));
 		instance.decorateContext(ctx);
 		assertThat(ctx.wantBranches(), is(false));
 		assertThat(ctx.wantPRs(), is(true));
@@ -35,7 +34,7 @@ public class OriginPullRequestDiscoveryTraitTest {
 		assertThat(ctx.filters(), is(Collections.<SCMHeadFilter>emptyList()));
 		assertThat(ctx.originPRStrategies(), Matchers.is(EnumSet.allOf(ChangeRequestCheckoutStrategy.class)));
 		assertThat(ctx.authorities(),
-		        hasItem(instanceOf(OriginPullRequestDiscoveryTrait.OriginChangeRequestSCMHeadAuthority.class)));
+		           hasItem(instanceOf(OriginPullRequestDiscoveryTrait.OriginChangeRequestSCMHeadAuthority.class)));
 	}
 
 	@Test
@@ -46,9 +45,8 @@ public class OriginPullRequestDiscoveryTraitTest {
 		assumeThat(ctx.prefilters(), is(Collections.<SCMHeadPrefilter>emptyList()));
 		assumeThat(ctx.filters(), is(Collections.<SCMHeadFilter>emptyList()));
 		assumeThat(ctx.authorities(),
-		        not(hasItem(instanceOf(OriginPullRequestDiscoveryTrait.OriginChangeRequestSCMHeadAuthority.class))));
-		OriginPullRequestDiscoveryTrait instance = new OriginPullRequestDiscoveryTrait(
-		        EnumSet.of(ChangeRequestCheckoutStrategy.HEAD));
+		           not(hasItem(instanceOf(OriginPullRequestDiscoveryTrait.OriginChangeRequestSCMHeadAuthority.class))));
+		OriginPullRequestDiscoveryTrait instance = new OriginPullRequestDiscoveryTrait(EnumSet.of(ChangeRequestCheckoutStrategy.HEAD));
 		instance.decorateContext(ctx);
 		assertThat(ctx.wantBranches(), is(false));
 		assertThat(ctx.wantPRs(), is(true));
@@ -56,7 +54,7 @@ public class OriginPullRequestDiscoveryTraitTest {
 		assertThat(ctx.filters(), is(Collections.<SCMHeadFilter>emptyList()));
 		assertThat(ctx.originPRStrategies(), Matchers.is(EnumSet.of(ChangeRequestCheckoutStrategy.HEAD)));
 		assertThat(ctx.authorities(),
-		        hasItem(instanceOf(OriginPullRequestDiscoveryTrait.OriginChangeRequestSCMHeadAuthority.class)));
+		           hasItem(instanceOf(OriginPullRequestDiscoveryTrait.OriginChangeRequestSCMHeadAuthority.class)));
 	}
 
 	@Test
@@ -67,9 +65,8 @@ public class OriginPullRequestDiscoveryTraitTest {
 		assumeThat(ctx.prefilters(), is(Collections.<SCMHeadPrefilter>emptyList()));
 		assumeThat(ctx.filters(), is(Collections.<SCMHeadFilter>emptyList()));
 		assumeThat(ctx.authorities(),
-		        not(hasItem(instanceOf(OriginPullRequestDiscoveryTrait.OriginChangeRequestSCMHeadAuthority.class))));
-		OriginPullRequestDiscoveryTrait instance = new OriginPullRequestDiscoveryTrait(
-		        EnumSet.of(ChangeRequestCheckoutStrategy.MERGE));
+		           not(hasItem(instanceOf(OriginPullRequestDiscoveryTrait.OriginChangeRequestSCMHeadAuthority.class))));
+		OriginPullRequestDiscoveryTrait instance = new OriginPullRequestDiscoveryTrait(EnumSet.of(ChangeRequestCheckoutStrategy.MERGE));
 		instance.decorateContext(ctx);
 		assertThat(ctx.wantBranches(), is(false));
 		assertThat(ctx.wantPRs(), is(true));
@@ -77,7 +74,7 @@ public class OriginPullRequestDiscoveryTraitTest {
 		assertThat(ctx.filters(), is(Collections.<SCMHeadFilter>emptyList()));
 		assertThat(ctx.originPRStrategies(), Matchers.is(EnumSet.of(ChangeRequestCheckoutStrategy.MERGE)));
 		assertThat(ctx.authorities(),
-		        hasItem(instanceOf(OriginPullRequestDiscoveryTrait.OriginChangeRequestSCMHeadAuthority.class)));
+		           hasItem(instanceOf(OriginPullRequestDiscoveryTrait.OriginChangeRequestSCMHeadAuthority.class)));
 	}
 
 	@Test
@@ -88,9 +85,8 @@ public class OriginPullRequestDiscoveryTraitTest {
 		assumeThat(ctx.prefilters(), is(Collections.<SCMHeadPrefilter>emptyList()));
 		assumeThat(ctx.filters(), is(Collections.<SCMHeadFilter>emptyList()));
 		assumeThat(ctx.authorities(),
-		        not(hasItem(instanceOf(OriginPullRequestDiscoveryTrait.OriginChangeRequestSCMHeadAuthority.class))));
-		OriginPullRequestDiscoveryTrait instance = new OriginPullRequestDiscoveryTrait(
-		        EnumSet.allOf(ChangeRequestCheckoutStrategy.class));
+		           not(hasItem(instanceOf(OriginPullRequestDiscoveryTrait.OriginChangeRequestSCMHeadAuthority.class))));
+		OriginPullRequestDiscoveryTrait instance = new OriginPullRequestDiscoveryTrait(EnumSet.allOf(ChangeRequestCheckoutStrategy.class));
 		instance.decorateContext(ctx);
 		assertThat(ctx.wantBranches(), is(false));
 		assertThat(ctx.wantPRs(), is(true));
@@ -98,6 +94,6 @@ public class OriginPullRequestDiscoveryTraitTest {
 		assertThat(ctx.filters(), is(Collections.<SCMHeadFilter>emptyList()));
 		assertThat(ctx.originPRStrategies(), Matchers.is(EnumSet.allOf(ChangeRequestCheckoutStrategy.class)));
 		assertThat(ctx.authorities(),
-		        hasItem(instanceOf(OriginPullRequestDiscoveryTrait.OriginChangeRequestSCMHeadAuthority.class)));
+		           hasItem(instanceOf(OriginPullRequestDiscoveryTrait.OriginChangeRequestSCMHeadAuthority.class)));
 	}
 }

@@ -57,39 +57,39 @@ public class GitHubSCMFileSystemTest extends AbstractGitHubWireMockTest {
 	private final SCMRevision revision;
 
 	public static PullRequestSCMHead prHead = new PullRequestSCMHead("PR-2",
-	        "stephenc",
-	        "yolo",
-	        "master",
-	        2,
-	        (BranchSCMHead) master,
-	        SCMHeadOrigin.Fork.DEFAULT,
-	        ChangeRequestCheckoutStrategy.HEAD);
+	                                                                 "stephenc",
+	                                                                 "yolo",
+	                                                                 "master",
+	                                                                 2,
+	                                                                 (BranchSCMHead) master,
+	                                                                 SCMHeadOrigin.Fork.DEFAULT,
+	                                                                 ChangeRequestCheckoutStrategy.HEAD);
 	public static PullRequestSCMRevision prHeadRevision = new PullRequestSCMRevision(prHead,
-	        "8f1314fc3c8284d8c6d5886d473db98f2126071c",
-	        "c0e024f89969b976da165eecaa71e09dc60c3da1");
+	                                                                                 "8f1314fc3c8284d8c6d5886d473db98f2126071c",
+	                                                                                 "c0e024f89969b976da165eecaa71e09dc60c3da1");
 
 	public static PullRequestSCMHead prMerge = new PullRequestSCMHead("PR-2",
-	        "stephenc",
-	        "yolo",
-	        "master",
-	        2,
-	        (BranchSCMHead) master,
-	        SCMHeadOrigin.Fork.DEFAULT,
-	        ChangeRequestCheckoutStrategy.MERGE);
+	                                                                  "stephenc",
+	                                                                  "yolo",
+	                                                                  "master",
+	                                                                  2,
+	                                                                  (BranchSCMHead) master,
+	                                                                  SCMHeadOrigin.Fork.DEFAULT,
+	                                                                  ChangeRequestCheckoutStrategy.MERGE);
 	public static PullRequestSCMRevision prMergeRevision = new PullRequestSCMRevision(prMerge,
-	        "8f1314fc3c8284d8c6d5886d473db98f2126071c",
-	        "c0e024f89969b976da165eecaa71e09dc60c3da1",
-	        "38814ca33833ff5583624c29f305be9133f27a40");
+	                                                                                  "8f1314fc3c8284d8c6d5886d473db98f2126071c",
+	                                                                                  "c0e024f89969b976da165eecaa71e09dc60c3da1",
+	                                                                                  "38814ca33833ff5583624c29f305be9133f27a40");
 
 	public static PullRequestSCMRevision prMergeInvalidRevision = new PullRequestSCMRevision(prMerge,
-	        "8f1314fc3c8284d8c6d5886d473db98f2126071c",
-	        "c0e024f89969b976da165eecaa71e09dc60c3da1",
-	        null);
+	                                                                                         "8f1314fc3c8284d8c6d5886d473db98f2126071c",
+	                                                                                         "c0e024f89969b976da165eecaa71e09dc60c3da1",
+	                                                                                         null);
 
 	public static PullRequestSCMRevision prMergeNotMergeableRevision = new PullRequestSCMRevision(prMerge,
-	        "8f1314fc3c8284d8c6d5886d473db98f2126071c",
-	        "c0e024f89969b976da165eecaa71e09dc60c3da1",
-	        PullRequestSCMRevision.NOT_MERGEABLE_HASH);
+	                                                                                              "8f1314fc3c8284d8c6d5886d473db98f2126071c",
+	                                                                                              "c0e024f89969b976da165eecaa71e09dc60c3da1",
+	                                                                                              PullRequestSCMRevision.NOT_MERGEABLE_HASH);
 
 	private GitHubSCMSource source;
 
@@ -101,8 +101,8 @@ public class GitHubSCMFileSystemTest extends AbstractGitHubWireMockTest {
 	public static String[] revisions() {
 		return new String[]{ "c0e024f89969b976da165eecaa71e09dc60c3da1", // Pull Request #2, unmerged but exposed on
 		                                                                 // target repo
-		        "e301dc6d5bb7e6e18d80e85f19caa92c74e15e96",
-		        null };
+		                     "e301dc6d5bb7e6e18d80e85f19caa92c74e15e96",
+		                     null };
 	}
 
 	@Before
@@ -110,19 +110,19 @@ public class GitHubSCMFileSystemTest extends AbstractGitHubWireMockTest {
 	public void prepareMockGitHub() {
 		super.prepareMockGitHub();
 		source = new GitHubSCMSource(null,
-		        "http://localhost:" + githubApi.port(),
-		        GitHubSCMSource.DescriptorImpl.SAME,
-		        null,
-		        "cloudbeers",
-		        "yolo");
+		                             "http://localhost:" + githubApi.port(),
+		                             GitHubSCMSource.DescriptorImpl.SAME,
+		                             null,
+		                             "cloudbeers",
+		                             "yolo");
 	}
 
 	@Override
 	void prepareMockGitHubFileMappings() {
 		super.prepareMockGitHubFileMappings();
-		githubApi.stubFor(get(urlEqualTo("/repos/cloudbeers/yolo/pulls/2"))
-		        .willReturn(aResponse().withHeader("Content-Type", "application/json; charset=utf-8")
-		                .withBodyFile("body-yolo-pulls-2-mergeable-true.json")));
+		githubApi.stubFor(get(urlEqualTo("/repos/cloudbeers/yolo/pulls/2")).willReturn(aResponse().withHeader("Content-Type",
+		                                                                                                      "application/json; charset=utf-8")
+		                                                                                          .withBodyFile("body-yolo-pulls-2-mergeable-true.json")));
 
 	}
 
@@ -160,7 +160,7 @@ public class GitHubSCMFileSystemTest extends AbstractGitHubWireMockTest {
 	public void readFileFromDir() throws Exception {
 		assumeThat(revision, instanceOf(AbstractGitSCMSource.SCMRevisionImpl.class));
 		assumeThat(((AbstractGitSCMSource.SCMRevisionImpl) revision).getHash(),
-		        is("c0e024f89969b976da165eecaa71e09dc60c3da1"));
+		           is("c0e024f89969b976da165eecaa71e09dc60c3da1"));
 		SCMFileSystem fs = SCMFileSystem.of(source, master, revision);
 
 		String expected = "Some text\n";
@@ -185,7 +185,7 @@ public class GitHubSCMFileSystemTest extends AbstractGitHubWireMockTest {
 	public void resolveDir() throws Exception {
 		assumeThat(revision, instanceOf(AbstractGitSCMSource.SCMRevisionImpl.class));
 		assumeThat(((AbstractGitSCMSource.SCMRevisionImpl) revision).getHash(),
-		        is("c0e024f89969b976da165eecaa71e09dc60c3da1"));
+		           is("c0e024f89969b976da165eecaa71e09dc60c3da1"));
 		SCMFileSystem fs = SCMFileSystem.of(source, master, revision);
 		assertThat(fs.getRoot().child("fu").getType(), is(SCMFile.Type.DIRECTORY));
 	}
@@ -194,10 +194,10 @@ public class GitHubSCMFileSystemTest extends AbstractGitHubWireMockTest {
 	public void listDir() throws Exception {
 		assumeThat(revision, instanceOf(AbstractGitSCMSource.SCMRevisionImpl.class));
 		assumeThat(((AbstractGitSCMSource.SCMRevisionImpl) revision).getHash(),
-		        is("c0e024f89969b976da165eecaa71e09dc60c3da1"));
+		           is("c0e024f89969b976da165eecaa71e09dc60c3da1"));
 		SCMFileSystem fs = SCMFileSystem.of(source, master, revision);
 		assertThat(fs.getRoot().child("fu").children(),
-		        hasItem(Matchers.<SCMFile>hasProperty("name", is("manchu.txt"))));
+		           hasItem(Matchers.<SCMFile>hasProperty("name", is("manchu.txt"))));
 	}
 
 	@Test

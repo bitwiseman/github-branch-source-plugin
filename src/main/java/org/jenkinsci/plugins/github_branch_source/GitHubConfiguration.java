@@ -108,12 +108,12 @@ public class GitHubConfiguration extends GlobalConfiguration {
 					port = -1;
 				}
 				apiUri = new URI(scheme,
-				        uri.getUserInfo(),
-				        host,
-				        port,
-				        uri.getPath(),
-				        uri.getQuery(),
-				        uri.getFragment()).toASCIIString();
+				                 uri.getUserInfo(),
+				                 host,
+				                 port,
+				                 uri.getPath(),
+				                 uri.getQuery(),
+				                 uri.getFragment()).toASCIIString();
 			}
 		} catch (URISyntaxException e) {
 			// ignore, this was a best effort tidy-up

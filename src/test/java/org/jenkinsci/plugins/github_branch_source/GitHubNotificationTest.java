@@ -97,8 +97,8 @@ public class GitHubNotificationTest {
 
 		@Override
 		public List<GitHubNotificationRequest> notifications(
-		        GitHubNotificationContext notificationContext,
-		        TaskListener listener) {
+		                                                     GitHubNotificationContext notificationContext,
+		                                                     TaskListener listener) {
 			return null;
 		}
 

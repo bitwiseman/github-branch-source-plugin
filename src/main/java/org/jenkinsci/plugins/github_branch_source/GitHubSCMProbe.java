@@ -57,11 +57,12 @@ class GitHubSCMProbe extends SCMProbe implements GitHubClosable {
 	private transient boolean open = true;
 
 	public GitHubSCMProbe(
-	        String apiUri,
-	        StandardCredentials credentials,
-	        GHRepository repo,
-	        SCMHead head,
-	        SCMRevision revision) throws IOException {
+	                      String apiUri,
+	                      StandardCredentials credentials,
+	                      GHRepository repo,
+	                      SCMHead head,
+	                      SCMRevision revision)
+	        throws IOException {
 		this.gitHub = Connector.connect(apiUri, credentials);
 		this.revision = revision;
 		this.repo = repo;
@@ -140,7 +141,7 @@ class GitHubSCMProbe extends SCMProbe implements GitHubClosable {
 		try {
 			int index = path.lastIndexOf('/') + 1;
 			List<GHContent> directoryContent = repo.getDirectoryContent(path.substring(0, index),
-			        Constants.R_REFS + ref);
+			                                                            Constants.R_REFS + ref);
 			for (GHContent content : directoryContent) {
 				if (content.getPath().equals(path)) {
 					if (content.isFile()) {

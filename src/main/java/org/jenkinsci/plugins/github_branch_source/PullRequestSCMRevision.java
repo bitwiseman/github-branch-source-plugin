@@ -48,17 +48,17 @@ public class PullRequestSCMRevision extends ChangeRequestSCMRevision<PullRequest
 	private final String mergeHash;
 
 	public PullRequestSCMRevision(
-	        @NonNull PullRequestSCMHead head,
-	        @NonNull String baseHash,
-	        @NonNull String pullHash) {
+	                              @NonNull PullRequestSCMHead head,
+	                              @NonNull String baseHash,
+	                              @NonNull String pullHash) {
 		this(head, baseHash, pullHash, null);
 	}
 
 	PullRequestSCMRevision(
-	        @NonNull PullRequestSCMHead head,
-	        @NonNull String baseHash,
-	        @NonNull String pullHash,
-	        String mergeHash) {
+	                       @NonNull PullRequestSCMHead head,
+	                       @NonNull String baseHash,
+	                       @NonNull String pullHash,
+	                       String mergeHash) {
 		super(head, new AbstractGitSCMSource.SCMRevisionImpl(head.getTarget(), baseHash));
 		this.baseHash = baseHash;
 		this.pullHash = pullHash;

@@ -35,7 +35,7 @@ public class GitHubAppCredentialsJCasCCompatibilityTest {
 
 	@ClassRule
 	public static RuleChain chain = RuleChain.outerRule(new EnvVarsRule().set("GITHUB_APP_KEY", GITHUB_APP_KEY))
-	        .around(j);
+	                                         .around(j);
 
 	@Test
 	public void should_support_configuration_as_code() {
@@ -61,8 +61,8 @@ public class GitHubAppCredentialsJCasCCompatibilityTest {
 		CNode githubApp = credentials.get(0).asMapping().get("gitHubApp");
 
 		String exported = toYamlString(githubApp)
-		        // replace secret with a constant value
-		        .replaceAll("privateKey: .*", "privateKey: \"some-secret-value\"");
+		                                         // replace secret with a constant value
+		                                         .replaceAll("privateKey: .*", "privateKey: \"some-secret-value\"");
 
 		String expected = toStringFromYamlFile(this, "github-app-jcasc-minimal-expected-export.yaml");
 
@@ -75,13 +75,13 @@ public class GitHubAppCredentialsJCasCCompatibilityTest {
 		ConfiguratorRegistry registry = ConfiguratorRegistry.get();
 		ConfigurationContext context = new ConfigurationContext(registry);
 		Mapping configNode = Objects.requireNonNull(root.describe(root.getTargetComponent(context), context))
-		        .asMapping();
+		                            .asMapping();
 		Mapping domainCredentials = configNode.get("system")
-		        .asMapping()
-		        .get("domainCredentials")
-		        .asSequence()
-		        .get(0)
-		        .asMapping();
+		                                      .asMapping()
+		                                      .get("domainCredentials")
+		                                      .asSequence()
+		                                      .get(0)
+		                                      .asMapping();
 		return domainCredentials.get("credentials").asSequence();
 	}
 }

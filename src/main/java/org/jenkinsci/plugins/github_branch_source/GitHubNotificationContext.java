@@ -61,10 +61,10 @@ public final class GitHubNotificationContext {
 	}
 
 	public static GitHubNotificationContext build(
-	        @Nullable Job<?, ?> job,
-	        @Nullable Run<?, ?> build,
-	        SCMSource source,
-	        SCMHead head) {
+	                                              @Nullable Job<?, ?> job,
+	                                              @Nullable Run<?, ?> build,
+	                                              SCMSource source,
+	                                              SCMHead head) {
 		return new GitHubNotificationContext(job, build, source, head);
 	}
 

@@ -64,11 +64,11 @@ public class GitHubSCMSourceBuilder extends SCMSourceBuilder<GitHubSCMSourceBuil
 	 * @param repoName      the project name.
 	 */
 	public GitHubSCMSourceBuilder(
-	        @CheckForNull String id,
-	        @CheckForNull String apiUri,
-	        @CheckForNull String credentialsId,
-	        @NonNull String repoOwner,
-	        @NonNull String repoName) {
+	                              @CheckForNull String id,
+	                              @CheckForNull String apiUri,
+	                              @CheckForNull String credentialsId,
+	                              @NonNull String repoOwner,
+	                              @NonNull String repoName) {
 		super(GitHubSCMSource.class, repoName);
 		this.id = id;
 		this.apiUri = apiUri;

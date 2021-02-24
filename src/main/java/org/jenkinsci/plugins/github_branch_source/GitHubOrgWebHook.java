@@ -46,8 +46,10 @@ import org.kohsuke.github.GitHub;
 public class GitHubOrgWebHook {
 
 	private static final Logger LOGGER = Logger.getLogger(GitHubOrgWebHook.class.getName());
-	private static final List<GHEvent> EVENTS = Arrays
-	        .asList(GHEvent.REPOSITORY, GHEvent.PUSH, GHEvent.PULL_REQUEST, GHEvent.PULL_REQUEST_REVIEW_COMMENT);
+	private static final List<GHEvent> EVENTS = Arrays.asList(GHEvent.REPOSITORY,
+	                                                          GHEvent.PUSH,
+	                                                          GHEvent.PULL_REQUEST,
+	                                                          GHEvent.PULL_REQUEST_REVIEW_COMMENT);
 
 	public static void register(GitHub hub, String orgName) throws IOException {
 		String rootUrl = System.getProperty("jenkins.hook.url");
@@ -80,13 +82,13 @@ public class GitHubOrgWebHook {
 				orghook.on();
 			} catch (FileNotFoundException e) {
 				LOGGER.log(Level.WARNING,
-				        "Failed to register GitHub Org hook to {0} (missing permissions?): {1}",
-				        new Object[]{ u.getHtmlUrl(), e.getMessage() });
+				           "Failed to register GitHub Org hook to {0} (missing permissions?): {1}",
+				           new Object[]{ u.getHtmlUrl(), e.getMessage() });
 				LOGGER.log(Level.FINE, null, e);
 			} catch (RateLimitExceededException e) {
 				LOGGER.log(Level.WARNING,
-				        "Failed to register GitHub Org hook to {0}: {1}",
-				        new Object[]{ u.getHtmlUrl(), e.getMessage() });
+				           "Failed to register GitHub Org hook to {0}: {1}",
+				           new Object[]{ u.getHtmlUrl(), e.getMessage() });
 				LOGGER.log(Level.FINE, null, e);
 			} catch (IOException e) {
 				LOGGER.log(Level.WARNING, "Failed to register GitHub Org hook to " + u.getHtmlUrl(), e);
@@ -121,13 +123,13 @@ public class GitHubOrgWebHook {
 				orghook.off();
 			} catch (FileNotFoundException e) {
 				LOGGER.log(Level.WARNING,
-				        "Failed to deregister GitHub Org hook to {0} (missing permissions?): {1}",
-				        new Object[]{ u.getHtmlUrl(), e.getMessage() });
+				           "Failed to deregister GitHub Org hook to {0} (missing permissions?): {1}",
+				           new Object[]{ u.getHtmlUrl(), e.getMessage() });
 				LOGGER.log(Level.FINE, null, e);
 			} catch (RateLimitExceededException e) {
 				LOGGER.log(Level.WARNING,
-				        "Failed to deregister GitHub Org hook to {0}: {1}",
-				        new Object[]{ u.getHtmlUrl(), e.getMessage() });
+				           "Failed to deregister GitHub Org hook to {0}: {1}",
+				           new Object[]{ u.getHtmlUrl(), e.getMessage() });
 				LOGGER.log(Level.FINE, null, e);
 			} catch (IOException e) {
 				LOGGER.log(Level.WARNING, "Failed to deregister GitHub Org hook to " + u.getHtmlUrl(), e);

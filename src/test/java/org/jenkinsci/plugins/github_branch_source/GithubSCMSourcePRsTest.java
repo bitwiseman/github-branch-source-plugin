@@ -24,27 +24,27 @@ public class GithubSCMSourcePRsTest extends GitSCMSourceBase {
 	@Test
 	public void testClosedSinglePR() throws IOException {
 		// Situation: Hitting the Github API for a PR and getting a closed PR
-		githubApi.stubFor(get(urlEqualTo("/repos/cloudbeers/yolo/pulls/1"))
-		        .willReturn(aResponse().withHeader("Content-Type", "application/json; charset=utf-8")
-		                .withBodyFile("../PRs/_files/body-yolo-pulls-closed-pr.json")));
+		githubApi.stubFor(get(urlEqualTo("/repos/cloudbeers/yolo/pulls/1")).willReturn(aResponse().withHeader("Content-Type",
+		                                                                                                      "application/json; charset=utf-8")
+		                                                                                          .withBodyFile("../PRs/_files/body-yolo-pulls-closed-pr.json")));
 		SCMHeadObserver mockSCMHeadObserver = Mockito.mock(SCMHeadObserver.class);
 		Mockito.when(mockSCMHeadObserver.getIncludes())
-		        .thenReturn(Collections.singleton(new PullRequestSCMHead("PR-1",
-		                "*",
-		                "http://localhost:" + githubApi.port(),
-		                "master",
-		                1,
-		                new BranchSCMHead("master"),
-		                SCMHeadOrigin.DEFAULT,
-		                ChangeRequestCheckoutStrategy.MERGE)));
+		       .thenReturn(Collections.singleton(new PullRequestSCMHead("PR-1",
+		                                                                "*",
+		                                                                "http://localhost:" + githubApi.port(),
+		                                                                "master",
+		                                                                1,
+		                                                                new BranchSCMHead("master"),
+		                                                                SCMHeadOrigin.DEFAULT,
+		                                                                ChangeRequestCheckoutStrategy.MERGE)));
 		GitHubSCMSourceContext context = new GitHubSCMSourceContext(null, mockSCMHeadObserver);
 		context.wantPRs();
 		GitHubSCMSourceRequest request = context.newRequest(new GitHubSCMSource("cloudbeers", "yolo", null, false),
-		        null);
+		                                                    null);
 		Iterator<GHPullRequest> pullRequest = new GitHubSCMSource("cloudbeers",
-		        "yolo",
-		        null,
-		        false).new LazyPullRequests(request, repo).iterator();
+		                                                          "yolo",
+		                                                          null,
+		                                                          false).new LazyPullRequests(request, repo).iterator();
 		// Expected: In the iterator will be empty
 		assertFalse(pullRequest.hasNext());
 	}
@@ -53,27 +53,27 @@ public class GithubSCMSourcePRsTest extends GitSCMSourceBase {
 	@Test
 	public void testOpenSinglePR() throws IOException {
 		// Situation: Hitting the Github API for a PR and getting a open PR
-		githubApi.stubFor(get(urlEqualTo("/repos/cloudbeers/yolo/pulls/1"))
-		        .willReturn(aResponse().withHeader("Content-Type", "application/json; charset=utf-8")
-		                .withBodyFile("../PRs/_files/body-yolo-pulls-open-pr.json")));
+		githubApi.stubFor(get(urlEqualTo("/repos/cloudbeers/yolo/pulls/1")).willReturn(aResponse().withHeader("Content-Type",
+		                                                                                                      "application/json; charset=utf-8")
+		                                                                                          .withBodyFile("../PRs/_files/body-yolo-pulls-open-pr.json")));
 		SCMHeadObserver mockSCMHeadObserver = Mockito.mock(SCMHeadObserver.class);
 		Mockito.when(mockSCMHeadObserver.getIncludes())
-		        .thenReturn(Collections.singleton(new PullRequestSCMHead("PR-1",
-		                "ataylor",
-		                "http://localhost:" + githubApi.port(),
-		                "master",
-		                1,
-		                new BranchSCMHead("master"),
-		                SCMHeadOrigin.DEFAULT,
-		                ChangeRequestCheckoutStrategy.MERGE)));
+		       .thenReturn(Collections.singleton(new PullRequestSCMHead("PR-1",
+		                                                                "ataylor",
+		                                                                "http://localhost:" + githubApi.port(),
+		                                                                "master",
+		                                                                1,
+		                                                                new BranchSCMHead("master"),
+		                                                                SCMHeadOrigin.DEFAULT,
+		                                                                ChangeRequestCheckoutStrategy.MERGE)));
 		GitHubSCMSourceContext context = new GitHubSCMSourceContext(null, mockSCMHeadObserver);
 		context.wantPRs();
 		GitHubSCMSourceRequest request = context.newRequest(new GitHubSCMSource("cloudbeers", "yolo", null, false),
-		        null);
+		                                                    null);
 		Iterator<GHPullRequest> pullRequest = new GitHubSCMSource("cloudbeers",
-		        "yolo",
-		        null,
-		        false).new LazyPullRequests(request, repo).iterator();
+		                                                          "yolo",
+		                                                          null,
+		                                                          false).new LazyPullRequests(request, repo).iterator();
 		// Expected: In the iterator will have one item in it
 		assertTrue(pullRequest.hasNext());
 		assertEquals(1, pullRequest.next().getId());
@@ -84,23 +84,23 @@ public class GithubSCMSourcePRsTest extends GitSCMSourceBase {
 	@Test
 	public void testSinglePRThrowingExceptionOnGettingNumbers() throws Exception {
 		// Situation: Hitting the Github API for a PR and an IO exception during the building of the iterator
-		githubApi.stubFor(get(urlEqualTo("/repos/cloudbeers/yolo/pulls/1"))
-		        .willReturn(aResponse().withHeader("Content-Type", "application/json; charset=utf-8")
-		                .withBodyFile("../PRs/_files/body-yolo-pulls-open-pr.json")));
+		githubApi.stubFor(get(urlEqualTo("/repos/cloudbeers/yolo/pulls/1")).willReturn(aResponse().withHeader("Content-Type",
+		                                                                                                      "application/json; charset=utf-8")
+		                                                                                          .withBodyFile("../PRs/_files/body-yolo-pulls-open-pr.json")));
 		SCMHeadObserver mockSCMHeadObserver = Mockito.mock(SCMHeadObserver.class);
 		Mockito.when(mockSCMHeadObserver.getIncludes())
-		        .thenReturn(Collections.singleton(new PullRequestSCMHead("PR-1",
-		                "ataylor",
-		                "http://localhost:" + githubApi.port(),
-		                "master",
-		                1,
-		                new BranchSCMHead("master"),
-		                SCMHeadOrigin.DEFAULT,
-		                ChangeRequestCheckoutStrategy.MERGE)));
+		       .thenReturn(Collections.singleton(new PullRequestSCMHead("PR-1",
+		                                                                "ataylor",
+		                                                                "http://localhost:" + githubApi.port(),
+		                                                                "master",
+		                                                                1,
+		                                                                new BranchSCMHead("master"),
+		                                                                SCMHeadOrigin.DEFAULT,
+		                                                                ChangeRequestCheckoutStrategy.MERGE)));
 		GitHubSCMSourceContext context = new GitHubSCMSourceContext(null, mockSCMHeadObserver);
 		context.wantPRs();
 		GitHubSCMSourceRequest request = context.newRequest(new GitHubSCMSource("cloudbeers", "yolo", null, false),
-		        null);
+		                                                    null);
 
 		GHRepository mockRequest = Mockito.spy(repo);
 		Mockito.when(mockRequest.getPullRequest(1)).thenThrow(new IOException("Number does not exist"));
@@ -108,9 +108,10 @@ public class GithubSCMSourcePRsTest extends GitSCMSourceBase {
 		// Expected: This will fail when trying to generate the iterator
 		try {
 			Iterator<GHPullRequest> pullRequest = new GitHubSCMSource("cloudbeers",
-			        "yolo",
-			        null,
-			        false).new LazyPullRequests(request, mockRequest).iterator();
+			                                                          "yolo",
+			                                                          null,
+			                                                          false).new LazyPullRequests(request,
+			                                                                                      mockRequest).iterator();
 			fail();
 		} catch (Exception e) {
 			assertEquals("java.io.IOException: Number does not exist", e.getMessage());
@@ -121,19 +122,19 @@ public class GithubSCMSourcePRsTest extends GitSCMSourceBase {
 	@Test
 	public void testOpenSinglePRThrowsFileNotFoundOnObserve() throws Exception {
 		// Situation: Hitting the Github API for a PR and an FileNotFound exception during the getPullRequest
-		githubApi.stubFor(get(urlEqualTo("/repos/cloudbeers/yolo/pulls/1"))
-		        .willReturn(aResponse().withHeader("Content-Type", "application/json; charset=utf-8")
-		                .withBodyFile("../PRs/_files/body-yolo-pulls-open-pr.json")));
+		githubApi.stubFor(get(urlEqualTo("/repos/cloudbeers/yolo/pulls/1")).willReturn(aResponse().withHeader("Content-Type",
+		                                                                                                      "application/json; charset=utf-8")
+		                                                                                          .withBodyFile("../PRs/_files/body-yolo-pulls-open-pr.json")));
 		SCMHeadObserver mockSCMHeadObserver = Mockito.mock(SCMHeadObserver.class);
 		Mockito.when(mockSCMHeadObserver.getIncludes())
-		        .thenReturn(Collections.singleton(new PullRequestSCMHead("PR-1",
-		                "ataylor",
-		                "http://localhost:" + githubApi.port(),
-		                "master",
-		                1,
-		                new BranchSCMHead("master"),
-		                SCMHeadOrigin.DEFAULT,
-		                ChangeRequestCheckoutStrategy.MERGE)));
+		       .thenReturn(Collections.singleton(new PullRequestSCMHead("PR-1",
+		                                                                "ataylor",
+		                                                                "http://localhost:" + githubApi.port(),
+		                                                                "master",
+		                                                                1,
+		                                                                new BranchSCMHead("master"),
+		                                                                SCMHeadOrigin.DEFAULT,
+		                                                                ChangeRequestCheckoutStrategy.MERGE)));
 		GitHubSCMSourceContext context = new GitHubSCMSourceContext(null, mockSCMHeadObserver);
 		context.wantPRs();
 
@@ -144,11 +145,12 @@ public class GithubSCMSourcePRsTest extends GitSCMSourceBase {
 		// then throw on the PR during observe
 		Mockito.when(pullRequestSpy.getUser()).thenThrow(new FileNotFoundException("User not found"));
 		GitHubSCMSourceRequest request = context.newRequest(new GitHubSCMSource("cloudbeers", "yolo", null, false),
-		        null);
+		                                                    null);
 		Iterator<GHPullRequest> pullRequestIterator = new GitHubSCMSource("cloudbeers",
-		        "yolo",
-		        null,
-		        false).new LazyPullRequests(request, repoSpy).iterator();
+		                                                                  "yolo",
+		                                                                  null,
+		                                                                  false).new LazyPullRequests(request,
+		                                                                                              repoSpy).iterator();
 
 		// Expected: In the iterator will have one item in it but when getting that item you receive an FileNotFound
 		// exception
@@ -164,19 +166,19 @@ public class GithubSCMSourcePRsTest extends GitSCMSourceBase {
 	@Test
 	public void testOpenSinglePRThrowsIOOnObserve() throws Exception {
 		// Situation: Hitting the Github API for a PR and an IO exception during the getPullRequest
-		githubApi.stubFor(get(urlEqualTo("/repos/cloudbeers/yolo/pulls/1"))
-		        .willReturn(aResponse().withHeader("Content-Type", "application/json; charset=utf-8")
-		                .withBodyFile("../PRs/_files/body-yolo-pulls-open-pr.json")));
+		githubApi.stubFor(get(urlEqualTo("/repos/cloudbeers/yolo/pulls/1")).willReturn(aResponse().withHeader("Content-Type",
+		                                                                                                      "application/json; charset=utf-8")
+		                                                                                          .withBodyFile("../PRs/_files/body-yolo-pulls-open-pr.json")));
 		SCMHeadObserver mockSCMHeadObserver = Mockito.mock(SCMHeadObserver.class);
 		Mockito.when(mockSCMHeadObserver.getIncludes())
-		        .thenReturn(Collections.singleton(new PullRequestSCMHead("PR-1",
-		                "ataylor",
-		                "http://localhost:" + githubApi.port(),
-		                "master",
-		                1,
-		                new BranchSCMHead("master"),
-		                SCMHeadOrigin.DEFAULT,
-		                ChangeRequestCheckoutStrategy.MERGE)));
+		       .thenReturn(Collections.singleton(new PullRequestSCMHead("PR-1",
+		                                                                "ataylor",
+		                                                                "http://localhost:" + githubApi.port(),
+		                                                                "master",
+		                                                                1,
+		                                                                new BranchSCMHead("master"),
+		                                                                SCMHeadOrigin.DEFAULT,
+		                                                                ChangeRequestCheckoutStrategy.MERGE)));
 		GitHubSCMSourceContext context = new GitHubSCMSourceContext(null, mockSCMHeadObserver);
 		context.wantPRs();
 
@@ -187,11 +189,12 @@ public class GithubSCMSourcePRsTest extends GitSCMSourceBase {
 		// then throw on the PR during observe
 		Mockito.when(pullRequestSpy.getUser()).thenThrow(new IOException("Failed to get user"));
 		GitHubSCMSourceRequest request = context.newRequest(new GitHubSCMSource("cloudbeers", "yolo", null, false),
-		        null);
+		                                                    null);
 		Iterator<GHPullRequest> pullRequestIterator = new GitHubSCMSource("cloudbeers",
-		        "yolo",
-		        null,
-		        false).new LazyPullRequests(request, repoSpy).iterator();
+		                                                                  "yolo",
+		                                                                  null,
+		                                                                  false).new LazyPullRequests(request,
+		                                                                                              repoSpy).iterator();
 
 		// Expected: In the iterator will have one item in it but when getting that item you receive an IO exception
 		assertTrue(pullRequestIterator.hasNext());
@@ -207,18 +210,18 @@ public class GithubSCMSourcePRsTest extends GitSCMSourceBase {
 	@Test
 	public void testOpenMultiplePRs() throws IOException {
 		// Situation: Hitting the Github API all the PRs and they are all Open. Then we close the request at the end
-		githubApi.stubFor(get(urlEqualTo("/repos/cloudbeers/yolo/pulls?state=open"))
-		        .willReturn(aResponse().withHeader("Content-Type", "application/json; charset=utf-8")
-		                .withBodyFile("../PRs/_files/body-yolo-pulls-open-multiple-PRs.json")));
+		githubApi.stubFor(get(urlEqualTo("/repos/cloudbeers/yolo/pulls?state=open")).willReturn(aResponse().withHeader("Content-Type",
+		                                                                                                               "application/json; charset=utf-8")
+		                                                                                                   .withBodyFile("../PRs/_files/body-yolo-pulls-open-multiple-PRs.json")));
 		SCMHeadObserver mockSCMHeadObserver = Mockito.mock(SCMHeadObserver.class);
 		GitHubSCMSourceContext context = new GitHubSCMSourceContext(null, mockSCMHeadObserver);
 		context.wantOriginPRs(true);
 		GitHubSCMSourceRequest request = context.newRequest(new GitHubSCMSource("cloudbeers", "yolo", null, false),
-		        null);
+		                                                    null);
 		Iterator<GHPullRequest> pullRequest = new GitHubSCMSource("cloudbeers",
-		        "yolo",
-		        null,
-		        false).new LazyPullRequests(request, repo).iterator();
+		                                                          "yolo",
+		                                                          null,
+		                                                          false).new LazyPullRequests(request, repo).iterator();
 		// Expected: In the iterator will have 2 items in it
 		assertTrue(pullRequest.hasNext());
 		assertEquals(1, pullRequest.next().getId());
@@ -232,9 +235,9 @@ public class GithubSCMSourcePRsTest extends GitSCMSourceBase {
 	@Test
 	public void testOpenMultiplePRsWithMasterAsOrigin() throws IOException {
 		// Situation: Hitting the Github API all the PRs and they are all Open but the master is the head branch
-		githubApi.stubFor(get(urlEqualTo("/repos/cloudbeers/yolo/pulls?state=open&head=cloudbeers%3Amaster"))
-		        .willReturn(aResponse().withHeader("Content-Type", "application/json; charset=utf-8")
-		                .withBodyFile("../PRs/_files/body-yolo-pulls-open-multiple-PRs.json")));
+		githubApi.stubFor(get(urlEqualTo("/repos/cloudbeers/yolo/pulls?state=open&head=cloudbeers%3Amaster")).willReturn(aResponse().withHeader("Content-Type",
+		                                                                                                                                        "application/json; charset=utf-8")
+		                                                                                                                            .withBodyFile("../PRs/_files/body-yolo-pulls-open-multiple-PRs.json")));
 		SCMHeadObserver mockSCMHeadObserver = Mockito.mock(SCMHeadObserver.class);
 		GitHubSCMSourceContext context = new GitHubSCMSourceContext(null, mockSCMHeadObserver);
 		context.wantOriginPRs(true);
@@ -244,11 +247,11 @@ public class GithubSCMSourcePRsTest extends GitSCMSourceBase {
 		GitHubSCMSourceContext contextSpy = Mockito.spy(context);
 		Mockito.when(contextSpy.observer().getIncludes()).thenReturn(masterSet);
 		GitHubSCMSourceRequest request = contextSpy.newRequest(new GitHubSCMSource("cloudbeers", "yolo", null, false),
-		        null);
+		                                                       null);
 		Iterator<GHPullRequest> pullRequest = new GitHubSCMSource("cloudbeers",
-		        "yolo",
-		        null,
-		        false).new LazyPullRequests(request, repo).iterator();
+		                                                          "yolo",
+		                                                          null,
+		                                                          false).new LazyPullRequests(request, repo).iterator();
 		// Expected: In the iterator will have 2 items in it
 		assertTrue(pullRequest.hasNext());
 		assertEquals(1, pullRequest.next().getId());

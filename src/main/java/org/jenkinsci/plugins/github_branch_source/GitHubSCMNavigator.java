@@ -238,7 +238,7 @@ public class GitHubSCMNavigator extends SCMNavigator {
 		this.traits = new ArrayList<>();
 		this.traits.add(new BranchDiscoveryTrait(true, true));
 		this.traits.add(new ForkPullRequestDiscoveryTrait(EnumSet.of(ChangeRequestCheckoutStrategy.MERGE),
-		        new ForkPullRequestDiscoveryTrait.TrustPermission()));
+		                                                  new ForkPullRequestDiscoveryTrait.TrustPermission()));
 		if (!GitHubSCMSource.DescriptorImpl.SAME.equals(checkoutCredentialsId)) {
 			traits.add(new SSHCheckoutTrait(checkoutCredentialsId));
 		}
@@ -353,7 +353,7 @@ public class GitHubSCMNavigator extends SCMNavigator {
 	 */
 	@SuppressWarnings("ConstantConditions")
 	@SuppressFBWarnings(value = "RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE",
-	        justification = "Only non-null after we set them here!")
+	                    justification = "Only non-null after we set them here!")
 	private Object readResolve() {
 		if (scanCredentialsId != null) {
 			credentialsId = scanCredentialsId;
@@ -395,7 +395,7 @@ public class GitHubSCMNavigator extends SCMNavigator {
 			}
 			if ((includes != null && !"*".equals(includes)) || (excludes != null && !"".equals(excludes))) {
 				traits.add(new WildcardSCMHeadFilterTrait(StringUtils.defaultIfBlank(includes, "*"),
-				        StringUtils.defaultIfBlank(excludes, "")));
+				                                          StringUtils.defaultIfBlank(excludes, "")));
 			}
 			if (pattern != null && !".*".equals(pattern)) {
 				traits.add(new RegexSCMSourceFilterTrait(pattern));
@@ -635,7 +635,7 @@ public class GitHubSCMNavigator extends SCMNavigator {
 		for (SCMTrait<?> trait : traits) {
 			if (trait instanceof OriginPullRequestDiscoveryTrait) {
 				return ((OriginPullRequestDiscoveryTrait) trait).getStrategies()
-				        .contains(ChangeRequestCheckoutStrategy.MERGE);
+				                                                .contains(ChangeRequestCheckoutStrategy.MERGE);
 			}
 		}
 		return false;
@@ -683,7 +683,7 @@ public class GitHubSCMNavigator extends SCMNavigator {
 		for (SCMTrait<?> trait : traits) {
 			if (trait instanceof OriginPullRequestDiscoveryTrait) {
 				return ((OriginPullRequestDiscoveryTrait) trait).getStrategies()
-				        .contains(ChangeRequestCheckoutStrategy.HEAD);
+				                                                .contains(ChangeRequestCheckoutStrategy.HEAD);
 			}
 		}
 		return false;
@@ -732,7 +732,7 @@ public class GitHubSCMNavigator extends SCMNavigator {
 		for (SCMTrait<?> trait : traits) {
 			if (trait instanceof ForkPullRequestDiscoveryTrait) {
 				return ((ForkPullRequestDiscoveryTrait) trait).getStrategies()
-				        .contains(ChangeRequestCheckoutStrategy.MERGE);
+				                                              .contains(ChangeRequestCheckoutStrategy.MERGE);
 			}
 		}
 		return false;
@@ -766,7 +766,7 @@ public class GitHubSCMNavigator extends SCMNavigator {
 		}
 		if (buildForkPRMerge) {
 			traits.add(new ForkPullRequestDiscoveryTrait(EnumSet.of(ChangeRequestCheckoutStrategy.MERGE),
-			        new ForkPullRequestDiscoveryTrait.TrustPermission()));
+			                                             new ForkPullRequestDiscoveryTrait.TrustPermission()));
 		}
 	}
 
@@ -783,7 +783,7 @@ public class GitHubSCMNavigator extends SCMNavigator {
 		for (SCMTrait<?> trait : traits) {
 			if (trait instanceof ForkPullRequestDiscoveryTrait) {
 				return ((ForkPullRequestDiscoveryTrait) trait).getStrategies()
-				        .contains(ChangeRequestCheckoutStrategy.HEAD);
+				                                              .contains(ChangeRequestCheckoutStrategy.HEAD);
 			}
 		}
 		return false;
@@ -817,7 +817,7 @@ public class GitHubSCMNavigator extends SCMNavigator {
 		}
 		if (buildForkPRHead) {
 			traits.add(new ForkPullRequestDiscoveryTrait(EnumSet.of(ChangeRequestCheckoutStrategy.HEAD),
-			        new ForkPullRequestDiscoveryTrait.TrustPermission()));
+			                                             new ForkPullRequestDiscoveryTrait.TrustPermission()));
 		}
 	}
 
@@ -835,7 +835,7 @@ public class GitHubSCMNavigator extends SCMNavigator {
 		for (SCMTrait<?> trait : traits) {
 			if (trait instanceof SSHCheckoutTrait) {
 				return StringUtils.defaultString(((SSHCheckoutTrait) trait).getCredentialsId(),
-				        GitHubSCMSource.DescriptorImpl.ANONYMOUS);
+				                                 GitHubSCMSource.DescriptorImpl.ANONYMOUS);
 			}
 		}
 		return DescriptorImpl.SAME;
@@ -913,8 +913,9 @@ public class GitHubSCMNavigator extends SCMNavigator {
 			throw new AbortException("Must specify user or organization");
 		}
 
-		StandardCredentials credentials = Connector
-		        .lookupScanCredentials((Item) observer.getContext(), apiUri, credentialsId);
+		StandardCredentials credentials = Connector.lookupScanCredentials((Item) observer.getContext(),
+		                                                                  apiUri,
+		                                                                  credentialsId);
 
 		// Github client and validation
 		GitHub github = Connector.connect(apiUri, credentials);
@@ -925,8 +926,8 @@ public class GitHubSCMNavigator extends SCMNavigator {
 			// Input data validation
 			if (credentials != null && !isCredentialValid(github)) {
 				String message = String.format("Invalid scan credentials %s to connect to %s, skipping",
-				        CredentialsNameProvider.name(credentials),
-				        apiUri == null ? GitHubSCMSource.GITHUB_URL : apiUri);
+				                               CredentialsNameProvider.name(credentials),
+				                               apiUri == null ? GitHubSCMSource.GITHUB_URL : apiUri);
 				throw new AbortException(message);
 			}
 
@@ -952,7 +953,8 @@ public class GitHubSCMNavigator extends SCMNavigator {
 					if (myself != null && repoOwner.equalsIgnoreCase(myself.getLogin())) {
 						listener.getLogger()
 						        .println(GitHubConsoleNote.create(System.currentTimeMillis(),
-						                String.format("Looking up repositories of myself %s", repoOwner)));
+						                                          String.format("Looking up repositories of myself %s",
+						                                                        repoOwner)));
 						for (GHRepository repo : myself.listRepositories(100)) {
 							if (!repo.getOwnerName().equals(repoOwner)) {
 								continue; // ignore repos in other orgs when using GHMyself
@@ -962,8 +964,8 @@ public class GitHubSCMNavigator extends SCMNavigator {
 								witness.record(repo.getName(), false);
 								listener.getLogger()
 								        .println(GitHubConsoleNote.create(System.currentTimeMillis(),
-								                String.format("Skipping repository %s because it is archived",
-								                        repo.getName())));
+								                                          String.format("Skipping repository %s because it is archived",
+								                                                        repo.getName())));
 
 							} else if (!gitHubSCMNavigatorContext.getTopics().isEmpty()
 							        && !repo.listTopics().containsAll(gitHubSCMNavigatorContext.getTopics())) {
@@ -971,26 +973,26 @@ public class GitHubSCMNavigator extends SCMNavigator {
 								witness.record(repo.getName(), false);
 								listener.getLogger()
 								        .println(GitHubConsoleNote.create(System.currentTimeMillis(),
-								                String.format(
-								                        "Skipping repository %s because it is missing one or more of the following topics: '%s'",
-								                        repo.getName(),
-								                        gitHubSCMNavigatorContext.getTopics())));
+								                                          String.format("Skipping repository %s because it is missing one or more of the following topics: '%s'",
+								                                                        repo.getName(),
+								                                                        gitHubSCMNavigatorContext.getTopics())));
 							} else if (!repo.isPrivate() && gitHubSCMNavigatorContext.isExcludePublicRepositories()) {
 								witness.record(repo.getName(), false);
 								listener.getLogger()
 								        .println(GitHubConsoleNote.create(System.currentTimeMillis(),
-								                String.format("Skipping repository %s because it is public",
-								                        repo.getName())));
+								                                          String.format("Skipping repository %s because it is public",
+								                                                        repo.getName())));
 							} else if (request.process(repo.getName(), sourceFactory, null, witness)) {
 								listener.getLogger()
 								        .println(GitHubConsoleNote.create(System.currentTimeMillis(),
-								                String.format("%d repositories were processed (query completed)",
-								                        witness.getCount())));
+								                                          String.format("%d repositories were processed (query completed)",
+								                                                        witness.getCount())));
 							}
 						}
 						listener.getLogger()
 						        .println(GitHubConsoleNote.create(System.currentTimeMillis(),
-						                String.format("%d repositories were processed", witness.getCount())));
+						                                          String.format("%d repositories were processed",
+						                                                        witness.getCount())));
 						return;
 					}
 				}
@@ -999,17 +1001,18 @@ public class GitHubSCMNavigator extends SCMNavigator {
 				if (org != null && repoOwner.equalsIgnoreCase(org.getLogin())) {
 					listener.getLogger()
 					        .println(GitHubConsoleNote.create(System.currentTimeMillis(),
-					                String.format("Looking up repositories of organization %s", repoOwner)));
+					                                          String.format("Looking up repositories of organization %s",
+					                                                        repoOwner)));
 					final Iterable<GHRepository> repositories;
 					if (StringUtils.isNotBlank(gitHubSCMNavigatorContext.getTeamSlug())) {
 						// get repositories for selected team
 						listener.getLogger()
 						        .println(GitHubConsoleNote.create(System.currentTimeMillis(),
-						                String.format("Looking up repositories for team %s",
-						                        gitHubSCMNavigatorContext.getTeamSlug())));
+						                                          String.format("Looking up repositories for team %s",
+						                                                        gitHubSCMNavigatorContext.getTeamSlug())));
 						repositories = org.getTeamBySlug(gitHubSCMNavigatorContext.getTeamSlug())
-						        .listRepositories()
-						        .withPageSize(100);
+						                  .listRepositories()
+						                  .withPageSize(100);
 					} else {
 						repositories = org.listRepositories(100);
 					}
@@ -1019,36 +1022,36 @@ public class GitHubSCMNavigator extends SCMNavigator {
 							witness.record(repo.getName(), false);
 							listener.getLogger()
 							        .println(GitHubConsoleNote.create(System.currentTimeMillis(),
-							                String.format("Skipping repository %s because it is archived",
-							                        repo.getName())));
+							                                          String.format("Skipping repository %s because it is archived",
+							                                                        repo.getName())));
 						} else if (!gitHubSCMNavigatorContext.getTopics().isEmpty()
 						        && !repo.listTopics().containsAll(gitHubSCMNavigatorContext.getTopics())) {
 							// exclude repositories which are missing one or more of the specified topics
 							witness.record(repo.getName(), false);
 							listener.getLogger()
 							        .println(GitHubConsoleNote.create(System.currentTimeMillis(),
-							                String.format(
-							                        "Skipping repository %s because it is missing one or more of the following topics: '%s'",
-							                        repo.getName(),
-							                        gitHubSCMNavigatorContext.getTopics())));
+							                                          String.format("Skipping repository %s because it is missing one or more of the following topics: '%s'",
+							                                                        repo.getName(),
+							                                                        gitHubSCMNavigatorContext.getTopics())));
 
 						} else if (!repo.isPrivate() && gitHubSCMNavigatorContext.isExcludePublicRepositories()) {
 							witness.record(repo.getName(), false);
 							listener.getLogger()
 							        .println(GitHubConsoleNote.create(System.currentTimeMillis(),
-							                String.format("Skipping repository %s because it is public",
-							                        repo.getName())));
+							                                          String.format("Skipping repository %s because it is public",
+							                                                        repo.getName())));
 
 						} else if (request.process(repo.getName(), sourceFactory, null, witness)) {
 							listener.getLogger()
 							        .println(GitHubConsoleNote.create(System.currentTimeMillis(),
-							                String.format("%d repositories were processed (query completed)",
-							                        witness.getCount())));
+							                                          String.format("%d repositories were processed (query completed)",
+							                                                        witness.getCount())));
 						}
 					}
 					listener.getLogger()
 					        .println(GitHubConsoleNote.create(System.currentTimeMillis(),
-					                String.format("%d repositories were processed", witness.getCount())));
+					                                          String.format("%d repositories were processed",
+					                                                        witness.getCount())));
 					return;
 				}
 
@@ -1067,8 +1070,8 @@ public class GitHubSCMNavigator extends SCMNavigator {
 							witness.record(repo.getName(), false);
 							listener.getLogger()
 							        .println(GitHubConsoleNote.create(System.currentTimeMillis(),
-							                String.format("Skipping repository %s because it is archived",
-							                        repo.getName())));
+							                                          String.format("Skipping repository %s because it is archived",
+							                                                        repo.getName())));
 
 						} else if (!gitHubSCMNavigatorContext.getTopics().isEmpty()
 						        && !repo.listTopics().containsAll(gitHubSCMNavigatorContext.getTopics())) {
@@ -1076,25 +1079,25 @@ public class GitHubSCMNavigator extends SCMNavigator {
 							witness.record(repo.getName(), false);
 							listener.getLogger()
 							        .println(GitHubConsoleNote.create(System.currentTimeMillis(),
-							                String.format(
-							                        "Skipping repository %s because it is missing one or more of the following topics: '%s'",
-							                        repo.getName(),
-							                        gitHubSCMNavigatorContext.getTopics())));
+							                                          String.format("Skipping repository %s because it is missing one or more of the following topics: '%s'",
+							                                                        repo.getName(),
+							                                                        gitHubSCMNavigatorContext.getTopics())));
 						} else if (request.process(repo.getName(), sourceFactory, null, witness)) {
 							listener.getLogger()
 							        .println(GitHubConsoleNote.create(System.currentTimeMillis(),
-							                String.format("%d repositories were processed (query completed)",
-							                        witness.getCount())));
+							                                          String.format("%d repositories were processed (query completed)",
+							                                                        witness.getCount())));
 						}
 					}
 					listener.getLogger()
 					        .println(GitHubConsoleNote.create(System.currentTimeMillis(),
-					                String.format("%d repositories were processed", witness.getCount())));
+					                                          String.format("%d repositories were processed",
+					                                                        witness.getCount())));
 					return;
 				}
 
-				throw new AbortException(
-				        repoOwner + " does not correspond to a known GitHub User Account or Organization");
+				throw new AbortException(repoOwner
+				        + " does not correspond to a known GitHub User Account or Organization");
 			}
 		} finally {
 			Connector.release(github);
@@ -1124,8 +1127,9 @@ public class GitHubSCMNavigator extends SCMNavigator {
 			throw new AbortException("Must specify user or organization");
 		}
 
-		StandardCredentials credentials = Connector
-		        .lookupScanCredentials((Item) observer.getContext(), apiUri, credentialsId);
+		StandardCredentials credentials = Connector.lookupScanCredentials((Item) observer.getContext(),
+		                                                                  apiUri,
+		                                                                  credentialsId);
 
 		// Github client and validation
 		GitHub github = Connector.connect(apiUri, credentials);
@@ -1134,15 +1138,15 @@ public class GitHubSCMNavigator extends SCMNavigator {
 				Connector.checkApiUrlValidity(github, credentials);
 			} catch (HttpException e) {
 				String message = String.format("It seems %s is unreachable",
-				        apiUri == null ? GitHubSCMSource.GITHUB_URL : apiUri);
+				                               apiUri == null ? GitHubSCMSource.GITHUB_URL : apiUri);
 				throw new AbortException(message);
 			}
 
 			// Input data validation
 			if (credentials != null && !isCredentialValid(github)) {
 				String message = String.format("Invalid scan credentials %s to connect to %s, skipping",
-				        CredentialsNameProvider.name(credentials),
-				        apiUri == null ? GitHubSCMSource.GITHUB_URL : apiUri);
+				                               CredentialsNameProvider.name(credentials),
+				                               apiUri == null ? GitHubSCMSource.GITHUB_URL : apiUri);
 				throw new AbortException(message);
 			}
 
@@ -1178,8 +1182,8 @@ public class GitHubSCMNavigator extends SCMNavigator {
 								witness.record(repo.getName(), false);
 								listener.getLogger()
 								        .println(GitHubConsoleNote.create(System.currentTimeMillis(),
-								                String.format("Skipping repository %s because it is archived",
-								                        repo.getName())));
+								                                          String.format("Skipping repository %s because it is archived",
+								                                                        repo.getName())));
 
 							} else if (!gitHubSCMNavigatorContext.getTopics().isEmpty()
 							        && !repo.listTopics().containsAll(gitHubSCMNavigatorContext.getTopics())) {
@@ -1187,27 +1191,27 @@ public class GitHubSCMNavigator extends SCMNavigator {
 								witness.record(repo.getName(), false);
 								listener.getLogger()
 								        .println(GitHubConsoleNote.create(System.currentTimeMillis(),
-								                String.format(
-								                        "Skipping repository %s because it is missing one or more of the following topics: '%s'",
-								                        repo.getName(),
-								                        gitHubSCMNavigatorContext.getTopics())));
+								                                          String.format("Skipping repository %s because it is missing one or more of the following topics: '%s'",
+								                                                        repo.getName(),
+								                                                        gitHubSCMNavigatorContext.getTopics())));
 							} else if (!repo.isPrivate() && gitHubSCMNavigatorContext.isExcludePublicRepositories()) {
 								witness.record(repo.getName(), false);
 								listener.getLogger()
 								        .println(GitHubConsoleNote.create(System.currentTimeMillis(),
-								                String.format("Skipping repository %s because it is public",
-								                        repo.getName())));
+								                                          String.format("Skipping repository %s because it is public",
+								                                                        repo.getName())));
 
 							} else if (request.process(repo.getName(), sourceFactory, null, witness)) {
 								listener.getLogger()
 								        .println(GitHubConsoleNote.create(System.currentTimeMillis(),
-								                String.format("%d repositories were processed (query completed)",
-								                        witness.getCount())));
+								                                          String.format("%d repositories were processed (query completed)",
+								                                                        witness.getCount())));
 							}
 						}
 						listener.getLogger()
 						        .println(GitHubConsoleNote.create(System.currentTimeMillis(),
-						                String.format("%d repositories were processed", witness.getCount())));
+						                                          String.format("%d repositories were processed",
+						                                                        witness.getCount())));
 						return;
 					}
 				}
@@ -1223,8 +1227,8 @@ public class GitHubSCMNavigator extends SCMNavigator {
 							witness.record(repo.getName(), false);
 							listener.getLogger()
 							        .println(GitHubConsoleNote.create(System.currentTimeMillis(),
-							                String.format("Skipping repository %s because it is archived",
-							                        repo.getName())));
+							                                          String.format("Skipping repository %s because it is archived",
+							                                                        repo.getName())));
 
 						} else if (!gitHubSCMNavigatorContext.getTopics().isEmpty()
 						        && !repo.listTopics().containsAll(gitHubSCMNavigatorContext.getTopics())) {
@@ -1232,34 +1236,34 @@ public class GitHubSCMNavigator extends SCMNavigator {
 							witness.record(repo.getName(), false);
 							listener.getLogger()
 							        .println(GitHubConsoleNote.create(System.currentTimeMillis(),
-							                String.format(
-							                        "Skipping repository %s because it is missing one or more of the following topics: '%s'",
-							                        repo.getName(),
-							                        gitHubSCMNavigatorContext.getTopics())));
+							                                          String.format("Skipping repository %s because it is missing one or more of the following topics: '%s'",
+							                                                        repo.getName(),
+							                                                        gitHubSCMNavigatorContext.getTopics())));
 						} else if (StringUtils.isNotBlank(gitHubSCMNavigatorContext.getTeamSlug())
 						        && !isRepositoryVisibleToTeam(org, repo, gitHubSCMNavigatorContext.getTeamSlug())) {
 							listener.getLogger()
 							        .println(GitHubConsoleNote.create(System.currentTimeMillis(),
-							                String.format("Skipping repository %s because it is not in team %s",
-							                        repo.getName(),
-							                        gitHubSCMNavigatorContext.getTeamSlug())));
+							                                          String.format("Skipping repository %s because it is not in team %s",
+							                                                        repo.getName(),
+							                                                        gitHubSCMNavigatorContext.getTeamSlug())));
 						} else if (!repo.isPrivate() && gitHubSCMNavigatorContext.isExcludePublicRepositories()) {
 							witness.record(repo.getName(), false);
 							listener.getLogger()
 							        .println(GitHubConsoleNote.create(System.currentTimeMillis(),
-							                String.format("Skipping repository %s because it is public",
-							                        repo.getName())));
+							                                          String.format("Skipping repository %s because it is public",
+							                                                        repo.getName())));
 
 						} else if (request.process(repo.getName(), sourceFactory, null, witness)) {
 							listener.getLogger()
 							        .println(GitHubConsoleNote.create(System.currentTimeMillis(),
-							                String.format("%d repositories were processed (query completed)",
-							                        witness.getCount())));
+							                                          String.format("%d repositories were processed (query completed)",
+							                                                        witness.getCount())));
 						}
 					}
 					listener.getLogger()
 					        .println(GitHubConsoleNote.create(System.currentTimeMillis(),
-					                String.format("%d repositories were processed", witness.getCount())));
+					                                          String.format("%d repositories were processed",
+					                                                        witness.getCount())));
 					return;
 				}
 
@@ -1280,8 +1284,8 @@ public class GitHubSCMNavigator extends SCMNavigator {
 							witness.record(repo.getName(), false);
 							listener.getLogger()
 							        .println(GitHubConsoleNote.create(System.currentTimeMillis(),
-							                String.format("Skipping repository %s because it is archived",
-							                        repo.getName())));
+							                                          String.format("Skipping repository %s because it is archived",
+							                                                        repo.getName())));
 
 						} else if (!gitHubSCMNavigatorContext.getTopics().isEmpty()
 						        && !repo.listTopics().containsAll(gitHubSCMNavigatorContext.getTopics())) {
@@ -1289,32 +1293,32 @@ public class GitHubSCMNavigator extends SCMNavigator {
 							witness.record(repo.getName(), false);
 							listener.getLogger()
 							        .println(GitHubConsoleNote.create(System.currentTimeMillis(),
-							                String.format(
-							                        "Skipping repository %s because it is missing one or more of the following topics: '%s'",
-							                        repo.getName(),
-							                        gitHubSCMNavigatorContext.getTopics())));
+							                                          String.format("Skipping repository %s because it is missing one or more of the following topics: '%s'",
+							                                                        repo.getName(),
+							                                                        gitHubSCMNavigatorContext.getTopics())));
 						} else if (!repo.isPrivate() && gitHubSCMNavigatorContext.isExcludePublicRepositories()) {
 							witness.record(repo.getName(), false);
 							listener.getLogger()
 							        .println(GitHubConsoleNote.create(System.currentTimeMillis(),
-							                String.format("Skipping repository %s because it is public",
-							                        repo.getName())));
+							                                          String.format("Skipping repository %s because it is public",
+							                                                        repo.getName())));
 
 						} else if (request.process(repo.getName(), sourceFactory, null, witness)) {
 							listener.getLogger()
 							        .println(GitHubConsoleNote.create(System.currentTimeMillis(),
-							                String.format("%d repositories were processed (query completed)",
-							                        witness.getCount())));
+							                                          String.format("%d repositories were processed (query completed)",
+							                                                        witness.getCount())));
 						}
 					}
 					listener.getLogger()
 					        .println(GitHubConsoleNote.create(System.currentTimeMillis(),
-					                String.format("%d repositories were processed", witness.getCount())));
+					                                          String.format("%d repositories were processed",
+					                                                        witness.getCount())));
 					return;
 				}
 
-				throw new AbortException(
-				        repoOwner + " does not correspond to a known GitHub User Account or Organization");
+				throw new AbortException(repoOwner
+				        + " does not correspond to a known GitHub User Account or Organization");
 			}
 		} finally {
 			Connector.release(github);
@@ -1338,9 +1342,10 @@ public class GitHubSCMNavigator extends SCMNavigator {
 	@NonNull
 	@Override
 	public List<Action> retrieveActions(
-	        @NonNull SCMNavigatorOwner owner,
-	        @CheckForNull SCMNavigatorEvent event,
-	        @NonNull TaskListener listener) throws IOException, InterruptedException {
+	                                    @NonNull SCMNavigatorOwner owner,
+	                                    @CheckForNull SCMNavigatorEvent event,
+	                                    @NonNull TaskListener listener)
+	        throws IOException, InterruptedException {
 		// TODO when we have support for trusted events, use the details from event if event was from trusted source
 		listener.getLogger().printf("Looking up details of %s...%n", getRepoOwner());
 		List<Action> result = new ArrayList<>();
@@ -1487,8 +1492,7 @@ public class GitHubSCMNavigator extends SCMNavigator {
 		@NonNull
 		@Override
 		protected SCMSourceCategory[] createCategories() {
-			return new SCMSourceCategory[]{
-			        new UncategorizedSCMSourceCategory(Messages._GitHubSCMNavigator_UncategorizedCategory())
+			return new SCMSourceCategory[]{ new UncategorizedSCMSourceCategory(Messages._GitHubSCMNavigator_UncategorizedCategory())
 					// TODO add support for forks
 			};
 		}
@@ -1505,9 +1509,9 @@ public class GitHubSCMNavigator extends SCMNavigator {
 		@RequirePOST
 		@Restricted(NoExternalUse.class) // stapler
 		public FormValidation doCheckCredentialsId(
-		        @CheckForNull @AncestorInPath Item context,
-		        @QueryParameter String apiUri,
-		        @QueryParameter String credentialsId) {
+		                                           @CheckForNull @AncestorInPath Item context,
+		                                           @QueryParameter String apiUri,
+		                                           @QueryParameter String credentialsId) {
 			return Connector.checkScanCredentials(context, apiUri, credentialsId);
 		}
 
@@ -1522,9 +1526,9 @@ public class GitHubSCMNavigator extends SCMNavigator {
 		 */
 		@Restricted(NoExternalUse.class) // stapler
 		public ListBoxModel doFillCredentialsIdItems(
-		        @CheckForNull @AncestorInPath Item context,
-		        @QueryParameter String apiUri,
-		        @QueryParameter String credentialsId) {
+		                                             @CheckForNull @AncestorInPath Item context,
+		                                             @QueryParameter String apiUri,
+		                                             @QueryParameter String credentialsId) {
 			if (context == null ? !Jenkins.get().hasPermission(Jenkins.ADMINISTER)
 			        : !context.hasPermission(Item.EXTENDED_READ)) {
 				return new StandardListBoxModel().includeCurrentValue(credentialsId);
@@ -1548,7 +1552,7 @@ public class GitHubSCMNavigator extends SCMNavigator {
 			result.add("GitHub", "");
 			for (Endpoint e : GitHubConfiguration.get().getEndpoints()) {
 				result.add(e.getName() == null ? e.getApiUri() : e.getName() + " (" + e.getApiUri() + ")",
-				        e.getApiUri());
+				           e.getApiUri());
 			}
 			return result;
 		}
@@ -1573,7 +1577,7 @@ public class GitHubSCMNavigator extends SCMNavigator {
 		@SuppressWarnings("unused") // jelly
 		public List<NamedArrayList<? extends SCMTraitDescriptor<?>>> getTraitsDescriptorLists() {
 			GitHubSCMSource.DescriptorImpl sourceDescriptor = Jenkins.get()
-			        .getDescriptorByType(GitHubSCMSource.DescriptorImpl.class);
+			                                                         .getDescriptorByType(GitHubSCMSource.DescriptorImpl.class);
 			List<SCMTraitDescriptor<?>> all = new ArrayList<>();
 			all.addAll(SCMNavigatorTrait._for(this, GitHubSCMNavigatorContext.class, GitHubSCMSourceBuilder.class));
 			all.addAll(SCMSourceTrait._for(sourceDescriptor, GitHubSCMSourceContext.class, null));
@@ -1596,11 +1600,11 @@ public class GitHubSCMNavigator extends SCMNavigator {
 				}
 			}, true, result);
 			NamedArrayList.select(all,
-			        Messages.GitHubSCMNavigator_withinRepository(),
-			        NamedArrayList.anyOf(NamedArrayList.withAnnotation(Discovery.class),
-			                NamedArrayList.withAnnotation(Selection.class)),
-			        true,
-			        result);
+			                      Messages.GitHubSCMNavigator_withinRepository(),
+			                      NamedArrayList.anyOf(NamedArrayList.withAnnotation(Discovery.class),
+			                                           NamedArrayList.withAnnotation(Selection.class)),
+			                      true,
+			                      result);
 			NamedArrayList.select(all, Messages.GitHubSCMNavigator_general(), null, true, result);
 			return result;
 		}
@@ -1613,56 +1617,56 @@ public class GitHubSCMNavigator extends SCMNavigator {
 
 		static {
 			IconSet.icons.addIcon(new Icon("icon-github-scm-navigator icon-sm",
-			        "plugin/github-branch-source/images/16x16/github-scmnavigator.png",
-			        Icon.ICON_SMALL_STYLE));
+			                               "plugin/github-branch-source/images/16x16/github-scmnavigator.png",
+			                               Icon.ICON_SMALL_STYLE));
 			IconSet.icons.addIcon(new Icon("icon-github-scm-navigator icon-md",
-			        "plugin/github-branch-source/images/24x24/github-scmnavigator.png",
-			        Icon.ICON_MEDIUM_STYLE));
+			                               "plugin/github-branch-source/images/24x24/github-scmnavigator.png",
+			                               Icon.ICON_MEDIUM_STYLE));
 			IconSet.icons.addIcon(new Icon("icon-github-scm-navigator icon-lg",
-			        "plugin/github-branch-source/images/32x32/github-scmnavigator.png",
-			        Icon.ICON_LARGE_STYLE));
+			                               "plugin/github-branch-source/images/32x32/github-scmnavigator.png",
+			                               Icon.ICON_LARGE_STYLE));
 			IconSet.icons.addIcon(new Icon("icon-github-scm-navigator icon-xlg",
-			        "plugin/github-branch-source/images/48x48/github-scmnavigator.png",
-			        Icon.ICON_XLARGE_STYLE));
+			                               "plugin/github-branch-source/images/48x48/github-scmnavigator.png",
+			                               Icon.ICON_XLARGE_STYLE));
 
 			IconSet.icons.addIcon(new Icon("icon-github-logo icon-sm",
-			        "plugin/github-branch-source/images/16x16/github-logo.png",
-			        Icon.ICON_SMALL_STYLE));
+			                               "plugin/github-branch-source/images/16x16/github-logo.png",
+			                               Icon.ICON_SMALL_STYLE));
 			IconSet.icons.addIcon(new Icon("icon-github-logo icon-md",
-			        "plugin/github-branch-source/images/24x24/github-logo.png",
-			        Icon.ICON_MEDIUM_STYLE));
+			                               "plugin/github-branch-source/images/24x24/github-logo.png",
+			                               Icon.ICON_MEDIUM_STYLE));
 			IconSet.icons.addIcon(new Icon("icon-github-logo icon-lg",
-			        "plugin/github-branch-source/images/32x32/github-logo.png",
-			        Icon.ICON_LARGE_STYLE));
+			                               "plugin/github-branch-source/images/32x32/github-logo.png",
+			                               Icon.ICON_LARGE_STYLE));
 			IconSet.icons.addIcon(new Icon("icon-github-logo icon-xlg",
-			        "plugin/github-branch-source/images/48x48/github-logo.png",
-			        Icon.ICON_XLARGE_STYLE));
+			                               "plugin/github-branch-source/images/48x48/github-logo.png",
+			                               Icon.ICON_XLARGE_STYLE));
 
 			IconSet.icons.addIcon(new Icon("icon-github-repo icon-sm",
-			        "plugin/github-branch-source/images/16x16/github-repo.png",
-			        Icon.ICON_SMALL_STYLE));
+			                               "plugin/github-branch-source/images/16x16/github-repo.png",
+			                               Icon.ICON_SMALL_STYLE));
 			IconSet.icons.addIcon(new Icon("icon-github-repo icon-md",
-			        "plugin/github-branch-source/images/24x24/github-repo.png",
-			        Icon.ICON_MEDIUM_STYLE));
+			                               "plugin/github-branch-source/images/24x24/github-repo.png",
+			                               Icon.ICON_MEDIUM_STYLE));
 			IconSet.icons.addIcon(new Icon("icon-github-repo icon-lg",
-			        "plugin/github-branch-source/images/32x32/github-repo.png",
-			        Icon.ICON_LARGE_STYLE));
+			                               "plugin/github-branch-source/images/32x32/github-repo.png",
+			                               Icon.ICON_LARGE_STYLE));
 			IconSet.icons.addIcon(new Icon("icon-github-repo icon-xlg",
-			        "plugin/github-branch-source/images/48x48/github-repo.png",
-			        Icon.ICON_XLARGE_STYLE));
+			                               "plugin/github-branch-source/images/48x48/github-repo.png",
+			                               Icon.ICON_XLARGE_STYLE));
 
 			IconSet.icons.addIcon(new Icon("icon-github-branch icon-sm",
-			        "plugin/github-branch-source/images/16x16/github-branch.png",
-			        Icon.ICON_SMALL_STYLE));
+			                               "plugin/github-branch-source/images/16x16/github-branch.png",
+			                               Icon.ICON_SMALL_STYLE));
 			IconSet.icons.addIcon(new Icon("icon-github-branch icon-md",
-			        "plugin/github-branch-source/images/24x24/github-branch.png",
-			        Icon.ICON_MEDIUM_STYLE));
+			                               "plugin/github-branch-source/images/24x24/github-branch.png",
+			                               Icon.ICON_MEDIUM_STYLE));
 			IconSet.icons.addIcon(new Icon("icon-github-branch icon-lg",
-			        "plugin/github-branch-source/images/32x32/github-branch.png",
-			        Icon.ICON_LARGE_STYLE));
+			                               "plugin/github-branch-source/images/32x32/github-branch.png",
+			                               Icon.ICON_LARGE_STYLE));
 			IconSet.icons.addIcon(new Icon("icon-github-branch icon-xlg",
-			        "plugin/github-branch-source/images/48x48/github-branch.png",
-			        Icon.ICON_XLARGE_STYLE));
+			                               "plugin/github-branch-source/images/48x48/github-branch.png",
+			                               Icon.ICON_XLARGE_STYLE));
 		}
 	}
 
@@ -1739,9 +1743,8 @@ public class GitHubSCMNavigator extends SCMNavigator {
 		@NonNull
 		@Override
 		public SCMSource create(@NonNull String name) {
-			return new GitHubSCMSourceBuilder(getId() + "::" + name, apiUri, credentialsId, repoOwner, name)
-			        .withRequest(request)
-			        .build();
+			return new GitHubSCMSourceBuilder(getId() + "::"
+			        + name, apiUri, credentialsId, repoOwner, name).withRequest(request).build();
 		}
 	}
 }

@@ -137,12 +137,13 @@ public class Connector {
 	@NonNull
 	public static ListBoxModel listScanCredentials(@CheckForNull Item context, String apiUri) {
 		return new StandardListBoxModel().includeEmptyValue()
-		        .includeMatchingAs(
-		                context instanceof Queue.Task ? ((Queue.Task) context).getDefaultAuthentication() : ACL.SYSTEM,
-		                context,
-		                StandardUsernameCredentials.class,
-		                githubDomainRequirements(apiUri),
-		                githubScanCredentialsMatcher());
+		                                 .includeMatchingAs(context instanceof Queue.Task
+		                                         ? ((Queue.Task) context).getDefaultAuthentication()
+		                                         : ACL.SYSTEM,
+		                                                    context,
+		                                                    StandardUsernameCredentials.class,
+		                                                    githubDomainRequirements(apiUri),
+		                                                    githubScanCredentialsMatcher());
 	}
 
 	/**
@@ -156,9 +157,9 @@ public class Connector {
 	 */
 	@Deprecated
 	public static FormValidation checkScanCredentials(
-	        @CheckForNull SCMSourceOwner context,
-	        String apiUri,
-	        String scanCredentialsId) {
+	                                                  @CheckForNull SCMSourceOwner context,
+	                                                  String apiUri,
+	                                                  String scanCredentialsId) {
 		return checkScanCredentials((Item) context, apiUri, scanCredentialsId);
 	}
 
@@ -171,9 +172,9 @@ public class Connector {
 	 * @return the {@link FormValidation} results.
 	 */
 	public static FormValidation checkScanCredentials(
-	        @CheckForNull Item context,
-	        String apiUri,
-	        String scanCredentialsId) {
+	                                                  @CheckForNull Item context,
+	                                                  String apiUri,
+	                                                  String scanCredentialsId) {
 		if (context == null && !Jenkins.get().hasPermission(Jenkins.ADMINISTER)
 		        || context != null && !context.hasPermission(Item.EXTENDED_READ)) {
 			return FormValidation.ok();
@@ -194,8 +195,9 @@ public class Connector {
 				return FormValidation.ok("Credentials found");
 			}
 			StandardCredentials credentials = Connector.lookupScanCredentials(context,
-			        StringUtils.defaultIfEmpty(apiUri, GitHubServerConfig.GITHUB_URL),
-			        scanCredentialsId);
+			                                                                  StringUtils.defaultIfEmpty(apiUri,
+			                                                                                             GitHubServerConfig.GITHUB_URL),
+			                                                                  scanCredentialsId);
 			if (credentials == null) {
 				return FormValidation.error("Credentials not found");
 			} else {
@@ -223,8 +225,8 @@ public class Connector {
 				} catch (IOException e) {
 					// ignore, never thrown
 					LOGGER.log(Level.WARNING,
-					        "Exception validating credentials {0} on {1}",
-					        new Object[]{ CredentialsNameProvider.name(credentials), apiUri });
+					           "Exception validating credentials {0} on {1}",
+					           new Object[]{ CredentialsNameProvider.name(credentials), apiUri });
 					return FormValidation.error("Exception validating credentials");
 				}
 			}
@@ -245,9 +247,9 @@ public class Connector {
 	@Deprecated
 	@CheckForNull
 	public static StandardCredentials lookupScanCredentials(
-	        @CheckForNull SCMSourceOwner context,
-	        @CheckForNull String apiUri,
-	        @CheckForNull String scanCredentialsId) {
+	                                                        @CheckForNull SCMSourceOwner context,
+	                                                        @CheckForNull String apiUri,
+	                                                        @CheckForNull String scanCredentialsId) {
 		return lookupScanCredentials((Item) context, apiUri, scanCredentialsId);
 	}
 
@@ -261,20 +263,20 @@ public class Connector {
 	 */
 	@CheckForNull
 	public static StandardCredentials lookupScanCredentials(
-	        @CheckForNull Item context,
-	        @CheckForNull String apiUri,
-	        @CheckForNull String scanCredentialsId) {
+	                                                        @CheckForNull Item context,
+	                                                        @CheckForNull String apiUri,
+	                                                        @CheckForNull String scanCredentialsId) {
 		if (Util.fixEmpty(scanCredentialsId) == null) {
 			return null;
 		} else {
-			return CredentialsMatchers.firstOrNull(
-			        CredentialsProvider.lookupCredentials(StandardUsernameCredentials.class,
-			                context,
-			                context instanceof Queue.Task ? ((Queue.Task) context).getDefaultAuthentication()
-			                        : ACL.SYSTEM,
-			                githubDomainRequirements(apiUri)),
-			        CredentialsMatchers.allOf(CredentialsMatchers.withId(scanCredentialsId),
-			                githubScanCredentialsMatcher()));
+			return CredentialsMatchers.firstOrNull(CredentialsProvider.lookupCredentials(StandardUsernameCredentials.class,
+			                                                                             context,
+			                                                                             context instanceof Queue.Task
+			                                                                                     ? ((Queue.Task) context).getDefaultAuthentication()
+			                                                                                     : ACL.SYSTEM,
+			                                                                             githubDomainRequirements(apiUri)),
+			                                       CredentialsMatchers.allOf(CredentialsMatchers.withId(scanCredentialsId),
+			                                                                 githubScanCredentialsMatcher()));
 		}
 	}
 
@@ -305,12 +307,13 @@ public class Connector {
 		result.includeEmptyValue();
 		result.add("- same as scan credentials -", GitHubSCMSource.DescriptorImpl.SAME);
 		result.add("- anonymous -", GitHubSCMSource.DescriptorImpl.ANONYMOUS);
-		return result.includeMatchingAs(
-		        context instanceof Queue.Task ? ((Queue.Task) context).getDefaultAuthentication() : ACL.SYSTEM,
-		        context,
-		        StandardUsernameCredentials.class,
-		        githubDomainRequirements(apiUri),
-		        GitClient.CREDENTIALS_MATCHER);
+		return result.includeMatchingAs(context instanceof Queue.Task
+		        ? ((Queue.Task) context).getDefaultAuthentication()
+		        : ACL.SYSTEM,
+		                                context,
+		                                StandardUsernameCredentials.class,
+		                                githubDomainRequirements(apiUri),
+		                                GitClient.CREDENTIALS_MATCHER);
 	}
 
 	public static void checkApiUrlValidity(@Nonnull GitHub gitHub, @CheckForNull StandardCredentials credentials)
@@ -384,12 +387,14 @@ public class Connector {
 				} else if (username != null && password != null) {
 					// At the time of this change this works for OAuth tokens as well.
 					// This may not continue to work in the future, as GitHub has deprecated Login/Password credentials.
-					gb.withAuthorizationProvider(
-					        ImmutableAuthorizationProvider.fromLoginAndPassword(username, password));
+					gb.withAuthorizationProvider(ImmutableAuthorizationProvider.fromLoginAndPassword(username,
+					                                                                                 password));
 				}
 
-				record = GitHubConnection
-				        .connect(connectionId, gb.build(), cache, credentials instanceof GitHubAppCredentials);
+				record = GitHubConnection.connect(connectionId,
+				                                  gb.build(),
+				                                  cache,
+				                                  credentials instanceof GitHubAppCredentials);
 			}
 
 			return record.getGitHub();
@@ -441,10 +446,10 @@ public class Connector {
 
 	@CheckForNull
 	private static Cache getCache(
-	        @Nonnull Jenkins jenkins,
-	        @Nonnull String apiUrl,
-	        @Nonnull String authHash,
-	        @CheckForNull String username) {
+	                              @Nonnull Jenkins jenkins,
+	                              @Nonnull String apiUrl,
+	                              @Nonnull String authHash,
+	                              @CheckForNull String username) {
 		Cache cache = null;
 		int cacheSize = GitHubSCMSource.getCacheSize();
 		if (cacheSize > 0) {
@@ -558,10 +563,11 @@ public class Connector {
 	}
 
 	/* package */ static void checkConnectionValidity(
-	        String apiUri,
-	        @NonNull TaskListener listener,
-	        StandardCredentials credentials,
-	        GitHub github) throws IOException {
+	                                                  String apiUri,
+	                                                  @NonNull TaskListener listener,
+	                                                  StandardCredentials credentials,
+	                                                  GitHub github)
+	        throws IOException {
 		synchronized (checked) {
 			Map<GitHub, Void> hubs = checked.get(listener);
 			if (hubs != null && hubs.containsKey(github)) {
@@ -576,22 +582,24 @@ public class Connector {
 		}
 		if (credentials != null && !isCredentialValid(github)) {
 			String message = String.format("Invalid scan credentials %s to connect to %s, skipping",
-			        CredentialsNameProvider.name(credentials),
-			        apiUri == null ? GitHubSCMSource.GITHUB_URL : apiUri);
+			                               CredentialsNameProvider.name(credentials),
+			                               apiUri == null ? GitHubSCMSource.GITHUB_URL : apiUri);
 			throw new AbortException(message);
 		}
 		if (!github.isAnonymous()) {
 			assert credentials != null;
 			listener.getLogger()
 			        .println(GitHubConsoleNote.create(System.currentTimeMillis(),
-			                String.format("Connecting to %s using %s",
-			                        apiUri == null ? GitHubSCMSource.GITHUB_URL : apiUri,
-			                        CredentialsNameProvider.name(credentials))));
+			                                          String.format("Connecting to %s using %s",
+			                                                        apiUri == null ? GitHubSCMSource.GITHUB_URL
+			                                                                : apiUri,
+			                                                        CredentialsNameProvider.name(credentials))));
 		} else {
 			listener.getLogger()
 			        .println(GitHubConsoleNote.create(System.currentTimeMillis(),
-			                String.format("Connecting to %s with no credentials, anonymous access",
-			                        apiUri == null ? GitHubSCMSource.GITHUB_URL : apiUri)));
+			                                          String.format("Connecting to %s with no credentials, anonymous access",
+			                                                        apiUri == null ? GitHubSCMSource.GITHUB_URL
+			                                                                : apiUri)));
 		}
 	}
 
@@ -660,10 +668,10 @@ public class Connector {
 
 		@NonNull
 		private static GitHubConnection connect(
-		        @NonNull ConnectionId connectionId,
-		        @NonNull GitHub gitHub,
-		        @CheckForNull Cache cache,
-		        boolean cleanupCacheFolder) {
+		                                        @NonNull ConnectionId connectionId,
+		                                        @NonNull GitHub gitHub,
+		                                        @CheckForNull Cache cache,
+		                                        boolean cleanupCacheFolder) {
 			GitHubConnection record = new GitHubConnection(gitHub, cache, cleanupCacheFolder);
 			connections.put(connectionId, record);
 			reverseLookup.put(record.gitHub, record);
@@ -681,7 +689,7 @@ public class Connector {
 
 		private static void removeAllUnused(long threshold) throws IOException {
 			for (Iterator<Map.Entry<ConnectionId, GitHubConnection>> iterator = connections.entrySet()
-			        .iterator(); iterator.hasNext();) {
+			                                                                               .iterator(); iterator.hasNext();) {
 				Map.Entry<ConnectionId, GitHubConnection> entry = iterator.next();
 				try {
 					GitHubConnection record = Objects.requireNonNull(entry.getValue());
@@ -696,8 +704,8 @@ public class Connector {
 					}
 				} catch (IOException | NullPointerException e) {
 					LOGGER.log(WARNING,
-					        "Exception removing cache directory for unused connection: " + entry.getKey(),
-					        e);
+					           "Exception removing cache directory for unused connection: " + entry.getKey(),
+					           e);
 				}
 			}
 		}

@@ -94,8 +94,8 @@ public class SSHCheckoutTraitTest {
 				ListBoxModel rsp = d.doFillCredentialsIdItems(dummy, "", "does-not-exist");
 				assertThat("Expecting only the provided value so that form config unchanged", rsp, hasSize(1));
 				assertThat("Expecting only the provided value so that form config unchanged",
-				        rsp.get(0).value,
-				        is("does-not-exist"));
+				           rsp.get(0).value,
+				           is("does-not-exist"));
 				rsp = d.doFillCredentialsIdItems(null, "", "does-not-exist");
 				assertThat("Expecting just the empty entry", rsp, hasSize(1));
 				assertThat("Expecting just the empty entry", rsp.get(0).value, is(""));
@@ -107,8 +107,8 @@ public class SSHCheckoutTraitTest {
 				rsp = d.doFillCredentialsIdItems(null, "", "does-not-exist");
 				assertThat("Expecting only the provided value so that form config unchanged", rsp, hasSize(1));
 				assertThat("Expecting only the provided value so that form config unchanged",
-				        rsp.get(0).value,
-				        is("does-not-exist"));
+				           rsp.get(0).value,
+				           is("does-not-exist"));
 			}
 			try (ACLContext ctx = ACL.as(User.getById("jim", true).impersonate())) {
 				ListBoxModel rsp = d.doFillCredentialsIdItems(dummy, "", "does-not-exist");
@@ -119,8 +119,8 @@ public class SSHCheckoutTraitTest {
 				ListBoxModel rsp = d.doFillCredentialsIdItems(dummy, "", "does-not-exist");
 				assertThat("Expecting only the provided value so that form config unchanged", rsp, hasSize(1));
 				assertThat("Expecting only the provided value so that form config unchanged",
-				        rsp.get(0).value,
-				        is("does-not-exist"));
+				           rsp.get(0).value,
+				           is("does-not-exist"));
 			}
 		} finally {
 			j.jenkins.setSecurityRealm(realm);

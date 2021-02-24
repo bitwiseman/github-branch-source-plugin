@@ -152,8 +152,7 @@ public class Endpoint extends AbstractDescribableImpl<Endpoint> {
 				return FormValidation.error("The endpoint does not look like a GitHub Enterprise (malformed URL)");
 			} catch (JsonParseException jpe) {
 				LOGGER.log(Level.WARNING, "Trying to configure a GitHub Enterprise server: " + apiUri, jpe.getCause());
-				return FormValidation
-				        .error("The endpoint does not look like a GitHub Enterprise (invalid JSON response)");
+				return FormValidation.error("The endpoint does not look like a GitHub Enterprise (invalid JSON response)");
 			} catch (FileNotFoundException fnt) {
 				// For example: https://github.mycompany.com/server/api/v3/ gets a FileNotFoundException
 				LOGGER.log(Level.WARNING, "Getting HTTP Error 404 for " + apiUri);
@@ -165,8 +164,7 @@ public class Endpoint extends AbstractDescribableImpl<Endpoint> {
 					return FormValidation.warning("Private mode enabled, validation disabled");
 				}
 				LOGGER.log(Level.WARNING, e.getMessage());
-				return FormValidation.error(
-				        "The endpoint does not look like a GitHub Enterprise (verify network and/or try again later)");
+				return FormValidation.error("The endpoint does not look like a GitHub Enterprise (verify network and/or try again later)");
 			}
 		}
 

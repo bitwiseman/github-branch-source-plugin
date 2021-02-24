@@ -98,14 +98,14 @@ public class PullRequestSCMHead extends SCMHead implements ChangeRequestSCMHead2
 	}
 
 	public PullRequestSCMHead(
-	        @NonNull String name,
-	        String sourceOwner,
-	        String sourceRepo,
-	        String sourceBranch,
-	        int number,
-	        BranchSCMHead target,
-	        SCMHeadOrigin origin,
-	        ChangeRequestCheckoutStrategy strategy) {
+	                          @NonNull String name,
+	                          String sourceOwner,
+	                          String sourceRepo,
+	                          String sourceBranch,
+	                          int number,
+	                          BranchSCMHead target,
+	                          SCMHeadOrigin origin,
+	                          ChangeRequestCheckoutStrategy strategy) {
 		super(name);
 		this.merge = ChangeRequestCheckoutStrategy.MERGE == strategy;
 		this.number = number;
@@ -142,9 +142,9 @@ public class PullRequestSCMHead extends SCMHead implements ChangeRequestSCMHead2
 			// Upgrade from 1.x:
 			if (UPGRADE_SKIPPED_2_0_X.compareAndSet(false, true)) {
 				LOGGER.log(Level.WARNING,
-				        "GitHub Branch Source plugin was directly upgraded from 1.x to 2.2.0 "
-				                + "or newer without completing a full fetch from all repositories. Consequently startup may be "
-				                + "delayed while GitHub is queried for the missing information");
+				           "GitHub Branch Source plugin was directly upgraded from 1.x to 2.2.0 "
+				                   + "or newer without completing a full fetch from all repositories. Consequently startup may be "
+				                   + "delayed while GitHub is queried for the missing information");
 			}
 			// we need the help of FixMetadataMigration
 			return new FixMetadata(getName(), merge, metadata.getNumber(), new BranchSCMHead(metadata.getBaseRef()));
@@ -286,14 +286,15 @@ public class PullRequestSCMHead extends SCMHead implements ChangeRequestSCMHead2
 		@Override
 		public PullRequestSCMHead migrate(@NonNull GitHubSCMSource source, @NonNull FixOrigin head) {
 			return new PullRequestSCMHead(head.getName(),
-			        head.getSourceOwner(),
-			        head.getSourceRepo(),
-			        head.getSourceBranch(),
-			        head.getNumber(),
-			        head.getTarget(),
-			        source.getRepoOwner().equalsIgnoreCase(head.getSourceOwner()) ? SCMHeadOrigin.DEFAULT
-			                : new SCMHeadOrigin.Fork(head.getSourceOwner()),
-			        head.getCheckoutStrategy());
+			                              head.getSourceOwner(),
+			                              head.getSourceRepo(),
+			                              head.getSourceBranch(),
+			                              head.getNumber(),
+			                              head.getTarget(),
+			                              source.getRepoOwner().equalsIgnoreCase(head.getSourceOwner())
+			                                      ? SCMHeadOrigin.DEFAULT
+			                                      : new SCMHeadOrigin.Fork(head.getSourceOwner()),
+			                              head.getCheckoutStrategy());
 		}
 
 		@Override
@@ -315,13 +316,13 @@ public class PullRequestSCMHead extends SCMHead implements ChangeRequestSCMHead2
 	public static class FixMetadata extends PullRequestSCMHead {
 		FixMetadata(String name, Boolean merge, int number, BranchSCMHead branchSCMHead) {
 			super(name,
-			        null,
-			        null,
-			        null,
-			        number,
-			        branchSCMHead,
-			        null,
-			        merge ? ChangeRequestCheckoutStrategy.MERGE : ChangeRequestCheckoutStrategy.HEAD);
+			      null,
+			      null,
+			      null,
+			      number,
+			      branchSCMHead,
+			      null,
+			      merge ? ChangeRequestCheckoutStrategy.MERGE : ChangeRequestCheckoutStrategy.HEAD);
 		}
 
 	}
@@ -344,14 +345,15 @@ public class PullRequestSCMHead extends SCMHead implements ChangeRequestSCMHead2
 		public PullRequestSCMHead migrate(@NonNull GitHubSCMSource source, @NonNull FixMetadata head) {
 			PullRequestSource src = source.retrievePullRequestSource(head.getNumber());
 			return new PullRequestSCMHead(head.getName(),
-			        src == null ? null : src.getSourceOwner(),
-			        src == null ? null : src.getSourceRepo(),
-			        src == null ? null : src.getSourceBranch(),
-			        head.getNumber(),
-			        head.getTarget(),
-			        src != null && source.getRepoOwner().equalsIgnoreCase(src.getSourceOwner()) ? SCMHeadOrigin.DEFAULT
-			                : new SCMHeadOrigin.Fork(head.getSourceOwner()),
-			        head.getCheckoutStrategy());
+			                              src == null ? null : src.getSourceOwner(),
+			                              src == null ? null : src.getSourceRepo(),
+			                              src == null ? null : src.getSourceBranch(),
+			                              head.getNumber(),
+			                              head.getTarget(),
+			                              src != null && source.getRepoOwner().equalsIgnoreCase(src.getSourceOwner())
+			                                      ? SCMHeadOrigin.DEFAULT
+			                                      : new SCMHeadOrigin.Fork(head.getSourceOwner()),
+			                              head.getCheckoutStrategy());
 		}
 
 		@Override

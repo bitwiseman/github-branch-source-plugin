@@ -51,11 +51,11 @@ public class GitHubNotificationRequest {
 	 * @since 2.3.2
 	 */
 	private GitHubNotificationRequest(
-	        String context,
-	        String url,
-	        String message,
-	        GHCommitState state,
-	        boolean ignoreError) {
+	                                  String context,
+	                                  String url,
+	                                  String message,
+	                                  GHCommitState state,
+	                                  boolean ignoreError) {
 		this.context = context;
 		this.url = url;
 		this.message = message;
@@ -64,11 +64,11 @@ public class GitHubNotificationRequest {
 	}
 
 	public static GitHubNotificationRequest build(
-	        String context,
-	        String url,
-	        String message,
-	        GHCommitState state,
-	        boolean ignoreError) {
+	                                              String context,
+	                                              String url,
+	                                              String message,
+	                                              GHCommitState state,
+	                                              boolean ignoreError) {
 		return new GitHubNotificationRequest(context, url, message, state, ignoreError);
 	}
 
